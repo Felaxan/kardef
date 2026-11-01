@@ -1,0 +1,9 @@
+# Özel belgeler ve büyük medya (bütçe, tanıtım videosu)
+/belgeler/
+
+# Genel
+node_modules/
+.env
+.env*.local
+.DS_Store
+Thumbs.db

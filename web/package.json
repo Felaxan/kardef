@@ -1,0 +1,45 @@
+{
+  "name": "kardef-web",
+  "version": "0.1.0",
+  "private": true,
+  "description": "KAR-DEF haber ve arşiv platformu: Next.js + Payload CMS",
+  "type": "module",
+  "scripts": {
+    "dev": "cross-env NODE_OPTIONS=--no-deprecation next dev",
+    "build": "cross-env NODE_OPTIONS=\"--no-deprecation --max-old-space-size=4096\" next build",
+    "start": "cross-env NODE_OPTIONS=--no-deprecation next start",
+    "payload": "cross-env NODE_OPTIONS=--no-deprecation payload",
+    "generate:types": "cross-env NODE_OPTIONS=--no-deprecation payload generate:types",
+    "generate:importmap": "cross-env NODE_OPTIONS=--no-deprecation payload generate:importmap",
+    "seed": "cross-env NODE_OPTIONS=--no-deprecation payload run src/seed/index.ts",
+    "lint": "cross-env NODE_OPTIONS=--no-deprecation eslint ."
+  },
+  "engines": {
+    "node": ">=20.18.1"
+  },
+  "dependencies": {
+    "@payloadcms/db-sqlite": "3.91.0",
+    "@payloadcms/next": "3.91.0",
+    "@payloadcms/richtext-lexical": "3.91.0",
+    "@payloadcms/translations": "3.91.0",
+    "@payloadcms/ui": "3.91.0",
+    "cross-env": "7.0.3",
+    "dotenv": "16.4.7",
+    "graphql": "16.11.0",
+    "lenis": "1.1.13",
+    "next": "16.3.3",
+    "payload": "3.91.0",
+    "react": "19.2.6",
+    "react-dom": "19.2.6",
+    "sharp": "0.35.4"
+  },
+  "devDependencies": {
+    "@types/node": "22.19.9",
+    "@types/react": "19.2.14",
+    "@types/react-dom": "19.2.3",
+    "eslint": "9.39.1",
+    "eslint-config-next": "16.3.3",
+    "prettier": "3.6.2",
+    "typescript": "5.7.3"
+  }
+}

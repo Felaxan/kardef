@@ -1,0 +1,535 @@
+<!doctype html>
+<html lang="tr" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Karakoçan — Haber ve Arşiv</title>
+<meta name="description" content="KAR-DEF ve AV-KARDEP'in ortak dijital yayını: memleketten ve gurbetten haberler, etkinlikler, duyurular ve Karakoçan arşivi.">
+<link rel="icon" href="assets/kar-def-logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Franklin:ital,wght@0,400..900;1,400..700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400..700;1,8..60,400..600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/site.css">
+<script>
+  document.documentElement.className = document.documentElement.className.replace('no-js', 'js');
+  // Kayıtlı tema tercihini sayfa çizilmeden uygula (beyaz/siyah yanıp sönmesin)
+  try { var t = localStorage.getItem('k-theme'); if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t); } catch (e) {}
+</script>
+</head>
+<body>
+
+<!-- Ortak simgeler -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+  <symbol id="i-left" viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></symbol>
+  <symbol id="i-right" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></symbol>
+  <symbol id="i-down" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></symbol>
+  <symbol id="i-up" viewBox="0 0 24 24"><path d="M12 19V5M6 11l6-6 6 6"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></symbol>
+  <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></symbol>
+  <symbol id="i-play" viewBox="0 0 24 24"><path d="M7 4.5v15l13-7.5z"/></symbol>
+  <symbol id="i-chat" viewBox="0 0 24 24"><path d="M4 20l1.4-4.2A8 8 0 1 1 8.6 19z"/></symbol>
+  <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></symbol>
+  <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></symbol>
+</svg>
+
+<a class="skip" href="#main" data-i18n="skip">İçeriğe geç</a>
+
+<!-- Üst şerit -->
+<div class="topbar">
+  <div class="wrap topbar-in">
+    <span id="today">1 Kasım 2026 Pazar</span>
+    <span class="topbar-place" data-i18n="top.place">Karakoçan · Elazığ ve gurbetteki hemşehrilerimiz</span>
+    <div class="tools">
+      <div class="fs" role="group" aria-label="Yazı boyutu" data-i18n-aria="top.fs">
+        <span class="fs-label" data-i18n="top.fs">Yazı boyutu</span>
+        <button type="button" aria-pressed="true">A</button>
+        <button type="button" aria-pressed="false">A</button>
+        <button type="button" aria-pressed="false">A</button>
+      </div>
+      <button type="button" class="theme-btn" aria-label="Açık / koyu tema" data-i18n-aria="top.theme">
+        <svg class="ico i-moon"><use href="#i-moon"/></svg>
+        <svg class="ico i-sun"><use href="#i-sun"/></svg>
+      </button>
+      <div class="lang">
+        <button type="button" class="lang-btn" aria-haspopup="listbox" aria-expanded="false"><span class="lang-cur">TR</span><svg class="ico"><use href="#i-down"/></svg></button>
+        <ul class="lang-list" role="listbox">
+          <li><button type="button" role="option" data-lang="tr" aria-selected="true"><b>TR</b>Türkçe</button></li>
+          <li><button type="button" role="option" data-lang="ku" aria-selected="false"><b>KU</b>Kurdî</button></li>
+          <li><button type="button" role="option" data-lang="en" aria-selected="false"><b>EN</b>English</button></li>
+          <li><button type="button" role="option" data-lang="de" aria-selected="false"><b>DE</b>Deutsch</button></li>
+          <li><button type="button" role="option" data-lang="nl" aria-selected="false"><b>NL</b>Nederlands</button></li>
+          <li><button type="button" role="option" data-lang="fr" aria-selected="false"><b>FR</b>Français</button></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Başlık -->
+<header class="head">
+  <div class="wrap head-in">
+    <a href="#" class="brand">
+      <span class="seals">
+        <img src="assets/kar-def-logo.png" alt="KAR-DEF" width="60" height="60">
+        <img src="assets/av-kardep-logo.png" alt="AV-KARDEP" width="60" height="60">
+      </span>
+      <span class="brand-text intro" style="--d:1">
+        <span class="brand-name">Karakoçan</span>
+        <span class="brand-tag" data-i18n="brand.tag">Haber ve Arşiv Platformu</span>
+      </span>
+    </a>
+    <div class="head-actions intro" style="--d:2">
+      <form class="search" role="search" onsubmit="return false">
+        <svg class="ico"><use href="#i-search"/></svg>
+        <label for="q" class="sr" data-i18n="search.btn">Ara</label>
+        <input id="q" type="search" placeholder="Haber, köy, isim veya yıl ara" data-i18n-ph="search.ph">
+        <button type="submit" data-i18n="search.btn">Ara</button>
+      </form>
+      <a href="#katki" class="btn btn-brand"><span data-i18n="cta.katki">Arşive katkı ver</span><svg class="ico"><use href="#i-arrow"/></svg></a>
+    </div>
+  </div>
+  <nav class="nav intro" style="--d:3" aria-label="Ana menü">
+    <div class="wrap nav-in">
+      <a href="#" class="is-active" data-i18n="nav.gundem">Gündem</a>
+      <a href="#gundem" data-i18n="nav.haberler">Haberler</a>
+      <a href="#etkinlikler" data-i18n="nav.etkinlikler">Etkinlikler</a>
+      <a href="#duyurular" data-i18n="nav.duyurular">Duyurular</a>
+      <a href="#arsiv" data-i18n="nav.arsiv">Arşiv</a>
+      <a href="#arsiv" data-i18n="nav.sozlu">Sözlü Tarih</a>
+      <a href="#koyler" data-i18n="nav.koyler">Köyler</a>
+      <a href="#kurumlar" data-i18n="nav.kurumlar">Kurumlar</a>
+      <span class="nav-ind" aria-hidden="true"></span>
+    </div>
+  </nav>
+</header>
+
+<!-- Son dakika -->
+<div class="ticker intro" style="--d:4">
+  <div class="wrap ticker-in">
+    <span class="ticker-label"><span class="pulse"></span><span data-i18n="ticker">Son dakika</span></span>
+    <div class="ticker-view">
+      <div class="ticker-track">
+        <ul class="ticker-list">
+          <li><time>14:20</time><a href="#">Federasyon olağan genel kurulu 22 Kasım Pazar günü yapılacak</a></li>
+          <li><time>11:05</time><a href="#">Köln'deki memleket akşamı için kayıtlar başladı</a></li>
+          <li><time>09:40</time><a href="#">Burs başvuruları 30 Kasım'a kadar açık</a></li>
+          <li><time>Dün</time><a href="#">Arşive bu hafta 26 yeni fotoğraf eklendi</a></li>
+          <li><time>Dün</time><a href="#">Köy yollarında kış hazırlığı için ortak çağrı</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="langnote" hidden><div class="wrap" data-i18n="langnote"></div></div>
+
+<!-- Kaydırınca beliren küçük başlık -->
+<div class="minibar" inert>
+  <div class="wrap minibar-in">
+    <a href="#" class="mini-brand"><img src="assets/kar-def-logo.png" alt=""><img src="assets/av-kardep-logo.png" alt=""><span>Karakoçan</span></a>
+    <nav class="mini-nav" aria-label="Kısa menü"></nav>
+    <a href="#katki" class="btn btn-brand btn-sm"><span data-i18n="cta.katki">Arşive katkı ver</span><svg class="ico"><use href="#i-arrow"/></svg></a>
+  </div>
+  <span class="progress"></span>
+</div>
+
+<main id="main">
+<h1 class="sr">Karakoçan — Haber ve Arşiv</h1>
+
+<!-- Manşet -->
+<section class="wrap hero" aria-label="Manşet">
+  <div class="slider intro" style="--d:3">
+    <div class="slides">
+      <article class="slide is-active">
+        <img src="assets/photos/karakocan-genel.jpg" alt="Karakoçan ilçe merkezindeki saat kulesi">
+        <div class="slide-cap">
+          <span class="kicker">Federasyon</span>
+          <h2><a href="#">Federasyon genel kurulu 22 Kasım'da Karakoçan'da toplanıyor</a></h2>
+          <p>Yeni dönem yönetimi seçilecek, burs ve kış yardımı programları oylanacak. Delege kayıtları 15 Kasım'da kapanıyor.</p>
+          <p class="meta"><b>KAR-DEF</b> · 31 Ekim 2026</p>
+        </div>
+        <span class="credit">Foto: LoqaT · CC BY-SA 4.0</span>
+      </article>
+      <article class="slide">
+        <img src="assets/photos/yesilbelen.jpg" alt="Yeşilbelen köyüne giden asfalt yol, yaz">
+        <div class="slide-cap">
+          <span class="kicker">Köyler</span>
+          <h2><a href="#">Köy rehberi yayında: her köyün kendi sayfası olacak</a></h2>
+          <p>Tarihçe, fotoğraflar ve gurbetteki aileler tek sayfada. İlk sayfa Yeşilbelen için açıldı.</p>
+          <p class="meta"><b>Haber Merkezi</b> · 30 Ekim 2026</p>
+        </div>
+        <span class="credit">Foto: Sabri Zurel · CC0</span>
+      </article>
+      <article class="slide">
+        <img src="assets/photos/alikan.jpg" alt="Karla kaplı tepelerin arasından kıvrılarak köye inen yol">
+        <div class="slide-cap">
+          <span class="kicker">Dayanışma</span>
+          <h2><a href="#">Kış yardımı kampanyası başlıyor: Avrupa'dan ortak destek</a></h2>
+          <p>AV-KARDEP'e bağlı dernekler, yakacak ve gıda yardımının köylere aralık başında ulaştırılması için birlikte çalışıyor.</p>
+          <p class="meta"><b>AV-KARDEP</b> · 29 Ekim 2026</p>
+        </div>
+        <span class="credit">Foto: Veyis Polat · CC BY 2.0</span>
+      </article>
+      <article class="slide">
+        <img src="assets/photos/otogar.jpg" alt="Karakoçan otogarı ve bekleyen yolcu otobüsleri">
+        <div class="slide-cap">
+          <span class="kicker">Sözlü Tarih</span>
+          <h2><a href="#">Gurbete ilk gidenler anlatıyor: 40 görüşme arşivde</a></h2>
+          <p>Gönüllü ekip yaz boyunca köylerde büyüklerimizle göç yıllarını, düğün geleneklerini ve eski köy hayatını konuştu.</p>
+          <p class="meta"><b>Haber Merkezi</b> · 28 Ekim 2026</p>
+        </div>
+        <span class="credit">Foto: KureCewlik81 · CC BY-SA 4.0</span>
+      </article>
+      <div class="slider-arrows">
+        <button type="button" data-prev aria-label="Önceki"><svg class="ico"><use href="#i-left"/></svg></button>
+        <button type="button" data-next aria-label="Sonraki"><svg class="ico"><use href="#i-right"/></svg></button>
+      </div>
+    </div>
+    <div class="tabs">
+      <button type="button" class="tab is-active"><span class="tab-bar"></span><span class="tab-n">01</span><span class="tab-t">Genel kurul 22 Kasım'da</span></button>
+      <button type="button" class="tab"><span class="tab-bar"></span><span class="tab-n">02</span><span class="tab-t">Köy rehberi yayında</span></button>
+      <button type="button" class="tab"><span class="tab-bar"></span><span class="tab-n">03</span><span class="tab-t">Kış yardımı başlıyor</span></button>
+      <button type="button" class="tab"><span class="tab-bar"></span><span class="tab-n">04</span><span class="tab-t">Gurbete ilk gidenler</span></button>
+    </div>
+  </div>
+
+  <aside class="side intro" style="--d:5">
+    <div>
+      <h2 class="sec-label"><span data-i18n="side.latest">Son eklenenler</span><a href="#" data-i18n="more.all">Tümünü gör</a></h2>
+      <ol class="latest">
+        <li><time>14:20</time><a href="#"><span class="ul">Genel kurul gündemi ve delege listesi yayımlandı</span></a><span class="loc">Karakoçan</span></li>
+        <li><time>11:05</time><a href="#"><span class="ul">Köln'deki memleket akşamı için kayıtlar başladı</span></a><span class="loc">Köln</span></li>
+        <li><time>09:40</time><a href="#"><span class="ul">Burs başvuruları için gereken belgeler</span></a><span class="loc">KAR-DEF</span></li>
+        <li><time>Dün</time><a href="#"><span class="ul">Arşive bu hafta 26 yeni fotoğraf eklendi</span></a><span class="loc">Arşiv</span></li>
+      </ol>
+    </div>
+    <div>
+      <h2 class="sec-label"><span data-i18n="side.popular">Çok okunanlar</span></h2>
+      <ol class="popular">
+        <li><a href="#"><span class="ul">Almanya'ya ilk gidenler: 1960'lardan kalan mektuplar</span></a></li>
+        <li><a href="#"><span class="ul">Köy köy düğün gelenekleri</span></a></li>
+        <li><a href="#"><span class="ul">Karakoçan'da kış: köy yolları ne durumda?</span></a></li>
+      </ol>
+    </div>
+  </aside>
+</section>
+
+<!-- Gündem -->
+<section class="wrap sec" id="gundem">
+  <header class="sec-head" data-reveal>
+    <h2 data-i18n="sec.gundem">Gündem</h2>
+    <a href="#" class="more"><span data-i18n="more.all">Tümünü gör</span><svg class="ico"><use href="#i-arrow"/></svg></a>
+  </header>
+  <div class="cards">
+    <article class="card" data-reveal="img" style="--i:0">
+      <a href="#" class="card-img"><img src="assets/photos/uzun-ince-yol.jpg" alt="Karla kaplı, kıvrılarak uzanan köy yolu" loading="lazy"></a>
+      <span class="kicker">Köyler</span>
+      <h3><a href="#"><span class="ul">Köy yollarında kış hazırlığı için ortak çağrı</span></a></h3>
+      <p class="dek">Muhtarlar ve dernekler, karla kapanan yolların hızlı açılması için birlikte başvuru yapıyor.</p>
+      <p class="meta"><b>KAR-DEF</b> · 30 Ekim</p>
+    </article>
+    <article class="card" data-reveal="img" style="--i:1">
+      <a href="#" class="card-img"><img src="assets/photos/saat-kulesi.jpg" alt="Karakoçan saat kulesi" loading="lazy" style="object-position:50% 30%"></a>
+      <span class="kicker">Karakoçan</span>
+      <h3><a href="#"><span class="ul">İlçe merkezinde hemşehri buluşması yapıldı</span></a></h3>
+      <p class="dek">Yaz boyunca memlekete gelen gurbetçi aileler saat kulesi meydanında bir araya geldi.</p>
+      <p class="meta"><b>Haber Merkezi</b> · 28 Ekim</p>
+    </article>
+    <article class="card" data-reveal="img" style="--i:2">
+      <a href="#" class="card-img"><img src="assets/photos/bahar.jpg" alt="Karlı, ormanlık tepeler" loading="lazy"></a>
+      <span class="kicker">Doğa</span>
+      <h3><a href="#"><span class="ul">Karakoçan dağlarında kış yürüyüşü rotaları</span></a></h3>
+      <p class="dek">Gençlik kolunun hazırladığı rehber, köyler arası eski patikaları yeniden tanıtıyor.</p>
+      <p class="meta"><b>Gençlik</b> · 26 Ekim</p>
+    </article>
+    <article class="card card-noimg" data-reveal style="--i:3">
+      <span class="kicker">Eğitim</span>
+      <h3><a href="#"><span class="ul">2026–2027 dönemi burs başvuruları açıldı; son gün 30 Kasım</span></a></h3>
+      <p class="dek">Üniversite ve lise öğrencileri başvurularını çevrim içi yapabilecek. Sonuçlar aralık sonunda açıklanacak.</p>
+      <p class="meta"><b>KAR-DEF</b> · 29 Ekim</p>
+    </article>
+  </div>
+</section>
+
+<!-- Etkinlikler -->
+<section class="wrap sec" id="etkinlikler">
+  <header class="sec-head" data-reveal>
+    <h2 data-i18n="ev.title">Etkinlik takvimi</h2>
+    <div class="seg" role="group">
+      <span class="seg-ind" aria-hidden="true"></span>
+      <button type="button" data-ev-filter="all" aria-pressed="true" data-i18n="ev.all">Tümü</button>
+      <button type="button" data-ev-filter="tr" aria-pressed="false" data-i18n="ev.tr">Karakoçan</button>
+      <button type="button" data-ev-filter="eu" aria-pressed="false" data-i18n="ev.eu">Avrupa</button>
+    </div>
+    <a href="#" class="more"><span data-i18n="ev.more">Tüm takvim</span><svg class="ico"><use href="#i-arrow"/></svg></a>
+  </header>
+  <ol class="events">
+    <li class="event" data-ev="tr" data-date="2026-11-07" data-reveal style="--i:0">
+      <div class="ev-date"><span class="d">7</span><span class="m"><b>Kasım</b>Cumartesi</span></div>
+      <h3>Kış yardımı kampanyası başlıyor</h3>
+      <p class="ev-place"><svg class="ico"><use href="#i-pin"/></svg>Karakoçan · 10:00</p>
+      <span class="tag">KAR-DEF</span>
+    </li>
+    <li class="event eu" data-ev="eu" data-date="2026-11-14" data-reveal style="--i:1">
+      <div class="ev-date"><span class="d">14</span><span class="m"><b>Kasım</b>Cumartesi</span></div>
+      <h3>Memleket akşamı: müzik, yemek, sohbet</h3>
+      <p class="ev-place"><svg class="ico"><use href="#i-pin"/></svg>Köln · 18:30</p>
+      <span class="tag">AV-KARDEP</span>
+    </li>
+    <li class="event" data-ev="tr" data-date="2026-11-22" data-reveal style="--i:2">
+      <div class="ev-date"><span class="d">22</span><span class="m"><b>Kasım</b>Pazar</span></div>
+      <h3>Federasyon olağan genel kurulu</h3>
+      <p class="ev-place"><svg class="ico"><use href="#i-pin"/></svg>Karakoçan · 10:30</p>
+      <span class="tag">KAR-DEF</span>
+    </li>
+    <li class="event eu" data-ev="tr eu" data-date="2026-12-05" data-reveal style="--i:3">
+      <div class="ev-date"><span class="d">5</span><span class="m"><b>Aralık</b>Cumartesi</span></div>
+      <h3>Atölye: aile fotoğraflarını dijitale aktarma</h3>
+      <p class="ev-place"><svg class="ico"><use href="#i-pin"/></svg><span data-i18n="ev.online">Çevrim içi</span> · 20:00</p>
+      <span class="tag" data-i18n="ev.joint">Ortak</span>
+    </li>
+  </ol>
+</section>
+
+<!-- Arşiv -->
+<section class="band" id="arsiv" aria-labelledby="arsiv-baslik">
+  <div class="wrap">
+    <header class="arc-head">
+      <div data-reveal>
+        <span class="kicker" data-i18n="arc.kicker">Arşiv</span>
+        <h2 id="arsiv-baslik" data-i18n="arc.title">Yetmiş yılın kayıtları</h2>
+      </div>
+      <p class="arc-intro" data-reveal style="--i:1" data-i18n="arc.intro">Fotoğraflar, belgeler, gazete kupürleri ve sözlü tarih kayıtları. Bir dönem seçin, arşiv o yıllara göre süzülsün.</p>
+    </header>
+
+    <div class="decades" role="group" data-i18n-aria="arc.alldec">
+      <button type="button" data-dec="all" aria-pressed="true"><span class="total" data-count="511">511</span><span class="lbl" data-i18n="arc.alldec">Tüm dönemler</span><span class="n"><span data-n>511</span> <span data-i18n="arc.records">kayıt</span></span></button>
+      <button type="button" data-dec="1950" aria-pressed="false" style="--i:1"><span class="bar" style="--h:.1"></span><span class="lbl"></span><span class="n" data-n>12</span></button>
+      <button type="button" data-dec="1960" aria-pressed="false" style="--i:2"><span class="bar" style="--h:.28"></span><span class="lbl"></span><span class="n" data-n>34</span></button>
+      <button type="button" data-dec="1970" aria-pressed="false" style="--i:3"><span class="bar" style="--h:.48"></span><span class="lbl"></span><span class="n" data-n>58</span></button>
+      <button type="button" data-dec="1980" aria-pressed="false" style="--i:4"><span class="bar" style="--h:.34"></span><span class="lbl"></span><span class="n" data-n>41</span></button>
+      <button type="button" data-dec="1990" aria-pressed="false" style="--i:5"><span class="bar" style="--h:.53"></span><span class="lbl"></span><span class="n" data-n>63</span></button>
+      <button type="button" data-dec="2000" aria-pressed="false" style="--i:6"><span class="bar" style="--h:.73"></span><span class="lbl"></span><span class="n" data-n>88</span></button>
+      <button type="button" data-dec="2010" aria-pressed="false" style="--i:7"><span class="bar" style="--h:1"></span><span class="lbl"></span><span class="n" data-n>120</span></button>
+      <button type="button" data-dec="2020" aria-pressed="false" style="--i:8"><span class="bar" style="--h:.79"></span><span class="lbl"></span><span class="n" data-n>95</span></button>
+    </div>
+
+    <div class="arc-wrap">
+      <div>
+        <p class="arc-status"><span id="arc-status">Tüm dönemler · 511 kayıt</span><a href="#"><span class="ul" data-i18n="arc.openall">Arşivin tamamını aç</span><svg class="ico"><use href="#i-arrow"/></svg></a></p>
+        <div class="arc-grid">
+          <a href="#katki" class="arc-item" data-dec="1950">
+            <span class="arc-vis"><span class="wanted"><span class="plus">+</span><span data-i18n="arc.wanted.btn">Fotoğraf gönder</span></span></span>
+            <p class="arc-meta"><span class="type" data-i18n="type.photo">Fotoğraf</span><span data-declabel="1950"></span></p>
+            <h3><span class="ul" data-i18n="arc.wanted.t">Bu döneme ait fotoğraf arıyoruz</span></h3>
+            <p class="arc-src" data-i18n="arc.wanted.p">Harman, düğün, okul günleri… Elinizde varsa gönderin.</p>
+          </a>
+          <a href="#" class="arc-item" data-dec="1960">
+            <span class="arc-vis"><span class="doc two"></span><span class="doc"></span></span>
+            <p class="arc-meta"><span class="type" data-i18n="type.doc">Belge</span><span>1964</span></p>
+            <h3><span class="ul">Almanya'dan köye gönderilen ilk mektuplar</span></h3>
+            <p class="arc-src">Aile arşivinden · 6 sayfa</p>
+          </a>
+          <a href="#" class="arc-item" data-dec="1970">
+            <span class="arc-vis"><span class="doc"></span></span>
+            <p class="arc-meta"><span class="type" data-i18n="type.doc">Belge</span><span>1972</span></p>
+            <h3><span class="ul">Köy ilkokulundan bir karne ve diploma</span></h3>
+            <p class="arc-src">Bağışlayan: bir hemşehrimiz</p>
+          </a>
+          <a href="#" class="arc-item" data-dec="1980">
+            <span class="arc-vis"><span class="clip"></span></span>
+            <p class="arc-meta"><span class="type" data-i18n="type.clip">Gazete kupürü</span><span>1986</span></p>
+            <h3><span class="ul">Bölge gazetesinde Karakoçan haberi</span></h3>
+            <p class="arc-src">Gazete arşivinden</p>
+          </a>
+          <a href="#" class="arc-item" data-dec="1990">
+            <span class="arc-vis"><span class="wave"></span><span class="play"><svg class="ico"><use href="#i-play"/></svg></span><span class="dur">38:12</span></span>
+            <p class="arc-meta"><span class="type" data-i18n="type.audio">Ses kaydı</span><span>1994</span></p>
+            <h3><span class="ul">Kasetten aktarılan ninniler ve ağıtlar</span></h3>
+            <p class="arc-src">Kaset kaydı, dijitale aktarıldı</p>
+          </a>
+          <a href="#" class="arc-item" data-dec="2010">
+            <span class="arc-vis"><img src="assets/photos/delikan.jpg" alt="Karla kaplı tarlalar ve çit" loading="lazy"></span>
+            <p class="arc-meta"><span class="type" data-i18n="type.photo">Fotoğraf</span><span data-declabel="2010"></span></p>
+            <h3><span class="ul">Kışın köy tarlaları ve eski çitler</span></h3>
+            <p class="arc-src">Veyis Polat · CC BY 2.0</p>
+          </a>
+          <a href="#" class="arc-item" data-dec="2000" hidden>
+            <span class="arc-vis"><span class="wanted"><span class="plus">+</span><span data-i18n="arc.wanted.btn">Fotoğraf gönder</span></span></span>
+            <p class="arc-meta"><span class="type" data-i18n="type.photo">Fotoğraf</span><span data-declabel="2000"></span></p>
+            <h3><span class="ul" data-i18n="arc.wanted.t">Bu döneme ait fotoğraf arıyoruz</span></h3>
+            <p class="arc-src" data-i18n="arc.wanted.p">Harman, düğün, okul günleri… Elinizde varsa gönderin.</p>
+          </a>
+          <a href="#" class="arc-item" data-dec="2010" hidden>
+            <span class="arc-vis"><img src="assets/photos/bahar.jpg" alt="Karlı tepeler" loading="lazy"></span>
+            <p class="arc-meta"><span class="type" data-i18n="type.photo">Fotoğraf</span><span data-declabel="2010"></span></p>
+            <h3><span class="ul">Karlı tepeler, köy yolu üzerinden</span></h3>
+            <p class="arc-src">Veyis Polat · CC BY 2.0</p>
+          </a>
+          <a href="#" class="arc-item" data-dec="2020" hidden>
+            <span class="arc-vis"><span class="wave"></span><span class="play"><svg class="ico"><use href="#i-play"/></svg></span><span class="dur">52:40</span></span>
+            <p class="arc-meta"><span class="type" data-i18n="type.oral">Sözlü tarih</span><span>2026</span></p>
+            <h3><span class="ul">Gurbete ilk gidenler anlatıyor</span></h3>
+            <p class="arc-src">Sözlü tarih projesi</p>
+          </a>
+          <a href="#" class="arc-item" data-dec="2020" hidden>
+            <span class="arc-vis"><img src="assets/photos/karakocan-genel.jpg" alt="Karakoçan saat kulesi" loading="lazy"></span>
+            <p class="arc-meta"><span class="type" data-i18n="type.photo">Fotoğraf</span><span data-declabel="2020"></span></p>
+            <h3><span class="ul">Saat kulesi ve ilçe meydanı</span></h3>
+            <p class="arc-src">LoqaT · CC BY-SA 4.0</p>
+          </a>
+        </div>
+      </div>
+
+      <aside class="arc-side">
+        <div class="otd" data-reveal>
+          <h3 class="sec-label" data-i18n="arc.otd">Bu gün geçmişte</h3>
+          <p class="otd-date" id="otd-date">1 Kasım</p>
+          <p class="otd-note" data-i18n="arc.otdnote">Arşivde bu tarihe ait 3 kayıt var.</p>
+          <ul>
+            <li><span>1971</span><a href="#"><span class="ul">Gurbetten köye gönderilen bir mektup</span></a></li>
+            <li><span>1989</span><a href="#"><span class="ul">İlk yardım kampanyasının tutanağı</span></a></li>
+            <li><span>2008</span><a href="#"><span class="ul">Köy okulunun yeniden açılışı</span></a></li>
+          </ul>
+        </div>
+        <div data-reveal style="--i:1">
+          <h3 class="sec-label" data-i18n="arc.bytype">Türüne göre</h3>
+          <ul class="types">
+            <li><a href="#"><b data-i18n="type.photo">Fotoğraf</b><span data-count="318">318</span></a></li>
+            <li><a href="#"><b data-i18n="type.doc">Belge</b><span data-count="84">84</span></a></li>
+            <li><a href="#"><b data-i18n="type.clip">Gazete kupürü</b><span data-count="47">47</span></a></li>
+            <li><a href="#"><b data-i18n="type.oral">Sözlü tarih</b><span data-count="38">38</span></a></li>
+            <li><a href="#"><b data-i18n="type.video">Video</b><span data-count="24">24</span></a></li>
+          </ul>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- Duyurular + Köy rehberi -->
+<div class="wrap split">
+  <section id="duyurular">
+    <header class="sec-head" data-reveal>
+      <h2 data-i18n="not.title">Duyurular</h2>
+      <a href="#" class="more"><span data-i18n="not.all">Tüm duyurular</span><svg class="ico"><use href="#i-arrow"/></svg></a>
+    </header>
+    <ul class="notices">
+      <li data-reveal><span class="cat vefat" data-i18n="cat.vefat">Vefat</span><a href="#"><span class="ul">Hemşehrimizin vefatı: cenaze ve taziye bilgileri</span></a><time>31.10</time></li>
+      <li data-reveal style="--i:1"><span class="cat burs" data-i18n="cat.burs">Burs</span><a href="#"><span class="ul">Burs başvuruları 30 Kasım'a kadar açık</span></a><time>29.10</time></li>
+      <li data-reveal style="--i:2"><span class="cat" data-i18n="cat.toplanti">Toplantı</span><a href="#"><span class="ul">Yönetim kurulu kararları yayımlandı</span></a><time>27.10</time></li>
+      <li data-reveal style="--i:3"><span class="cat yardim" data-i18n="cat.yardim">Yardım</span><a href="#"><span class="ul">Kış yardımı için bağış hesapları</span></a><time>25.10</time></li>
+      <li data-reveal style="--i:4"><span class="cat" data-i18n="cat.uyelik">Üyelik</span><a href="#"><span class="ul">Üyelik bilgilerinin güncellenmesi hakkında</span></a><time>20.10</time></li>
+    </ul>
+  </section>
+
+  <section class="villages" id="koyler">
+    <header class="sec-head" data-reveal><h2 data-i18n="vil.title">Köy rehberi</h2></header>
+    <p class="lede" data-reveal data-i18n="vil.lede">Her köyün kendi sayfası var: tarihçesi, fotoğrafları, haberleri ve gurbetteki aileleri.</p>
+    <nav class="alpha" aria-label="Köyler" data-reveal style="--i:1">
+      <a href="#">A</a><a href="#">B</a><a href="#">C</a><a href="#">Ç</a><a href="#">D</a><a href="#">E</a><a href="#">F</a>
+      <a href="#">G</a><a href="#">H</a><a href="#" class="off">I</a><a href="#">İ</a><a href="#" class="off">J</a><a href="#">K</a><a href="#">L</a>
+      <a href="#">M</a><a href="#">N</a><a href="#">O</a><a href="#">Ö</a><a href="#">P</a><a href="#">R</a><a href="#">S</a>
+      <a href="#">Ş</a><a href="#">T</a><a href="#">U</a><a href="#" class="off">Ü</a><a href="#">V</a><a href="#">Y</a><a href="#">Z</a>
+    </nav>
+    <form class="vsearch" role="search" onsubmit="return false" data-reveal style="--i:2">
+      <label for="vq" class="sr" data-i18n="vil.ph">Köy veya mahalle adı yazın</label>
+      <input id="vq" type="search" placeholder="Köy veya mahalle adı yazın" data-i18n-ph="vil.ph">
+      <button type="submit" data-i18n="vil.btn">Bul</button>
+    </form>
+  </section>
+</div>
+
+<!-- Kurumlar -->
+<section class="wrap sec" id="kurumlar">
+  <header class="sec-head" data-reveal><h2 data-i18n="org.title">Kurumlarımız</h2></header>
+  <div class="org-grid">
+    <article class="org" data-reveal>
+      <img class="org-seal" src="assets/kar-def-logo.png" alt="KAR-DEF logosu" loading="lazy">
+      <div>
+        <p class="org-abbr">KAR-DEF</p>
+        <h3>Elazığ Karakoçan Dernekleri Federasyonu</h3>
+        <p class="desc" data-i18n="org.kardef.desc">Karakoçan'ın derneklerini tek çatı altında buluşturan federasyon. Dayanışma, eğitim ve kültürel mirasın korunması için çalışıyor.</p>
+        <dl><div><dt data-i18n="org.since">Kuruluş</dt><dd>2010</dd></div><div><dt data-i18n="org.base">Merkez</dt><dd>Elazığ</dd></div></dl>
+        <a href="#" class="more"><span data-i18n="org.page">Kurum sayfası</span><svg class="ico"><use href="#i-arrow"/></svg></a>
+      </div>
+    </article>
+    <article class="org av" data-reveal style="--i:1">
+      <img class="org-seal" src="assets/av-kardep-logo.png" alt="AV-KARDEP logosu" loading="lazy">
+      <div>
+        <p class="org-abbr">AV-KARDEP</p>
+        <h3>Avrupa Karakoçan DEP Dayanışma Platformu</h3>
+        <p class="desc" data-i18n="org.av.desc">Avrupa'da yaşayan Karakoçanlıları bir araya getiren dayanışma platformu. Gurbetle memleket arasındaki bağı güçlendiriyor.</p>
+        <dl><div><dt data-i18n="org.since">Kuruluş</dt><dd>2023</dd></div><div><dt data-i18n="org.base">Merkez</dt><dd data-i18n="org.europe">Avrupa</dd></div></dl>
+        <a href="#" class="more"><span data-i18n="org.page">Kurum sayfası</span><svg class="ico"><use href="#i-arrow"/></svg></a>
+      </div>
+    </article>
+  </div>
+</section>
+
+<!-- Katkı + bülten -->
+<div class="wrap">
+  <div class="joins" id="katki">
+    <section class="join join-a" data-reveal>
+      <img class="seal-bg" src="assets/kar-def-logo.png" alt="">
+      <span class="kicker" data-i18n="join.k1">Ortak hafıza</span>
+      <h2 data-i18n="join.h1">Sandıkta eski bir fotoğraf mı var?</h2>
+      <p data-i18n="join.p1">Albümde, sandıkta ya da telefonunuzda duran her fotoğraf, mektup ve belge ortak hafızamızın parçası. Gönderin, künyesini yazıp arşive ekleyelim. Asılları sizde kalır.</p>
+      <a href="#" class="btn"><span data-i18n="join.b1">Arşive gönder</span><svg class="ico"><use href="#i-arrow"/></svg></a>
+    </section>
+    <section class="join join-b" data-reveal style="--i:1">
+      <span class="kicker" data-i18n="join.k2">Haber bülteni</span>
+      <h2 data-i18n="join.h2">Memleketten haberler, haftada bir.</h2>
+      <p data-i18n="join.p2">Haberler, etkinlikler ve duyurular e-postanıza gelsin.</p>
+      <form class="sub" onsubmit="return false">
+        <label for="mail" class="sr" data-i18n="join.ph">E-posta adresiniz</label>
+        <input id="mail" type="email" placeholder="E-posta adresiniz" data-i18n-ph="join.ph">
+        <button type="submit" data-i18n="join.b2">Abone ol</button>
+      </form>
+      <a href="#" class="alt"><svg class="ico"><use href="#i-chat"/></svg><span class="ul" data-i18n="join.wa">WhatsApp kanalına katılın</span></a>
+    </section>
+  </div>
+</div>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot">
+      <div>
+        <p class="foot-brand"><img src="assets/kar-def-logo.png" alt=""><img src="assets/av-kardep-logo.png" alt=""> Karakoçan</p>
+        <p data-i18n="foot.about">KAR-DEF ve AV-KARDEP'in ortak dijital yayınıdır. Gönüllüler tarafından hazırlanır.</p>
+      </div>
+      <div>
+        <h3>KAR-DEF</h3>
+        <ul><li><a href="#" data-i18n="foot.hakkinda">Hakkında</a></li><li><a href="#" data-i18n="foot.yonetim">Yönetim</a></li><li><a href="#" data-i18n="foot.uyeler">Üye dernekler</a></li><li><a href="#" data-i18n="foot.iletisim">İletişim</a></li></ul>
+      </div>
+      <div>
+        <h3>AV-KARDEP</h3>
+        <ul><li><a href="#" data-i18n="foot.hakkinda">Hakkında</a></li><li><a href="#" data-i18n="foot.avdernek">Avrupa'daki dernekler</a></li><li><a href="#" data-i18n="foot.iletisim">İletişim</a></li></ul>
+      </div>
+      <div>
+        <h3 data-i18n="foot.site">Site</h3>
+        <ul><li><a href="#" data-i18n="foot.kunye">Künye</a></li><li><a href="#" data-i18n="foot.terms">Arşiv kullanım koşulları</a></li><li><a href="#" data-i18n="foot.kvkk">KVKK ve gizlilik</a></li><li><a href="#" data-i18n="foot.bagis">Bağış</a></li></ul>
+      </div>
+    </div>
+    <p class="foot-credits"><span data-i18n="foot.photos">Fotoğraflar</span>: Wikimedia Commons — LoqaT (CC BY-SA 4.0), Veyis Polat (CC BY 2.0), KureCewlik81 (CC BY-SA 4.0), Sabri Zurel (CC0).</p>
+    <div class="foot-bottom">
+      <span>© 2026 KAR-DEF · AV-KARDEP</span>
+      <span data-i18n="foot.rights">Arşivdeki içerikler izinle yayımlanır.</span>
+    </div>
+  </div>
+</footer>
+
+<button type="button" class="totop" aria-label="Başa dön" data-i18n-aria="totop">
+  <svg class="ring" viewBox="0 0 52 52" aria-hidden="true"><circle class="bg" cx="26" cy="26" r="24"/><circle class="fg" cx="26" cy="26" r="24"/></svg>
+  <svg class="ico"><use href="#i-up"/></svg>
+</button>
+<div class="draft" data-i18n="draft">Taslak · içerikler örnektir</div>
+
+<script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js" defer></script>
+<script src="assets/js/i18n.js" defer></script>
+<script src="assets/js/site.js" defer></script>
+</body>
+</html>

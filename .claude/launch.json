@@ -1,0 +1,17 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "kardef",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["C:\\Users\\ayinr\\AppData\\Local\\Temp\\claude\\C--Users-ayinr-Desktop-Software-kardef\\76555c34-0699-44ab-ba38-713fc7164728\\scratchpad\\serve.js", "C:\\Users\\ayinr\\Desktop\\Software\\kardef", "5173"],
+      "port": 5173
+    },
+    {
+      "name": "kardef-panel",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["--prefix", "C:\\Users\\ayinr\\Desktop\\Software\\kardef\\web", "run", "dev"],
+      "port": 3000
+    }
+  ]
+}

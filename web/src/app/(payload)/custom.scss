@@ -1,0 +1,796 @@
+/* =========================================================
+   KAR-DEF yönetim paneli görünümü
+   Sitenin kimliği: Libre Franklin, KAR-DEF kırmızısı, kilim deseni.
+   Hareketler: sayfa geçişi, sıralı beliren kartlar ve satırlar,
+   yumuşak hover ve odak durumları.
+   ========================================================= */
+
+/* Yazı tipi projenin içinden yüklenir (dış @import hidrasyon uyuşmazlığına yol açıyordu) */
+@font-face {
+  font-family: 'Libre Franklin';
+  font-style: normal;
+  font-weight: 400 900;
+  font-display: swap;
+  src: url('/fonts/libre-franklin-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF,
+    U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Libre Franklin';
+  font-style: normal;
+  font-weight: 400 900;
+  font-display: swap;
+  src: url('/fonts/libre-franklin-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F,
+    U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+:root {
+  --font-body: 'Libre Franklin', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --kd-red: #c8161d;
+  --kd-red-dark: #a51117;
+  --kd-red-soft: rgba(200, 22, 29, 0.1);
+  --kd-purple: #5e2b8c;
+  --kd-ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --kd-ease-io: cubic-bezier(0.65, 0, 0.35, 1);
+  --kd-kilim: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='14'%3E%3Cpath d='M16 1L28 7L16 13L4 7Z' fill='%23C8161D'/%3E%3Cpath d='M16 4.5L21 7L16 9.5L11 7Z' fill='%23ffffff'/%3E%3Cpath d='M0 1L4 7L0 13ZM32 1L28 7L32 13Z' fill='%23141414'/%3E%3C/svg%3E");
+}
+html[data-theme='dark'] {
+  --kd-red: #e0353c;
+  --kd-red-dark: #c8161d;
+  --kd-red-soft: rgba(224, 53, 60, 0.14);
+}
+
+body {
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+h1, h2, h3, h4 {
+  letter-spacing: -0.02em;
+}
+
+/* ---------- Hareket temelleri ---------- */
+@keyframes kd-enter {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes kd-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes kd-pop {
+  from { opacity: 0; transform: translateY(-6px) scale(0.97); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes kd-spin-in {
+  from { opacity: 0; transform: scale(0.6) rotate(-35deg); }
+  to { opacity: 1; transform: none; }
+}
+
+/* Her sayfa açılışında içerik alttan kayarak gelir */
+.template-default__wrap > *:not(.app-header):not(.payload__modal-container) {
+  animation: kd-enter 0.55s var(--kd-ease) both;
+}
+
+/* ---------- Üst çubuk ---------- */
+.app-header__bg {
+  backdrop-filter: saturate(1.4) blur(12px);
+  -webkit-backdrop-filter: saturate(1.4) blur(12px);
+}
+.step-nav a {
+  transition: color 0.2s;
+}
+.step-nav a:hover {
+  color: var(--kd-red);
+}
+
+/* Tema düğmesi */
+.kd-theme {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  margin-right: 6px;
+  padding: 0;
+  border-radius: 50%;
+  border: 1px solid var(--theme-elevation-150);
+  background: var(--theme-elevation-50);
+  color: var(--theme-text);
+  cursor: pointer;
+  transition: border-color 0.25s, background 0.25s, transform 0.5s var(--kd-ease);
+}
+.kd-theme:hover {
+  border-color: var(--kd-red);
+  transform: rotate(-20deg);
+}
+.kd-theme:active {
+  transform: rotate(-40deg) scale(0.9);
+}
+.kd-theme svg {
+  width: 17px;
+  height: 17px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.kd-theme__sun { display: none; }
+html[data-theme='dark'] .kd-theme__sun { display: block; }
+html[data-theme='dark'] .kd-theme__moon { display: none; }
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.45s;
+  animation-timing-function: var(--kd-ease-io);
+}
+
+/* ---------- Sol menü ---------- */
+.nav__link {
+  position: relative;
+  border-radius: 6px;
+  transition: background-color 0.25s, color 0.25s, padding-left 0.35s var(--kd-ease);
+}
+.nav__link::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 18%;
+  bottom: 18%;
+  width: 3px;
+  border-radius: 3px;
+  background: var(--kd-red);
+  transform: scaleY(0);
+  transition: transform 0.35s var(--kd-ease);
+}
+a.nav__link:hover {
+  background: var(--theme-elevation-50);
+  padding-left: 6px;
+}
+a.nav__link:hover::before,
+.nav__link:has(.nav__link-indicator)::before {
+  transform: scaleY(1);
+}
+.nav__link-indicator {
+  background: var(--kd-red) !important;
+}
+.nav-group__label {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--theme-elevation-500);
+}
+.nav-group__indicator {
+  transition: transform 0.35s var(--kd-ease);
+}
+
+/* ---------- Butonlar ---------- */
+.btn {
+  transition: background-color 0.25s, border-color 0.25s, color 0.25s, transform 0.3s var(--kd-ease), box-shadow 0.3s;
+}
+.btn:active:not(:disabled) {
+  transform: scale(0.97);
+}
+.btn--style-primary {
+  --bg-color: var(--kd-red);
+  --hover-bg: var(--kd-red-dark);
+  --color: #fff;
+  --hover-color: #fff;
+  background-color: var(--kd-red);
+  color: #fff;
+}
+.btn--style-primary:hover:not(:disabled) {
+  background-color: var(--kd-red-dark);
+  box-shadow: 0 8px 20px -10px var(--kd-red);
+  transform: translateY(-1px);
+}
+.btn--style-secondary:hover:not(:disabled) {
+  border-color: var(--kd-red);
+}
+
+/* ---------- Ana sayfa kartları ---------- */
+.collections__label {
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--theme-elevation-500);
+}
+.collections__card-list > li {
+  animation: kd-enter 0.6s var(--kd-ease) both;
+}
+@for $i from 1 through 12 {
+  .collections__card-list > li:nth-child(#{$i}) {
+    animation-delay: #{0.05 + $i * 0.05}s;
+  }
+}
+.card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 8px;
+  transition: transform 0.45s var(--kd-ease), box-shadow 0.45s var(--kd-ease), border-color 0.3s, background-color 0.3s;
+}
+.card::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 3px;
+  background: var(--kd-red);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.55s var(--kd-ease);
+}
+.card--has-onclick:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 14px 30px -18px rgba(0, 0, 0, 0.45);
+}
+.card--has-onclick:hover::before {
+  transform: scaleX(1);
+}
+.card__title {
+  font-weight: 700;
+}
+.card .btn--round {
+  transition: transform 0.4s var(--kd-ease), background-color 0.25s, border-color 0.25s;
+}
+.card .btn--round:hover {
+  transform: rotate(90deg);
+  border-color: var(--kd-red);
+  color: var(--kd-red);
+}
+
+/* ---------- Listeler ---------- */
+.table table tbody tr {
+  animation: kd-enter 0.5s var(--kd-ease) both;
+  transition: background-color 0.2s;
+}
+@for $i from 1 through 20 {
+  .table table tbody tr:nth-child(#{$i}) {
+    animation-delay: #{$i * 0.03}s;
+  }
+}
+.table table tbody tr:hover td {
+  background-color: var(--theme-elevation-50);
+}
+.table a {
+  transition: color 0.2s;
+}
+.table a:hover {
+  color: var(--kd-red);
+}
+.kd-chip {
+  display: inline-block;
+  padding: 2px 9px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  background: var(--kd-red-soft);
+  color: var(--kd-red);
+}
+.kd-cell-empty {
+  color: var(--theme-elevation-400);
+}
+.pill {
+  transition: background-color 0.25s, transform 0.3s var(--kd-ease);
+}
+
+/* ---------- Formlar ---------- */
+.render-fields > * {
+  animation: kd-enter 0.5s var(--kd-ease) both;
+}
+@for $i from 1 through 14 {
+  .render-fields > *:nth-child(#{$i}) {
+    animation-delay: #{$i * 0.035}s;
+  }
+}
+.field-type input,
+.field-type textarea,
+.rs__control {
+  transition: border-color 0.2s, box-shadow 0.25s !important;
+}
+.field-type input:focus,
+.field-type textarea:focus,
+.rs__control--is-focused {
+  border-color: var(--kd-red) !important;
+  box-shadow: 0 0 0 3px var(--kd-red-soft) !important;
+}
+.field-label {
+  font-weight: 600;
+}
+.collapsible__toggle-wrap {
+  transition: background-color 0.2s;
+}
+.collapsible__indicator,
+.array-field__toggle {
+  transition: transform 0.35s var(--kd-ease);
+}
+.checkbox-input__input {
+  transition: background-color 0.2s, border-color 0.2s;
+}
+.checkbox-input--checked .checkbox-input__input {
+  background-color: var(--kd-red) !important;
+  border-color: var(--kd-red) !important;
+}
+
+/* ---------- Açılır menüler ---------- */
+.popup__content {
+  animation: kd-pop 0.28s var(--kd-ease) both;
+  border-radius: 8px;
+}
+.rs__menu {
+  animation: kd-pop 0.25s var(--kd-ease) both;
+}
+.popup-button-list__button {
+  transition: background-color 0.15s, padding-left 0.3s var(--kd-ease);
+}
+.popup-button-list__button:hover {
+  padding-left: calc(var(--base) * 0.75);
+}
+
+/* ---------- Giriş ekranı ----------
+   Masaüstü: solda tam yükseklikte fotoğraf paneli, sağda form.
+   Telefon: fotoğraf üstte şerit olur. */
+@keyframes kd-kenburns {
+  from { transform: scale(1.14) translate(1.5%, 1%); }
+  to { transform: scale(1) translate(0, 0); }
+}
+.login.template-minimal {
+  min-height: 100vh;
+  padding: 0 0 0 54vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--theme-bg);
+}
+.login .template-minimal__wrap {
+  width: 100%;
+  max-width: 440px;
+  margin: 0 auto;
+  padding: 48px 32px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Fotoğraf paneli */
+.kd-login-art {
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 54vw;
+  overflow: hidden;
+  background: #141414;
+  color: #fff;
+  z-index: 1;
+  animation: kd-fade 0.8s ease both;
+}
+.kd-login-photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  animation: kd-kenburns 18s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.kd-login-art::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0) 26%, rgba(0, 0, 0, 0) 40%, rgba(0, 0, 0, 0.88) 100%);
+}
+.kd-login-top,
+.kd-login-copy {
+  position: absolute;
+  left: clamp(28px, 4vw, 56px);
+  right: clamp(28px, 4vw, 56px);
+  z-index: 2;
+}
+.kd-login-top {
+  top: clamp(24px, 4vh, 40px);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 0.02em;
+  animation: kd-enter 0.8s var(--kd-ease) both 0.2s;
+}
+.kd-login-seals {
+  display: flex;
+}
+.kd-login-seals img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #fff;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.9);
+}
+.kd-login-seals img + img {
+  margin-left: -12px;
+}
+.kd-login-copy {
+  bottom: clamp(28px, 6vh, 64px);
+  max-width: 620px;
+}
+.kd-login-copy > * {
+  margin: 0;
+  animation: kd-enter 0.9s var(--kd-ease) both;
+}
+.kd-login-kicker {
+  font-size: 13px;
+  font-weight: 700;
+  color: #ffb3b5;
+  animation-delay: 0.35s !important;
+}
+.kd-login-title {
+  margin-top: 10px !important;
+  font-size: clamp(30px, 3.4vw, 52px);
+  font-weight: 900;
+  line-height: 1.04;
+  letter-spacing: -0.022em;
+  text-wrap: balance;
+  animation-delay: 0.45s !important;
+}
+.kd-login-credit {
+  margin-top: 18px !important;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.65);
+  animation-delay: 0.6s !important;
+}
+
+/* Form sütunu */
+.login .login__brand {
+  margin-bottom: 36px;
+  display: flex;
+  justify-content: flex-start;
+  animation: kd-enter 0.7s var(--kd-ease) both 0.15s;
+}
+.kd-login-head {
+  margin-bottom: 28px;
+  animation: kd-enter 0.7s var(--kd-ease) both 0.25s;
+}
+.kd-login-head h1 {
+  margin: 0 0 8px;
+  font-size: 34px;
+  font-weight: 900;
+  letter-spacing: -0.035em;
+  line-height: 1;
+}
+.kd-login-head p {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--theme-elevation-600);
+}
+.login .login__form > * {
+  animation: kd-enter 0.7s var(--kd-ease) both;
+}
+.login .login__form > *:nth-child(1) { animation-delay: 0.35s; }
+.login .login__form > *:nth-child(2) { animation-delay: 0.45s; }
+.login .login__form > *:nth-child(3) { animation-delay: 0.55s; }
+.login .login__form__inputWrap {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+.login .field-type {
+  margin: 0;
+}
+.login .field-label {
+  margin-bottom: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--theme-elevation-800);
+}
+.login .field-type input {
+  height: 50px;
+  padding: 0 16px;
+  border-radius: 10px !important;
+  font-size: 15px;
+  background: var(--theme-elevation-50);
+  border: 1px solid var(--theme-elevation-150);
+  box-shadow: none;
+}
+.login .field-type input:hover {
+  border-color: var(--theme-elevation-300);
+}
+.login .login__form > a {
+  display: inline-block;
+  align-self: flex-end;
+  margin: 12px 0 0 auto;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--theme-elevation-600);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.login .login__form > a:hover {
+  color: var(--kd-red);
+}
+.login .login__form {
+  display: flex;
+  flex-direction: column;
+}
+.login .form-submit {
+  margin-top: 26px;
+}
+.login .form-submit .btn {
+  width: 100%;
+  height: 52px;
+  margin: 0;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+/* Telefon / dar ekran */
+@media (max-width: 900px) {
+  .login.template-minimal {
+    padding: 0;
+    align-items: flex-start;
+  }
+  .login .template-minimal__wrap {
+    padding: 0 20px 40px;
+    max-width: 520px;
+  }
+  .kd-login-art {
+    position: relative;
+    order: -1;
+    width: auto;
+    height: 270px;
+    margin: 0 -20px 28px;
+    inset: auto;
+  }
+  .kd-login-copy {
+    bottom: 20px;
+  }
+  .kd-login-title {
+    font-size: 26px;
+  }
+  .kd-login-credit,
+  .kd-login-kicker {
+    display: none;
+  }
+  .login .login__brand {
+    display: none;
+  }
+}
+
+/* Logo (şifre sıfırlama gibi diğer kısa ekranlarda) */
+.kd-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.kd-seals {
+  display: flex;
+}
+.kd-seals img {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #fff;
+  box-shadow: 0 0 0 2px var(--theme-bg);
+  animation: kd-spin-in 1s var(--kd-ease) both;
+}
+.kd-seals img + img {
+  margin-left: -12px;
+  animation-delay: 0.12s;
+}
+.kd-logo-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+}
+.kd-logo-text b {
+  font-size: 20px;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+}
+.kd-logo-text small {
+  margin-top: 3px;
+  font-size: 12px;
+  color: var(--theme-elevation-500);
+}
+
+/* Küçük simge (sol üst) */
+.kd-icon {
+  display: block;
+  width: 30px !important;
+  height: 30px !important;
+  min-width: 30px;
+  max-width: none !important;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #fff;
+  transition: transform 0.6s var(--kd-ease);
+}
+.step-nav__home:hover .kd-icon {
+  transform: rotate(-12deg) scale(1.06);
+}
+
+/* ---------- Karşılama kutusu ---------- */
+.kd-welcome {
+  position: relative;
+  overflow: hidden;
+  margin-bottom: calc(var(--base) * 2);
+  padding: calc(var(--base) * 1.5);
+  border-radius: 10px;
+  background: var(--theme-elevation-50);
+  animation: kd-enter 0.6s var(--kd-ease) both;
+}
+.kd-welcome::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 14px;
+  background-image: var(--kd-kilim);
+  background-repeat: repeat-x;
+  opacity: 0.9;
+}
+.kd-welcome-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  margin: 8px 0 var(--base);
+}
+.kd-welcome h2 {
+  margin: 0;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+}
+.kd-eyebrow {
+  margin: 0 0 4px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--kd-red);
+}
+.kd-sub {
+  margin: 4px 0 0;
+  color: var(--theme-elevation-600);
+}
+.kd-site {
+  font-weight: 600;
+  white-space: nowrap;
+  color: var(--theme-elevation-800);
+  transition: color 0.2s;
+}
+.kd-site:hover {
+  color: var(--kd-red);
+}
+.kd-actions {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+@media (max-width: 1100px) {
+  .kd-actions { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+.kd-action {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 16px 18px;
+  overflow: hidden;
+  border-radius: 8px;
+  background: var(--theme-bg);
+  border: 1px solid var(--theme-elevation-150);
+  color: var(--theme-text);
+  text-decoration: none;
+  isolation: isolate;
+  animation: kd-enter 0.6s var(--kd-ease) both;
+  transition: border-color 0.3s, transform 0.45s var(--kd-ease), box-shadow 0.45s var(--kd-ease), color 0.3s;
+}
+.kd-action:nth-child(1) { animation-delay: 0.12s; }
+.kd-action:nth-child(2) { animation-delay: 0.18s; }
+.kd-action:nth-child(3) { animation-delay: 0.24s; }
+.kd-action:nth-child(4) { animation-delay: 0.3s; }
+.kd-action::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--kd-red);
+  transform: translateY(101%);
+  transition: transform 0.5s var(--kd-ease);
+}
+.kd-action:hover {
+  border-color: var(--kd-red);
+  transform: translateY(-3px);
+  box-shadow: 0 16px 30px -18px var(--kd-red);
+  color: #fff;
+}
+.kd-action:hover::after {
+  transform: none;
+}
+.kd-action b {
+  font-size: 16px;
+  font-weight: 700;
+}
+.kd-action b::before {
+  content: '+ ';
+  color: var(--kd-red);
+  transition: color 0.3s;
+}
+.kd-action:hover b::before {
+  color: #fff;
+}
+.kd-action span {
+  font-size: 13px;
+  color: var(--theme-elevation-600);
+  transition: color 0.3s;
+}
+.kd-action:hover span {
+  color: rgba(255, 255, 255, 0.85);
+}
+.kd-waiting,
+.kd-adminbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  align-items: center;
+  margin-top: var(--base);
+  padding: 12px 16px;
+  border-radius: 8px;
+  animation: kd-enter 0.6s var(--kd-ease) both 0.35s;
+}
+.kd-waiting {
+  background: var(--kd-red-soft);
+}
+.kd-adminbar {
+  background: var(--theme-elevation-100);
+}
+.kd-waiting a,
+.kd-adminbar a {
+  font-weight: 600;
+  color: var(--kd-red);
+  text-decoration: none;
+  background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat;
+  transition: background-size 0.4s var(--kd-ease);
+}
+.kd-waiting a:hover,
+.kd-adminbar a:hover {
+  background-size: 100% 1px;
+}
+.kd-tips {
+  margin-top: var(--base);
+}
+.kd-tips summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+.kd-tips[open] ul {
+  animation: kd-enter 0.4s var(--kd-ease) both;
+}
+.kd-tips ul {
+  margin: 10px 0 0;
+  padding-left: 20px;
+  line-height: 1.6;
+  color: var(--theme-elevation-700);
+}
+
+/* İnce kaydırma çubuğu */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--theme-elevation-200) transparent;
+}
+
+/* Hareket istemeyenler için */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0s !important;
+    transition-duration: 0.01ms !important;
+  }
+}
