@@ -23,6 +23,10 @@ const nextConfig: NextConfig = {
 
     return webpackConfig
   },
+  // Maket verisi (demo/) Vercel'deki sunucu fonksiyonlarına da kopyalansın
+  outputFileTracingIncludes: {
+    '/**': ['./demo/**/*'],
+  },
   turbopack: {
     root: path.resolve(dirname),
   },

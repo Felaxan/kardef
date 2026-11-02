@@ -35,6 +35,17 @@ Editör ve yazar panele girdiğinde yönetim bölümlerini görmez.
 İçerik dilleri: Türkçe (varsayılan), Kurdî, English, Deutsch, Nederlands, Français.
 Çevrilmeyen dil Türkçe gösterilir.
 
+## Vercel maketi
+
+Vercel'de site kendiliğinden **maket modunda** açılır: içerik `demo/` klasöründeki salt okunur
+kopyadan gelir, yönetim paneli ve içerik yazma kapalıdır. Ortam değişkeni gerekmez.
+
+- Vercel projesinde **Root Directory**: `web`
+- Maket içeriğini yenilemek: yerelde içeriği düzenleyin, sonra `node scripts/make-demo-db.mjs`
+  (kullanıcı e-posta ve şifreleri kopyada silinir), commit + push.
+- Yerelde maketi denemek: `DEMO_MODE=1 npm run build` ve `DEMO_MODE=1 npm start`
+- Vercel'de maketi kapatmak (gerçek veritabanına geçince): `DEMO_MODE=0`
+
 ## Sunucuya geçerken
 
 - Veritabanı: `@payloadcms/db-sqlite` yerine `@payloadcms/db-postgres` (payload.config.ts'te tek satır).

@@ -12,6 +12,12 @@
       "runtimeExecutable": "npm",
       "runtimeArgs": ["--prefix", "C:\\Users\\ayinr\\Desktop\\Software\\kardef\\web", "run", "dev"],
       "port": 3000
+    },
+    {
+      "name": "kardef-maket",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["--prefix", "C:\\Users\\ayinr\\Desktop\\Software\\kardef\\web", "cross-env", "DEMO_MODE=1", "npm", "--prefix", "C:\\Users\\ayinr\\Desktop\\Software\\kardef\\web", "run", "start", "--", "-p", "3100"],
+      "port": 3100
     }
   ]
 }

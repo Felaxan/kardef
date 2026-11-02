@@ -1,5 +1,7 @@
+import path from 'path'
 import type { CollectionConfig } from 'payload'
 import { anyone, isAdminOrEditor, isLoggedIn } from '../access'
+import { DEMO } from '../demo'
 
 export const Media: CollectionConfig = {
   slug: 'media',
@@ -16,7 +18,7 @@ export const Media: CollectionConfig = {
     delete: isAdminOrEditor,
   },
   upload: {
-    staticDir: 'media',
+    staticDir: DEMO ? path.join(process.cwd(), 'demo', 'media') : 'media',
     mimeTypes: ['image/*', 'audio/*', 'video/*', 'application/pdf'],
     adminThumbnail: 'thumbnail',
     focalPoint: true,

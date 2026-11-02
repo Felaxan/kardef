@@ -54,3 +54,6 @@ node_modules/
 *.db-journal
 *.db-wal
 *.db-shm
+
+# Vercel maketi için salt okunur kopya (scripts/make-demo-db.mjs üretir)
+!/demo/kardef-demo.db

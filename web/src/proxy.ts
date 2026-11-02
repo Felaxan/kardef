@@ -1,4 +1,5 @@
 import { NextResponse, type NextRequest } from 'next/server'
+import { DEMO } from './demo'
 
 const LANGS = ['tr', 'ku', 'en', 'de', 'nl', 'fr']
 const PANEL_COOKIE = 'payload-lng'
@@ -11,6 +12,16 @@ const PANEL_COOKIE = 'payload-lng'
 export function proxy(req: NextRequest) {
   const { pathname } = req.nextUrl
 
+  // Maket modu: panel kapalı, içerik yalnızca okunur
+  if (DEMO) {
+    if (pathname === '/admin' || pathname.startsWith('/admin/')) {
+      return NextResponse.redirect(new URL('/', req.url))
+    }
+    if (pathname.startsWith('/api/') && (req.method !== 'GET' || pathname.startsWith('/api/graphql'))) {
+      return new NextResponse('Maket sürümünde kapalı', { status: 403 })
+    }
+  }
+
   if (pathname === '/') {
     const saved = req.cookies.get('k-lang')?.value
     const accept = (req.headers.get('accept-language') || '')
@@ -19,6 +30,8 @@ export function proxy(req: NextRequest) {
     const lang = (saved && LANGS.includes(saved) && saved) || accept.find((l) => LANGS.includes(l)) || 'tr'
     return NextResponse.redirect(new URL(`/${lang}`, req.url))
   }
+
+  if (pathname.startsWith('/api/')) return NextResponse.next()
 
   if (req.cookies.get(PANEL_COOKIE)) return NextResponse.next()
   const headers = new Headers(req.headers)
@@ -29,4 +42,4 @@ export function proxy(req: NextRequest) {
   return res
 }
 
-export const config = { matcher: ['/', '/admin', '/admin/:path*'] }
+export const config = { matcher: ['/', '/admin', '/admin/:path*', '/api/:path*'] }
