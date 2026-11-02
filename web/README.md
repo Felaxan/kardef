@@ -12,6 +12,25 @@ npm run dev               # http://localhost:3000  ·  panel: /admin
 ```
 
 Deneme hesaplarının e-posta ve şifreleri `.env` dosyasındadır (`SEED_*`).
+Örnek kayıtların boş açıklamalarını doldurmak için: `npm run seed:enrich` (dolu alanlara dokunmaz).
+
+## Site sayfaları
+
+Her sayfa 6 dilde (`/tr`, `/ku`, `/en`, `/de`, `/nl`, `/fr`), açık/koyu temada ve telefonda çalışır.
+
+| Adres | Ne gösterir |
+|---|---|
+| `/{dil}` | Ana sayfa: manşet, gündem, etkinlik takvimi, arşiv, duyurular, köyler, kurumlar |
+| `/{dil}/haber/{adres}` | Haber: kelime kelime açılan başlık, kapak, okuma süresi, paylaş, ilgili haberler |
+| `/{dil}/etkinlik/{adres}` | Etkinlik: takvim yaprağı, geri sayım, harita bağlantısı, kayıt, **takvime ekle (.ics)**, yaklaşan etkinlikler |
+| `/{dil}/duyuru/{adres}` | Duyuru: türüne göre kart (vefat kartı, burs için son başvuru sayacı, toplantı tarihi), diğer duyurular |
+| `/{dil}/arsiv/{adres}` | Arşiv kaydı: sergi alanı (fotoğraf, ses oynatıcı, video), künye, arşiv zaman çizelgesi, yakın dönem kayıtları |
+| `/{dil}/koy/{adres}` | Köy: tam ekran kapak, sayaçlar, tarihçe, köyün arşiv şeridi, köyden haberler |
+| `/{dil}/koyler` | Köy rehberi: yazdıkça süzülen liste, harf dizini |
+| `/{dil}/ara?q=…` | Arama: türe göre sekmeler ve sayıları, aranan kelime vurgulu |
+
+Bulunamayan adresler, adresteki dile göre çevrilmiş bir 404 sayfası gösterir.
+Ziyaretçiler yalnızca **yayınlanmış** içerikleri görür; taslaklar sitede çıkmaz.
 
 ## Roller
 

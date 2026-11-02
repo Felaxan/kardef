@@ -9,6 +9,7 @@ import path from 'path'
 import { fileURLToPath } from 'url'
 import { getPayload } from 'payload'
 import config from '../payload.config'
+import { enrich } from './enrich'
 
 const dirname = path.dirname(fileURLToPath(import.meta.url))
 const photos = path.resolve(dirname, '../../../assets/photos')
@@ -262,5 +263,6 @@ await payload.updateGlobal({
   data: { siteName: 'KAR-DEF', tagline: 'Haber ve Arşiv Platformu', footerNote: "KAR-DEF ve AV-KARDEP'in ortak dijital yayınıdır. Gönüllüler tarafından hazırlanır." },
 })
 
+await enrich(payload)
 payload.logger.info('Örnek içerikler yüklendi. Panel: http://localhost:3000/admin')
 process.exit(0)

@@ -12,6 +12,7 @@
     "generate:types": "cross-env NODE_OPTIONS=--no-deprecation payload generate:types",
     "generate:importmap": "cross-env NODE_OPTIONS=--no-deprecation payload generate:importmap",
     "seed": "cross-env NODE_OPTIONS=--no-deprecation payload run src/seed/index.ts",
+    "seed:enrich": "cross-env NODE_OPTIONS=--no-deprecation payload run src/seed/enrich-run.ts",
     "lint": "cross-env NODE_OPTIONS=--no-deprecation eslint ."
   },
   "engines": {

@@ -2,7 +2,7 @@ import { RichText } from '@payloadcms/richtext-lexical/react'
 import type { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical'
 import Link from 'next/link'
 import React from 'react'
-import { t, type Lang } from '@/i18n/ui'
+import { fmt, t, type Lang } from '@/i18n/ui'
 import { hasRichText, isMedia, mediaUrl } from '@/lib/cms'
 import type { Media } from '@/payload-types'
 import { Ico } from './Icons'
@@ -81,5 +81,62 @@ export function Files({ files, lang }: { files?: (number | Media)[] | null; lang
         </>
       )}
     </>
+  )
+}
+
+const cssVars = (v: Record<string, string | number>) => v as React.CSSProperties
+
+/** Kelimeleri sırayla aşağıdan yukarı kayan büyük başlık (haber sayfasıyla aynı) */
+export function WordTitle({ text, className = 'story-title', delay = 0 }: { text: string; className?: string; delay?: number }) {
+  return (
+    <h1 className={className} aria-label={text}>
+      {text.split(/\s+/).filter(Boolean).map((w, i) => (
+        <React.Fragment key={i}>
+          <span className="w" aria-hidden="true"><span style={cssVars({ '--w': i + delay })}>{w}</span></span>{' '}
+        </React.Fragment>
+      ))}
+    </h1>
+  )
+}
+
+/** Kurum mührü: içeriği yayımlayan kurumun logosu (ortaksa ikisi) */
+export function KurumSeal({ kurum }: { kurum?: string | null }) {
+  const logos = kurum === 'avkardep' ? ['av-kardep'] : kurum === 'ortak' ? ['kar-def', 'av-kardep'] : ['kar-def']
+  return (
+    <span className={`seal${logos.length > 1 ? ' seal--two' : ''}`} aria-hidden="true">
+      {logos.map((l) => <img key={l} src={`/brand/${l}-logo.png`} alt="" />)}
+    </span>
+  )
+}
+
+/** Bir tarihin, verilen saat dilimine göre bugünden kaç takvim günü sonra olduğu */
+export function daysUntil(input: string | Date, tz = 'Europe/Istanbul'): number {
+  const day = (d: Date) => {
+    const [y, m, dd] = new Intl.DateTimeFormat('en-CA', { timeZone: tz, year: 'numeric', month: '2-digit', day: '2-digit' }).format(d).split('-').map(Number)
+    return Date.UTC(y, m - 1, dd)
+  }
+  return Math.round((day(new Date(input)) - day(new Date())) / 86400000)
+}
+
+/** "12 gün kaldı", "Yarın", "Bugün", "Sona erdi" */
+export function countdownLabel(lang: Lang, days: number): string {
+  if (days < 0) return t(lang, 'ev.past')
+  if (days === 0) return t(lang, 'ev.today')
+  if (days === 1) return t(lang, 'ev.tomorrow')
+  return `${days} ${t(lang, 'days.left')}`
+}
+
+/** Takvim yaprağı: gün adı, büyük gün sayısı, ay ve saat */
+export function DateTile({ lang, date, tz, accent }: { lang: Lang; date: string; tz?: string; accent?: 'av' }) {
+  const d = new Date(date)
+  const dayNum = new Intl.DateTimeFormat('en-GB', { timeZone: tz ?? 'Europe/Istanbul', day: 'numeric' }).format(d)
+  const year = new Intl.DateTimeFormat('en-GB', { timeZone: tz ?? 'Europe/Istanbul', year: 'numeric' }).format(d)
+  return (
+    <div className={`date-tile${accent ? ` date-tile--${accent}` : ''}`}>
+      <span className="dt-wd">{fmt(lang, d, 'weekday', tz)}</span>
+      <span className="dt-d">{dayNum}</span>
+      <span className="dt-m">{fmt(lang, d, 'month', tz)} {year}</span>
+      <span className="dt-t">{fmt(lang, d, 'time', tz)}</span>
+    </div>
   )
 }

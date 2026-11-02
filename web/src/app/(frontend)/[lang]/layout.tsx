@@ -5,12 +5,14 @@ import { Footer } from '@/components/site/Footer'
 import { Header, navItems, type TickerItem } from '@/components/site/Header'
 import { IconSprite } from '@/components/site/Icons'
 import { Motion } from '@/components/site/Motion'
+import { PrePaint } from '@/components/site/PrePaint'
 import { ScrollChrome } from '@/components/site/ScrollChrome'
 import { SmoothScroll } from '@/components/site/SmoothScroll'
 import { fmt, isLang, LOCALES, t, type Lang } from '@/i18n/ui'
 import { cms, loc } from '@/lib/cms'
 import './site.css'
 import './pages.css'
+import './details.css'
 
 const franklin = Libre_Franklin({ subsets: ['latin', 'latin-ext'], variable: '--font-franklin', display: 'swap' })
 const serif = Source_Serif_4({ subsets: ['latin', 'latin-ext'], variable: '--font-sourceserif', display: 'swap', style: ['normal', 'italic'] })
@@ -56,7 +58,7 @@ export default async function SiteLayout({ children, params }: { children: React
   return (
     <html lang={lang} className={`${franklin.variable} ${serif.variable}`} suppressHydrationWarning>
       <head>
-        <script dangerouslySetInnerHTML={{ __html: PRE_PAINT }} />
+        <PrePaint code={PRE_PAINT} />
       </head>
       <body>
         <IconSprite />
@@ -69,7 +71,7 @@ export default async function SiteLayout({ children, params }: { children: React
         />
         <ScrollChrome lang={lang} items={navItems(lang)} cta={t(lang, 'cta.katki')} totop={t(lang, 'totop')} siteName={siteName} />
         <main id="main">{children}</main>
-        <Footer lang={lang} siteName={siteName} note={settings.footerNote} credits={credits.length ? [`Wikimedia Commons — ${credits.join(', ')}`] : []} />
+        <Footer lang={lang} siteName={siteName} note={lang === 'tr' ? settings.footerNote : t(lang, 'foot.about')} credits={credits.length ? [`Wikimedia Commons — ${credits.join(', ')}`] : []} />
         <SmoothScroll />
         <Motion />
       </body>
