@@ -193,6 +193,19 @@ export interface Post {
   authorName?: string | null;
   kurum?: ('kardef' | 'avkardep' | 'ortak') | null;
   createdBy?: (number | null) | User;
+  autoTr?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  /**
+   * İşaretleyip kaydederseniz bütün diller Türkçe metinden yeniden çevrilir (elle düzeltilenler dahil).
+   */
+  retranslate?: boolean | null;
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
@@ -212,6 +225,19 @@ export interface Media {
   caption?: string | null;
   credit?: string | null;
   license?: ('izinli' | 'kurum' | 'cc-by' | 'cc-by-sa' | 'cc0') | null;
+  autoTr?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  /**
+   * İşaretleyip kaydederseniz bütün diller Türkçe metinden yeniden çevrilir (elle düzeltilenler dahil).
+   */
+  retranslate?: boolean | null;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -264,6 +290,19 @@ export interface Category {
    */
   slug?: string | null;
   color?: ('kirmizi' | 'mor' | 'gri') | null;
+  autoTr?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  /**
+   * İşaretleyip kaydederseniz bütün diller Türkçe metinden yeniden çevrilir (elle düzeltilenler dahil).
+   */
+  retranslate?: boolean | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -306,6 +345,19 @@ export interface Village {
    * Sayfanın internet adresi. Boş bırakırsanız başlıktan otomatik oluşur.
    */
   slug?: string | null;
+  autoTr?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  /**
+   * İşaretleyip kaydederseniz bütün diller Türkçe metinden yeniden çevrilir (elle düzeltilenler dahil).
+   */
+  retranslate?: boolean | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -386,6 +438,19 @@ export interface Event {
   slug?: string | null;
   kurum?: ('kardef' | 'avkardep' | 'ortak') | null;
   createdBy?: (number | null) | User;
+  autoTr?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  /**
+   * İşaretleyip kaydederseniz bütün diller Türkçe metinden yeniden çevrilir (elle düzeltilenler dahil).
+   */
+  retranslate?: boolean | null;
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
@@ -441,6 +506,19 @@ export interface Announcement {
   pinned?: boolean | null;
   kurum?: ('kardef' | 'avkardep' | 'ortak') | null;
   createdBy?: (number | null) | User;
+  autoTr?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  /**
+   * İşaretleyip kaydederseniz bütün diller Türkçe metinden yeniden çevrilir (elle düzeltilenler dahil).
+   */
+  retranslate?: boolean | null;
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
@@ -517,6 +595,19 @@ export interface Archive {
   featuredOnHome?: boolean | null;
   kurum?: ('kardef' | 'avkardep' | 'ortak') | null;
   createdBy?: (number | null) | User;
+  autoTr?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  /**
+   * İşaretleyip kaydederseniz bütün diller Türkçe metinden yeniden çevrilir (elle düzeltilenler dahil).
+   */
+  retranslate?: boolean | null;
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
@@ -560,6 +651,19 @@ export interface Organization {
    * Sayfanın internet adresi. Boş bırakırsanız başlıktan otomatik oluşur.
    */
   slug?: string | null;
+  autoTr?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  /**
+   * İşaretleyip kaydederseniz bütün diller Türkçe metinden yeniden çevrilir (elle düzeltilenler dahil).
+   */
+  retranslate?: boolean | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -684,6 +788,8 @@ export interface PostsSelect<T extends boolean = true> {
   authorName?: T;
   kurum?: T;
   createdBy?: T;
+  autoTr?: T;
+  retranslate?: T;
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
@@ -711,6 +817,8 @@ export interface EventsSelect<T extends boolean = true> {
   slug?: T;
   kurum?: T;
   createdBy?: T;
+  autoTr?: T;
+  retranslate?: T;
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
@@ -752,6 +860,8 @@ export interface AnnouncementsSelect<T extends boolean = true> {
   pinned?: T;
   kurum?: T;
   createdBy?: T;
+  autoTr?: T;
+  retranslate?: T;
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
@@ -782,6 +892,8 @@ export interface ArchiveSelect<T extends boolean = true> {
   featuredOnHome?: T;
   kurum?: T;
   createdBy?: T;
+  autoTr?: T;
+  retranslate?: T;
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
@@ -804,6 +916,8 @@ export interface VillagesSelect<T extends boolean = true> {
         lng?: T;
       };
   slug?: T;
+  autoTr?: T;
+  retranslate?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -816,6 +930,8 @@ export interface MediaSelect<T extends boolean = true> {
   caption?: T;
   credit?: T;
   license?: T;
+  autoTr?: T;
+  retranslate?: T;
   updatedAt?: T;
   createdAt?: T;
   url?: T;
@@ -870,6 +986,8 @@ export interface CategoriesSelect<T extends boolean = true> {
   name?: T;
   slug?: T;
   color?: T;
+  autoTr?: T;
+  retranslate?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -894,6 +1012,8 @@ export interface OrganizationsSelect<T extends boolean = true> {
         address?: T;
       };
   slug?: T;
+  autoTr?: T;
+  retranslate?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -988,6 +1108,19 @@ export interface Homepage {
       }[]
     | null;
   heroSeconds?: number | null;
+  autoTr?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  /**
+   * İşaretleyip kaydederseniz bütün diller Türkçe metinden yeniden çevrilir (elle düzeltilenler dahil).
+   */
+  retranslate?: boolean | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -1012,6 +1145,19 @@ export interface SiteSetting {
       }[]
     | null;
   footerNote?: string | null;
+  autoTr?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  /**
+   * İşaretleyip kaydederseniz bütün diller Türkçe metinden yeniden çevrilir (elle düzeltilenler dahil).
+   */
+  retranslate?: boolean | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -1035,6 +1181,8 @@ export interface HomepageSelect<T extends boolean = true> {
         id?: T;
       };
   heroSeconds?: T;
+  autoTr?: T;
+  retranslate?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
@@ -1061,6 +1209,8 @@ export interface SiteSettingsSelect<T extends boolean = true> {
         id?: T;
       };
   footerNote?: T;
+  autoTr?: T;
+  retranslate?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

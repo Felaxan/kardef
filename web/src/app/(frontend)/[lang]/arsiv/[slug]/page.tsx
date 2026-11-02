@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import React from 'react'
-import { Crumbs, KurumSeal, Prose, WordTitle } from '@/components/site/Article'
+import { AutoNote, Crumbs, KurumSeal, Prose, WordTitle } from '@/components/site/Article'
 import { ArchiveAudio } from '@/components/site/ArchiveAudio'
 import { ArcVis } from '@/components/site/ArcVis'
 import { Ico } from '@/components/site/Icons'
@@ -126,6 +126,7 @@ export default async function ArchivePage({ params }: P) {
                 <span className="arc-no">{L('arc.no')} {catalogNo(a.id)}</span>
               </div>
               <WordTitle text={a.title} className="story-title arc-title" />
+              <AutoNote lang={lang} autoTr={a.autoTr} trHref={`/tr/arsiv/${a.slug}`} />
             </div>
             <p className="arc-year intro" style={css({ '--d': 2 })} aria-label={date}>
               <b>{a.year}</b>

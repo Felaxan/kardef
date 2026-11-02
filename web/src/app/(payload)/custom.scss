@@ -794,3 +794,45 @@ a.nav__link:hover::before,
     transition-duration: 0.01ms !important;
   }
 }
+
+/* ---------- Otomatik çeviri durumu (kenar çubuğu) ---------- */
+.kd-tr {
+  margin: 4px 0 18px;
+  padding: 14px 16px;
+  border-radius: 10px;
+  background: var(--theme-elevation-50);
+  border: 1px solid var(--theme-elevation-100);
+  animation: kd-enter 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.kd-tr-title {
+  margin: 0 0 8px;
+  font-weight: 700;
+  font-size: 13px;
+}
+.kd-tr-list {
+  list-style: none;
+  margin: 0 0 10px;
+  padding: 0;
+  li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 6px 0;
+    border-bottom: 1px solid var(--theme-elevation-100);
+    font-size: 13px;
+    font-weight: 600;
+    &:last-child { border-bottom: 0; }
+    small { font-weight: 500; font-size: 12px; color: var(--theme-elevation-500); }
+    &::before { content: ''; flex: none; width: 7px; height: 7px; border-radius: 50%; background: var(--theme-elevation-250); }
+    span { flex: 1; }
+    &.is-auto::before { background: #2f9e5b; }
+    &.is-manual::before { background: var(--kd-red); }
+  }
+}
+.kd-tr-note {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--theme-elevation-600);
+}

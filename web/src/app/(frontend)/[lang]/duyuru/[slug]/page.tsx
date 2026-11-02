@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import React from 'react'
-import { Crumbs, DateTile, daysUntil, Files, KurumSeal, Prose, WordTitle } from '@/components/site/Article'
+import { AutoNote, Crumbs, DateTile, daysUntil, Files, KurumSeal, Prose, WordTitle } from '@/components/site/Article'
 import { Ico } from '@/components/site/Icons'
 import { Share } from '@/components/site/Share'
 import { fmt, t } from '@/i18n/ui'
@@ -111,6 +111,7 @@ export default async function AnnouncementPage({ params }: P) {
                 <time dateTime={a.publishedAt ?? undefined}>{fmt(lang, a.publishedAt, 'datetime')}</time>
               </div>
             </div>
+            <AutoNote lang={lang} autoTr={a.autoTr} trHref={`/tr/duyuru/${a.slug}`} />
           </header>
           {panel}
         </div>

@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import React from 'react'
-import { countdownLabel, Crumbs, DateTile, daysUntil, KurumSeal, Prose, WordTitle } from '@/components/site/Article'
+import { AutoNote, countdownLabel, Crumbs, DateTile, daysUntil, KurumSeal, Prose, WordTitle } from '@/components/site/Article'
 import { Ico } from '@/components/site/Icons'
 import { ParallaxImage } from '@/components/site/ParallaxImage'
 import { Share } from '@/components/site/Share'
@@ -107,6 +107,7 @@ export default async function EventPage({ params }: P) {
               )}
               <Share title={e.title} labels={shareLabels} compact />
             </div>
+            <AutoNote lang={lang} autoTr={e.autoTr} trHref={`/tr/etkinlik/${e.slug}`} />
           </header>
         </div>
       </div>

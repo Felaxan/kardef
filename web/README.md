@@ -54,6 +54,36 @@ Editör ve yazar panele girdiğinde yönetim bölümlerini görmez.
 İçerik dilleri: Türkçe (varsayılan), Kurdî, English, Deutsch, Nederlands, Français.
 Çevrilmeyen dil Türkçe gösterilir.
 
+## Otomatik çeviri (Microsoft Translator, ücretsiz)
+
+Türkçe içerik **yayınlanınca** başlık, özet ve metin birkaç saniye içinde Kurdî (Kurmancî), English,
+Deutsch, Nederlands ve Français'ye çevrilip kaydedilir. Kod: `src/translate/`.
+
+- **Ücretsiz paket (F0):** ayda 2 milyon karakter (yaklaşık 150 haberin 5 dile çevrisi). Kota dolunca
+  çeviri o ay durur, ücret çıkmaz.
+- **Elle düzeltme korunur:** bir dilde metni elle değiştirirseniz o dil bir daha ezilmez. Kenar çubuğundaki
+  "Çevirileri yenile" kutusu işaretlenip kaydedilirse bütün diller yeniden çevrilir.
+- **Karakter harcamaz:** Türkçe metin değişmediyse tekrar çevrilmez. Taslaklar çevrilmez.
+- **Çevrilmeyen adlar:** KAR-DEF, AV-KARDEP, Karakoçan, Elazığ ve bütün köy adları (`src/translate/config.ts`).
+- **Sitede not:** otomatik çevrilen sayfalarda "Bu metin Türkçeden otomatik olarak çevrildi · Türkçe aslı" yazar;
+  elle düzeltilen dilde bu not kalkar.
+- **Kurmancî:** makine çevirisi bu dilde zayıftır; önemli içerikleri bir bilen kontrol etmelidir.
+
+### Anahtarı almak (bir kez, derneğin hesabıyla)
+
+1. [portal.azure.com](https://portal.azure.com) adresinde ücretsiz hesap açın (kimlik doğrulaması için kart
+   istenir; F0 paketinde ücret alınmaz).
+2. **Create a resource → Translator** seçin. *Region*: **West Europe**, *Pricing tier*: **Free F0**.
+3. Oluşan kaynakta **Keys and Endpoint** sayfasından **KEY 1** ve **Location/Region** değerini kopyalayın.
+4. `.env` dosyasına yazın ve sunucuyu yeniden başlatın:
+   ```
+   AZURE_TRANSLATOR_KEY=…
+   AZURE_TRANSLATOR_REGION=westeurope
+   ```
+5. Var olan içeriği bir kez topluca çevirin: `npm run translate:all`
+
+Anahtar yoksa çeviri kapalıdır; site ve panel normal çalışır. Maket modunda (Vercel) çeviri her zaman kapalıdır.
+
 ## Vercel maketi
 
 Vercel'de site kendiliğinden **maket modunda** açılır: içerik `demo/` klasöründeki salt okunur

@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import React from 'react'
-import { Crumbs, Prose } from '@/components/site/Article'
+import { AutoNote, Crumbs, Prose } from '@/components/site/Article'
 import { Ico } from '@/components/site/Icons'
 import { ParallaxImage } from '@/components/site/ParallaxImage'
 import { Share } from '@/components/site/Share'
@@ -75,6 +75,7 @@ export default async function NewsPage({ params }: P) {
                 <span>{minutes} {L('readmin')}</span>
               </div>
             </div>
+            <AutoNote lang={lang} autoTr={p.autoTr} trHref={`/tr/haber/${p.slug}`} />
           </header>
         </div>
       </div>

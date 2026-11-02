@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import React from 'react'
-import { Crumbs, Files, Prose, WordTitle } from '@/components/site/Article'
+import { AutoNote, Crumbs, Files, Prose, WordTitle } from '@/components/site/Article'
 import { Ico } from '@/components/site/Icons'
 import { ParallaxImage } from '@/components/site/ParallaxImage'
 import { Share } from '@/components/site/Share'
@@ -48,6 +48,7 @@ export default async function VillagePage({ params }: P) {
             <span className="kicker intro" style={css({ '--d': 0 })}>{L('vil.title')}</span>
             <WordTitle text={v.name} className="story-title vil-title" delay={1} />
             {v.otherNames?.length ? <p className="vil-aka intro" style={css({ '--d': 3 })}>{v.otherNames.join(' · ')}</p> : null}
+            <AutoNote lang={lang} autoTr={v.autoTr} trHref={`/tr/koy/${v.slug}`} />
           </div>
           <div className="vil-stats intro" style={css({ '--d': 4 })}>
             <a href="#koy-haberleri"><b data-count={posts.totalDocs}>{posts.totalDocs}</b><span>{L('vil.news')}</span></a>

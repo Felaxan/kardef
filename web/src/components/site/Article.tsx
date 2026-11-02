@@ -140,3 +140,22 @@ export function DateTile({ lang, date, tz, accent }: { lang: Lang; date: string;
     </div>
   )
 }
+
+/** Bu dildeki metin otomatik çeviri mi? (elle düzeltildiyse not gösterilmez) */
+export function isAutoTranslated(autoTr: unknown, lang: Lang): boolean {
+  if (lang === 'tr') return false
+  const s = (autoTr as { langs?: Record<string, { hash?: string; manual?: boolean }> } | null)?.langs?.[lang]
+  return Boolean(s?.hash && !s.manual)
+}
+
+/** "Bu metin Türkçeden otomatik olarak çevrildi · Türkçe aslı" */
+export function AutoNote({ lang, autoTr, trHref }: { lang: Lang; autoTr: unknown; trHref: string }) {
+  if (!isAutoTranslated(autoTr, lang)) return null
+  return (
+    <p className="auto-note intro" style={{ '--d': 4 } as React.CSSProperties}>
+      <Ico name="globe" />
+      <span>{t(lang, 'auto.note')}</span>
+      <Link href={trHref} hrefLang="tr">{t(lang, 'auto.orig')}</Link>
+    </p>
+  )
+}

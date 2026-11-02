@@ -423,3 +423,13 @@
 @media (prefers-reduced-motion: reduce){
   .vd-in,.sp-results li,.nf-code span,.nf-body{animation:none}
 }
+
+/* ---------- Otomatik çeviri notu ---------- */
+.auto-note{display:flex;align-items:center;flex-wrap:wrap;gap:6px 8px;margin:18px 0 0;padding:9px 13px;border-radius:6px;background:var(--bg-soft);font-size:.8125rem;color:var(--ink-2);width:fit-content;max-width:100%}
+.auto-note .ico{flex:none;color:var(--muted)}
+.auto-note a{font-weight:700;text-decoration:underline;text-underline-offset:.18em;text-decoration-thickness:1px}
+.auto-note a:hover{color:var(--brand-text)}
+.band .auto-note{background:var(--band-2);color:var(--band-ink)}
+.band .auto-note .ico{color:var(--band-muted)}
+.vil-cover .auto-note{background:rgba(0,0,0,.35);color:#fff;backdrop-filter:blur(6px)}
+.vil-cover .auto-note .ico{color:rgba(255,255,255,.8)}

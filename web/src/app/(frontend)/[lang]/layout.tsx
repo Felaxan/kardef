@@ -26,9 +26,9 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
   const { lang } = await params
   if (!isLang(lang)) return {}
   const payload = await cms()
-  const s = await payload.findGlobal({ slug: 'site-settings', locale: loc(lang) })
+  const s = await payload.findGlobal({ slug: 'site-settings', locale: loc(lang), fallbackLocale: false })
   return {
-    title: { default: `${s.siteName} · ${lang === 'tr' ? s.tagline ?? t(lang, 'brand.tag') : t(lang, 'brand.tag')}`, template: `%s · ${s.siteName}` },
+    title: { default: `${s.siteName} · ${s.tagline || t(lang, 'brand.tag')}`, template: `%s · ${s.siteName}` },
     description: t(lang, 'foot.about'),
     icons: { icon: '/brand/kar-def-logo.png' },
     alternates: { languages: Object.fromEntries(LOCALES.map((l) => [l, `/${l}`])) },
@@ -42,7 +42,8 @@ export default async function SiteLayout({ children, params }: { children: React
   const payload = await cms()
 
   const [settings, home, breaking, media] = await Promise.all([
-    payload.findGlobal({ slug: 'site-settings', locale: loc(lang) }),
+    // Çevrilmemiş alanlar boş gelsin; yerine arayüz metni kullanılır
+    payload.findGlobal({ slug: 'site-settings', locale: loc(lang), fallbackLocale: false }),
     payload.findGlobal({ slug: 'homepage', locale: loc(lang) }),
     payload.find({ collection: 'posts', where: { breaking: { equals: true } }, sort: '-publishedAt', limit: 6, depth: 0, locale: loc(lang), overrideAccess: false }),
     payload.find({ collection: 'media', where: { credit: { exists: true } }, limit: 50, depth: 0, pagination: false }),
@@ -65,13 +66,13 @@ export default async function SiteLayout({ children, params }: { children: React
         <Header
           lang={lang}
           siteName={siteName}
-          tagline={lang === 'tr' ? settings.tagline || t(lang, 'brand.tag') : t(lang, 'brand.tag')}
+          tagline={settings.tagline || t(lang, 'brand.tag')}
           ticker={ticker}
           notice={home.notice?.enabled ? { text: home.notice.text || '', link: home.notice.link } : null}
         />
         <ScrollChrome lang={lang} items={navItems(lang)} cta={t(lang, 'cta.katki')} totop={t(lang, 'totop')} siteName={siteName} />
         <main id="main">{children}</main>
-        <Footer lang={lang} siteName={siteName} note={lang === 'tr' ? settings.footerNote : t(lang, 'foot.about')} credits={credits.length ? [`Wikimedia Commons — ${credits.join(', ')}`] : []} />
+        <Footer lang={lang} siteName={siteName} note={settings.footerNote || t(lang, 'foot.about')} credits={credits.length ? [`Wikimedia Commons — ${credits.join(', ')}`] : []} />
         <SmoothScroll />
         <Motion />
       </body>

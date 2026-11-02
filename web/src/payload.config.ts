@@ -23,6 +23,7 @@ import { Users } from './collections/Users'
 import { Villages } from './collections/Villages'
 import { Homepage, SiteSettings } from './globals'
 import { DEMO } from './demo'
+import { withAutoTranslate, withAutoTranslateGlobal } from './translate/fields'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -77,8 +78,9 @@ export default buildConfig({
     fallback: true,
   },
 
-  collections: [Posts, Events, Announcements, ArchiveItems, Villages, Media, Categories, Organizations, Users],
-  globals: [Homepage, SiteSettings],
+  // Türkçe içerik yayınlanınca diğer dillere otomatik çeviri (src/translate)
+  collections: [Posts, Events, Announcements, ArchiveItems, Villages, Media, Categories, Organizations, Users].map(withAutoTranslate),
+  globals: [Homepage, SiteSettings].map(withAutoTranslateGlobal),
   editor: lexicalEditor(),
   // Maket modunda giriş kapalı olduğu için anahtar zorunlu değil
   secret: process.env.PAYLOAD_SECRET || (DEMO ? 'kardef-maket-salt-okunur' : ''),
