@@ -18,24 +18,24 @@ export function Footer({ lang, siteName, note, credits }: { lang: Lang; siteName
           <div>
             <h3>KAR-DEF</h3>
             <ul>
-              <li><Link href={`/${lang}#kurumlar`}>{L('foot.hakkinda')}</Link></li>
-              <li><Link href={`/${lang}#duyurular`}>{L('not.title')}</Link></li>
-              <li><Link href={`/${lang}#kurumlar`}>{L('foot.iletisim')}</Link></li>
+              <li><Link href={`/${lang}/kurumlar#kar-def`}>{L('foot.hakkinda')}</Link></li>
+              <li><Link href={`/${lang}/duyurular`}>{L('not.title')}</Link></li>
+              <li><Link href={`/${lang}/kurumlar#kar-def`}>{L('foot.iletisim')}</Link></li>
             </ul>
           </div>
           <div>
             <h3>AV-KARDEP</h3>
             <ul>
-              <li><Link href={`/${lang}#kurumlar`}>{L('foot.hakkinda')}</Link></li>
-              <li><Link href={`/${lang}#etkinlikler`}>{L('nav.etkinlikler')}</Link></li>
-              <li><Link href={`/${lang}#kurumlar`}>{L('foot.iletisim')}</Link></li>
+              <li><Link href={`/${lang}/kurumlar#av-kardep`}>{L('foot.hakkinda')}</Link></li>
+              <li><Link href={`/${lang}/etkinlikler`}>{L('nav.etkinlikler')}</Link></li>
+              <li><Link href={`/${lang}/kurumlar#av-kardep`}>{L('foot.iletisim')}</Link></li>
             </ul>
           </div>
           <div>
             <h3>{L('foot.site')}</h3>
             <ul>
               <li><Link href={`/${lang}/koyler`}>{L('nav.koyler')}</Link></li>
-              <li><Link href={`/${lang}#arsiv`}>{L('nav.arsiv')}</Link></li>
+              <li><Link href={`/${lang}/arsiv`}>{L('nav.arsiv')}</Link></li>
               <li><Link href={`/${lang}#katki`}>{L('cta.katki')}</Link></li>
               <li><Link href="/admin">Panel</Link></li>
             </ul>

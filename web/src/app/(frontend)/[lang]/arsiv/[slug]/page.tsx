@@ -118,7 +118,7 @@ export default async function ArchivePage({ params }: P) {
     <article className="arc-page">
       <section className="band arc-stage-band">
         <div className="wrap">
-          <Crumbs lang={lang} href={`/${lang}#arsiv`} label={L('arc.kicker')} />
+          <Crumbs lang={lang} href={`/${lang}/arsiv`} label={L('arc.kicker')} />
           <div className="arc-top">
             <div className="arc-title-col">
               <div className="story-tags intro" style={css({ '--d': 0 })}>

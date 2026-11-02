@@ -144,7 +144,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
         <HeroSlider slides={slides} seconds={home.heroSeconds || 7} labels={{ prev: '‹', next: '›' }} />
         <aside className="side intro" style={css({ '--d': 5 })}>
           <div>
-            <h2 className="sec-label"><span>{L('side.latest')}</span><Link href={`/${lang}#gundem`}>{L('more.all')}</Link></h2>
+            <h2 className="sec-label"><span>{L('side.latest')}</span><Link href={`/${lang}/haberler`}>{L('more.all')}</Link></h2>
             <ol className="latest">
               {side.map((p) => (
                 <li key={p.id}>
@@ -156,7 +156,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
             </ol>
           </div>
           <div>
-            <h2 className="sec-label"><span>{L('not.title')}</span><Link href={`/${lang}#duyurular`}>{L('more.all')}</Link></h2>
+            <h2 className="sec-label"><span>{L('not.title')}</span><Link href={`/${lang}/duyurular`}>{L('more.all')}</Link></h2>
             <ul className="side-notices">
               {notices.docs.slice(0, 3).map((n) => (
                 <li key={n.id}>
@@ -173,7 +173,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
       <section className="wrap sec" id="gundem">
         <header className="sec-head" data-reveal="">
           <h2>{L('sec.gundem')}</h2>
-          <Link href={`/${lang}/ara?q=`} className="more"><span>{L('more.all')}</span><Ico name="arrow" /></Link>
+          <Link href={`/${lang}/haberler`} className="more"><span>{L('more.all')}</span><Ico name="arrow" /></Link>
         </header>
         <div className="cards">
           {cards.map((p, i) => {
@@ -199,7 +199,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
       <section className="wrap sec" id="etkinlikler">
         <EventsBlock
           events={evCards}
-          moreHref={`/${lang}#etkinlikler`}
+          moreHref={`/${lang}/etkinlikler`}
           labels={{ title: L('ev.title'), all: L('ev.all'), tr: L('ev.tr'), eu: L('ev.eu'), more: L('ev.more'), none: L('ev.none') }}
         />
       </section>
@@ -220,7 +220,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
             cards={arcCards}
             side={arcSide}
             contributeHref={`/${lang}#katki`}
-            openAllHref={`/${lang}/ara?q=&tur=arsiv`}
+            openAllHref={`/${lang}/arsiv`}
             labels={{
               alldec: L('arc.alldec'), records: L('arc.records'), openall: L('arc.openall'),
               wantedT: L('arc.wanted.t'), wantedP: L('arc.wanted.p'), wantedBtn: L('arc.wanted.btn'), photo: L('type.photo'),
@@ -234,7 +234,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
         <section id="duyurular">
           <header className="sec-head" data-reveal="">
             <h2>{L('not.title')}</h2>
-            <Link href={`/${lang}/ara?q=&tur=duyuru`} className="more"><span>{L('not.all')}</span><Ico name="arrow" /></Link>
+            <Link href={`/${lang}/duyurular`} className="more"><span>{L('not.all')}</span><Ico name="arrow" /></Link>
           </header>
           <ul className="notices">
             {notices.docs.map((n, i) => (
@@ -296,7 +296,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
             <span className="kicker">{L('join.k1')}</span>
             <h2>{L('join.h1')}</h2>
             <p>{L('join.p1')}</p>
-            <a href={settings.contact?.email ? `mailto:${settings.contact.email}` : `/${lang}#kurumlar`} className="btn">
+            <a href={settings.contact?.email ? `mailto:${settings.contact.email}` : `/${lang}/kurumlar`} className="btn">
               <span>{L('join.b1')}</span><Ico name="arrow" />
             </a>
           </section>

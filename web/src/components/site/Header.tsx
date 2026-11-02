@@ -7,13 +7,13 @@ import { TopTools } from './TopTools'
 
 export const navItems = (lang: Lang): NavItem[] => [
   { href: `/${lang}`, label: t(lang, 'nav.gundem') },
-  { href: `/${lang}#gundem`, label: t(lang, 'nav.haberler'), section: 'gundem' },
-  { href: `/${lang}#etkinlikler`, label: t(lang, 'nav.etkinlikler'), section: 'etkinlikler' },
-  { href: `/${lang}#duyurular`, label: t(lang, 'nav.duyurular'), section: 'duyurular' },
-  { href: `/${lang}#arsiv`, label: t(lang, 'nav.arsiv'), section: 'arsiv' },
-  { href: `/${lang}#arsiv`, label: t(lang, 'nav.sozlu'), section: 'arsiv-sozlu' },
+  { href: `/${lang}/haberler`, label: t(lang, 'nav.haberler') },
+  { href: `/${lang}/etkinlikler`, label: t(lang, 'nav.etkinlikler') },
+  { href: `/${lang}/duyurular`, label: t(lang, 'nav.duyurular') },
+  { href: `/${lang}/arsiv`, label: t(lang, 'nav.arsiv') },
+  { href: `/${lang}/sozlu-tarih`, label: t(lang, 'nav.sozlu') },
   { href: `/${lang}/koyler`, label: t(lang, 'nav.koyler') },
-  { href: `/${lang}#kurumlar`, label: t(lang, 'nav.kurumlar'), section: 'kurumlar' },
+  { href: `/${lang}/kurumlar`, label: t(lang, 'nav.kurumlar') },
 ]
 
 export type TickerItem = { text: string; href?: string; time?: string }

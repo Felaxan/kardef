@@ -53,7 +53,7 @@ export default async function NewsPage({ params }: P) {
     <article className={`story${hero ? '' : ' story--noimg'}`}>
       <div className="wrap story-grid story-top">
         <div className="story-col">
-          <Crumbs lang={lang} href={`/${lang}#gundem`} label={L('sec.gundem')} />
+          <Crumbs lang={lang} href={`/${lang}/haberler`} label={L('nav.haberler')} />
           <header className="story-head">
             <div className="story-tags intro" style={css({ '--d': 0 })}>
               {categoryName(p.category) && <span className="kicker">{categoryName(p.category)}</span>}

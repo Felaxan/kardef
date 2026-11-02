@@ -98,7 +98,7 @@ export default async function AnnouncementPage({ params }: P) {
     <article className={`story an-page an--${type}`}>
       <div className="wrap story-grid story-top">
         <div className="story-col">
-          <Crumbs lang={lang} href={`/${lang}#duyurular`} label={L('not.title')} />
+          <Crumbs lang={lang} href={`/${lang}/duyurular`} label={L('not.title')} />
           <header className="story-head">
             <div className="story-tags intro" style={css({ '--d': 0 })}>
               <span className="kicker">{announcementTypeLabel(lang, type)}</span>
@@ -141,7 +141,7 @@ export default async function AnnouncementPage({ params }: P) {
         <section className="wrap related related--narrow">
           <header className="sec-head" data-reveal="">
             <h2>{L('not.more')}</h2>
-            <Link href={`/${lang}#duyurular`} className="more"><span>{L('not.all')}</span><Ico name="arrow" /></Link>
+            <Link href={`/${lang}/duyurular`} className="more"><span>{L('not.all')}</span><Ico name="arrow" /></Link>
           </header>
           <ul className="notices">
             {others.docs.map((n, i) => (

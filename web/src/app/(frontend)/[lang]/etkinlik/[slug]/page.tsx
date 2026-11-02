@@ -53,7 +53,7 @@ export default async function EventPage({ params }: P) {
     <article className={`story ev-page${av ? ' is-av' : ''}${hero ? '' : ' story--noimg'}`}>
       <div className="wrap story-grid story-top">
         <div className="story-col">
-          <Crumbs lang={lang} href={`/${lang}#etkinlikler`} label={L('ev.title')} />
+          <Crumbs lang={lang} href={`/${lang}/etkinlikler`} label={L('ev.title')} />
           <header className="story-head">
             <div className="story-tags intro" style={css({ '--d': 0 })}>
               <span className="kicker">{regionLabel(lang, e)}</span>
@@ -131,7 +131,7 @@ export default async function EventPage({ params }: P) {
         <section className="wrap related">
           <header className="sec-head" data-reveal="">
             <h2>{L('ev.upcoming')}</h2>
-            <Link href={`/${lang}#etkinlikler`} className="more"><span>{L('ev.more')}</span><Ico name="arrow" /></Link>
+            <Link href={`/${lang}/etkinlikler`} className="more"><span>{L('ev.more')}</span><Ico name="arrow" /></Link>
           </header>
           <ol className="ev-next">
             {upcoming.docs.map((u, i) => {

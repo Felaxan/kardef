@@ -33,7 +33,7 @@ export default function NotFound() {
         </form>
         <nav className="nf-links">
           <Link href={`/${lang}`}><Ico name="back" />{x.home}</Link>
-          <Link href={`/${lang}#arsiv`}>{x.arc}</Link>
+          <Link href={`/${lang}/arsiv`}>{x.arc}</Link>
           <Link href={`/${lang}/koyler`}>{x.vil}</Link>
         </nav>
       </div>

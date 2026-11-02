@@ -29,7 +29,7 @@ export function SmoothScroll() {
       const el = document.getElementById(decodeURIComponent(url.hash.slice(1)))
       if (!el) return
       e.preventDefault()
-      lenis.scrollTo(el, { offset: -76, duration: 1.4, easing: ease })
+      lenis.scrollTo(el, { offset: -76, duration: 0.9, easing: ease })
       history.replaceState(null, '', url.hash)
     }
     document.addEventListener('click', onClick)
@@ -45,7 +45,7 @@ export function SmoothScroll() {
   useEffect(() => {
     const lenis = window.__lenis
     const hash = location.hash ? document.getElementById(decodeURIComponent(location.hash.slice(1))) : null
-    if (hash) setTimeout(() => (lenis ? lenis.scrollTo(hash, { offset: -76, duration: 1.2, easing: ease }) : hash.scrollIntoView()), 120)
+    if (hash) setTimeout(() => (lenis ? lenis.scrollTo(hash, { offset: -76, duration: 0.8, easing: ease }) : hash.scrollIntoView()), 120)
     else if (lenis) lenis.scrollTo(0, { immediate: true })
   }, [pathname])
 
