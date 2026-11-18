@@ -104,8 +104,8 @@ export interface Config {
     | ('false' | 'none' | 'null')
     | false
     | null
-    | ('tr' | 'ku' | 'en' | 'de' | 'nl' | 'fr')
-    | ('tr' | 'ku' | 'en' | 'de' | 'nl' | 'fr')[];
+    | ('tr' | 'ku' | 'zza' | 'en' | 'de' | 'nl' | 'fr')
+    | ('tr' | 'ku' | 'zza' | 'en' | 'de' | 'nl' | 'fr')[];
   globals: {
     homepage: Homepage;
     'site-settings': SiteSetting;
@@ -114,7 +114,7 @@ export interface Config {
     homepage: HomepageSelect<false> | HomepageSelect<true>;
     'site-settings': SiteSettingsSelect<false> | SiteSettingsSelect<true>;
   };
-  locale: 'tr' | 'ku' | 'en' | 'de' | 'nl' | 'fr';
+  locale: 'tr' | 'ku' | 'zza' | 'en' | 'de' | 'nl' | 'fr';
   widgets: {
     collections: CollectionsWidget;
   };
@@ -463,7 +463,7 @@ export interface Event {
  */
 export interface Announcement {
   id: number;
-  type: 'vefat' | 'burs' | 'toplanti' | 'yardim' | 'uyelik' | 'genel';
+  type: 'vefat' | 'burs' | 'toplanti' | 'yardim' | 'uyelik' | 'dugun' | 'ozel-gun' | 'genel';
   title: string;
   vefat?: {
     name?: string | null;
@@ -479,6 +479,23 @@ export interface Announcement {
     applyLink?: string | null;
   };
   toplanti?: {
+    date?: string | null;
+    place?: string | null;
+  };
+  dugun?: {
+    bride?: string | null;
+    groom?: string | null;
+    /**
+     * Ör. "Yılmaz ve Demir aileleri"
+     */
+    families?: string | null;
+    date?: string | null;
+    village?: (number | null) | Village;
+    place?: string | null;
+  };
+  ozelGun?: {
+    kind?: ('nisan' | 'kina' | 'sunnet' | 'dogum' | 'mezuniyet' | 'diger') | null;
+    person?: string | null;
     date?: string | null;
     place?: string | null;
   };
@@ -850,6 +867,24 @@ export interface AnnouncementsSelect<T extends boolean = true> {
   toplanti?:
     | T
     | {
+        date?: T;
+        place?: T;
+      };
+  dugun?:
+    | T
+    | {
+        bride?: T;
+        groom?: T;
+        families?: T;
+        date?: T;
+        village?: T;
+        place?: T;
+      };
+  ozelGun?:
+    | T
+    | {
+        kind?: T;
+        person?: T;
         date?: T;
         place?: T;
       };

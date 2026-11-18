@@ -31,6 +31,8 @@ export const Announcements: CollectionConfig = {
         { label: 'Toplantı', value: 'toplanti' },
         { label: 'Yardım', value: 'yardim' },
         { label: 'Üyelik', value: 'uyelik' },
+        { label: 'Düğün', value: 'dugun' },
+        { label: 'Özel gün (nişan, kına, sünnet...)', value: 'ozel-gun' },
         { label: 'Genel', value: 'genel' },
       ],
     },
@@ -87,6 +89,70 @@ export const Announcements: CollectionConfig = {
       type: 'group',
       admin: { condition: (_, s) => s?.type === 'toplanti' },
       fields: [
+        {
+          type: 'row',
+          fields: [
+            { name: 'date', label: 'Tarih ve saat', type: 'date', admin: { width: '50%', date: dt } },
+            { name: 'place', label: 'Yer', type: 'text', admin: { width: '50%' } },
+          ],
+        },
+      ],
+    },
+
+    // Düğün
+    {
+      name: 'dugun',
+      label: 'Düğün bilgileri',
+      type: 'group',
+      admin: { condition: (_, s) => s?.type === 'dugun' },
+      fields: [
+        {
+          type: 'row',
+          fields: [
+            { name: 'bride', label: 'Gelin', type: 'text', admin: { width: '50%' } },
+            { name: 'groom', label: 'Damat', type: 'text', admin: { width: '50%' } },
+          ],
+        },
+        { name: 'families', label: 'Aileler', type: 'textarea', admin: { description: 'Ör. "Yılmaz ve Demir aileleri"' } },
+        {
+          type: 'row',
+          fields: [
+            { name: 'date', label: 'Tarih ve saat', type: 'date', admin: { width: '50%', date: dt } },
+            { name: 'village', label: 'Köyü', type: 'relationship', relationTo: 'villages', admin: { width: '50%' } },
+          ],
+        },
+        { name: 'place', label: 'Düğün yeri', type: 'text' },
+      ],
+    },
+
+    // Özel gün
+    {
+      name: 'ozelGun',
+      label: 'Özel gün bilgileri',
+      type: 'group',
+      admin: { condition: (_, s) => s?.type === 'ozel-gun' },
+      fields: [
+        {
+          type: 'row',
+          fields: [
+            {
+              name: 'kind',
+              label: 'Ne günü?',
+              type: 'select',
+              defaultValue: 'nisan',
+              admin: { width: '50%' },
+              options: [
+                { label: 'Nişan', value: 'nisan' },
+                { label: 'Kına', value: 'kina' },
+                { label: 'Sünnet düğünü', value: 'sunnet' },
+                { label: 'Doğum', value: 'dogum' },
+                { label: 'Mezuniyet', value: 'mezuniyet' },
+                { label: 'Diğer', value: 'diger' },
+              ],
+            },
+            { name: 'person', label: 'Kimin için', type: 'text', admin: { width: '50%' } },
+          ],
+        },
         {
           type: 'row',
           fields: [

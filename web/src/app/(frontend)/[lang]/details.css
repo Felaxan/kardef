@@ -27,8 +27,8 @@
 .date-tile .dt-d{padding-top:12px;font-weight:900;font-size:4rem;line-height:.9;letter-spacing:-.05em}
 .date-tile .dt-m{padding:6px 8px 0;font-weight:600;font-size:.8125rem;color:var(--ink-2)}
 .date-tile .dt-t{margin:10px 0 12px;padding:3px 9px;border-radius:999px;background:var(--bg-soft);font-weight:700;font-size:.8125rem}
-.js .story-head .date-tile,.js .meeting .date-tile{transform:perspective(700px) rotateX(-75deg);transform-origin:top;opacity:0}
-.js.ready .story-head .date-tile,.js.ready .meeting .date-tile{animation:tileFlip 1.1s var(--ease-out) .25s both}
+.js .celebration .date-tile,.js .story-head .date-tile,.js .meeting .date-tile{transform:perspective(700px) rotateX(-75deg);transform-origin:top;opacity:0}
+.js.ready .celebration .date-tile,.js.ready .story-head .date-tile,.js.ready .meeting .date-tile{animation:tileFlip 1.1s var(--ease-out) .25s both}
 @keyframes tileFlip{from{transform:perspective(700px) rotateX(-75deg);opacity:0}to{transform:none;opacity:1}}
 
 /* =========================================================
@@ -112,6 +112,19 @@
 .meeting dt{margin-bottom:4px;font-weight:700;font-size:.6875rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
 .meeting dd{margin:0;font-weight:700;font-size:1.0625rem}
 .meeting dd small{display:block;font-weight:500;color:var(--ink-2)}
+/* Düğün ve özel gün kartı */
+.celebration{position:relative;display:flex;align-items:flex-start;gap:28px;margin:0 0 8px;padding:26px;border-radius:6px;background:var(--bg-soft);overflow:hidden}
+.celebration::after{content:"";position:absolute;inset:auto 0 0 0;height:4px;background:repeating-linear-gradient(90deg,#c9831b 0 14px,var(--brand) 14px 20px,transparent 20px 26px);transform:scaleX(0);transform-origin:left;transition:transform 1.2s var(--ease-out)}
+.ready .celebration::after{transform:scaleX(1)}
+.cel-body{display:flex;flex-direction:column;gap:16px;min-width:0}
+.cel-names{margin:0;font-family:var(--font-sourceserif),Georgia,serif;font-size:clamp(1.4rem,2.6vw,1.9rem);font-weight:600;line-height:1.2}
+.cel-names small{display:block;margin-bottom:6px;font-family:var(--font-franklin),sans-serif;font-weight:700;font-size:.6875rem;letter-spacing:.06em;text-transform:uppercase;color:#a96a0f}
+.is-dark .cel-names small{color:#e7a94b}
+.celebration dl{margin:0;display:flex;flex-wrap:wrap;gap:14px 32px}
+.celebration dt{margin-bottom:4px;font-weight:700;font-size:.6875rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.celebration dd{margin:0;font-weight:700;font-size:1.0625rem}
+.celebration dd small{display:block;font-weight:500;color:var(--ink-2)}
+.an--dugun .story-tags .kicker,.an--ozel-gun .story-tags .kicker{background:#c9831b;color:#fff}
 
 .related--narrow .notices{max-width:980px}
 
@@ -288,7 +301,7 @@
   .m-mono{font-size:1.625rem}
   .deadline{grid-template-columns:minmax(0,1fr);gap:16px;padding:22px 22px 26px}
   .dl-count{flex-direction:row;align-items:baseline;gap:10px;min-width:0}
-  .meeting{flex-direction:column;align-items:flex-start}
+  .meeting,.celebration{flex-direction:column;align-items:flex-start}
   .arc-audio{grid-template-columns:auto minmax(0,1fr);padding:18px}
   .aa-time{grid-column:2}
   .aa-btn{width:52px;height:52px}
@@ -302,7 +315,7 @@
   .vil-tl li::before{left:calc(3rem - 4px)}
 }
 @media (prefers-reduced-motion: reduce){
-  .js .story-head .date-tile,.js.ready .story-head .date-tile,.js .meeting .date-tile,.js.ready .meeting .date-tile{animation:none;transform:none;opacity:1}
+  .js .celebration .date-tile,.js.ready .celebration .date-tile,.js .story-head .date-tile,.js.ready .story-head .date-tile,.js .meeting .date-tile,.js.ready .meeting .date-tile{animation:none;transform:none;opacity:1}
   .js .arc-mat img,.js.ready .arc-mat img{animation:none;filter:none;opacity:1}
   .js .vil-cover-img,.js.ready .vil-cover-img{animation:none;clip-path:none}
   .js.ready .dl-bar{animation:none}

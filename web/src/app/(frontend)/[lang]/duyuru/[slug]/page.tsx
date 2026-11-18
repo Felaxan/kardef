@@ -6,7 +6,7 @@ import { Share } from '@/components/site/Share'
 import { fmt, t } from '@/i18n/ui'
 import { hasRichText, loc, mediaUrl } from '@/lib/cms'
 import { bySlug } from '@/lib/detail'
-import { announcementTypeLabel, kurumLabel } from '@/lib/labels'
+import { announcementTypeLabel, kurumLabel, occasionLabel } from '@/lib/labels'
 import type { Announcement, Village } from '@/payload-types'
 
 export const dynamic = 'force-dynamic'
@@ -90,6 +90,39 @@ export default async function AnnouncementPage({ params }: P) {
           {a.toplanti?.date && <div><dt>{L('ev.when')}</dt><dd>{fmt(lang, a.toplanti.date, 'full')}<small>{fmt(lang, a.toplanti.date, 'time')}</small></dd></div>}
           {a.toplanti?.place && <div><dt>{L('ev.where')}</dt><dd>{a.toplanti.place}</dd></div>}
         </dl>
+      </section>
+    )
+  } else if (type === 'dugun' && a.dugun) {
+    const d = a.dugun
+    const dv = d.village && typeof d.village === 'object' ? (d.village as Village) : null
+    const couple = [d.bride, d.groom].filter(Boolean).join(' & ')
+    panel = (
+      <section className="celebration intro" style={css({ '--d': 4 })}>
+        {d.date && <DateTile lang={lang} date={d.date} />}
+        <div className="cel-body">
+          {couple && <p className="cel-names"><small>{L('not.couple')}</small>{couple}</p>}
+          <dl>
+            {d.families && <div><dt>{L('not.families')}</dt><dd>{d.families}</dd></div>}
+            {d.date && <div><dt>{L('ev.when')}</dt><dd>{fmt(lang, d.date, 'full')}<small>{fmt(lang, d.date, 'time')}</small></dd></div>}
+            {(d.place || dv) && (
+              <div><dt>{L('ev.where')}</dt><dd>{d.place}{dv && <small><Link href={`/${lang}/koy/${dv.slug}`}>{dv.name}</Link></small>}</dd></div>
+            )}
+          </dl>
+        </div>
+      </section>
+    )
+  } else if (type === 'ozel-gun' && a.ozelGun) {
+    const o = a.ozelGun
+    panel = (
+      <section className="celebration is-occasion intro" style={css({ '--d': 4 })}>
+        {o.date && <DateTile lang={lang} date={o.date} />}
+        <div className="cel-body">
+          <p className="cel-names"><small>{occasionLabel(lang, o.kind)}</small>{o.person || occasionLabel(lang, o.kind)}</p>
+          <dl>
+            {o.date && <div><dt>{L('ev.when')}</dt><dd>{fmt(lang, o.date, 'full')}<small>{fmt(lang, o.date, 'time')}</small></dd></div>}
+            {o.place && <div><dt>{L('ev.where')}</dt><dd>{o.place}</dd></div>}
+          </dl>
+        </div>
       </section>
     )
   }

@@ -10,6 +10,7 @@ import { fileURLToPath } from 'url'
 import { getPayload } from 'payload'
 import config from '../payload.config'
 import { enrich } from './enrich'
+import { seedFeatures } from './features'
 
 const dirname = path.dirname(fileURLToPath(import.meta.url))
 const photos = path.resolve(dirname, '../../../assets/photos')
@@ -264,5 +265,6 @@ await payload.updateGlobal({
 })
 
 await enrich(payload)
+await seedFeatures(payload)
 payload.logger.info('Örnek içerikler yüklendi. Panel: http://localhost:3000/admin')
 process.exit(0)

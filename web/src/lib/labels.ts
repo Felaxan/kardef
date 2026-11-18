@@ -11,6 +11,9 @@ export const archiveTypeLabel = (lang: Lang, type: ArchiveItem['type']) =>
 export const archiveYear = (lang: Lang, a: Pick<ArchiveItem, 'year' | 'approximate' | 'decade'>) =>
   a.approximate ? decadeLabel(lang, a.decade ?? Math.floor(a.year / 10) * 10) : String(a.year)
 
+export const OCCASIONS = ['nisan', 'kina', 'sunnet', 'dogum', 'mezuniyet', 'diger'] as const
+export const occasionLabel = (lang: Lang, kind?: string | null) => t(lang, `occ.${kind || 'diger'}`)
+
 export const announcementTypeLabel = (lang: Lang, type?: string | null) =>
   !type || type === 'genel' ? t(lang, 'not.title') : t(lang, `cat.${type}`)
 

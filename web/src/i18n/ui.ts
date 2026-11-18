@@ -1,3 +1,4 @@
+import { FEATURES } from './features'
 import base from './ui-dict.json'
 
 export const LOCALES = ['tr', 'ku', 'zza', 'en', 'de', 'nl', 'fr'] as const
@@ -89,7 +90,7 @@ const dict = base.dict as Record<Lang, Record<string, string>>
 
 /** Arayüz metni: seçilen dil, yoksa Türkçe */
 export const t = (lang: Lang, key: string): string =>
-  extra[lang]?.[key] ?? dict[lang]?.[key] ?? extra.tr[key] ?? dict.tr[key] ?? key
+  extra[lang]?.[key] ?? FEATURES[lang]?.[key] ?? dict[lang]?.[key] ?? extra.tr[key] ?? FEATURES.tr[key] ?? dict.tr[key] ?? key
 
 /** Dönem adı: 1960'lar, 1960s, 1960er... */
 export function decadeLabel(lang: Lang, y: number): string {
