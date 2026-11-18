@@ -30,6 +30,7 @@ import { AccountAvatar as AccountAvatar_d82f5ee63e8a51b1e29d2f3544b2f758 } from 
 import { Icon as Icon_dfe4008080d895d460898c3a6155e9ba } from '../../../components/admin/Icon'
 import { Logo as Logo_91a09b539d3c86b0aebf520e7564ce08 } from '../../../components/admin/Logo'
 import { ThemeToggle as ThemeToggle_fc85bd5ac375c29cf24795ab8778bf43 } from '../../../components/admin/ThemeToggle'
+import { AdminFonts as AdminFonts_1a7dbd9a670a2dd0dc56d863acf43b09 } from '../../../components/admin/AdminFonts'
 import { LoginArt as LoginArt_ec4d721f58f0c831981091d6ecf9e0d4 } from '../../../components/admin/LoginArt'
 import { SubmissionCount as SubmissionCount_fddedb054eb9f79719b3bfa3a0955b0f } from '../../../components/admin/SubmissionCount'
 import { Dashboard as Dashboard_af669912e06d01f0ca1b5c3178684fc9 } from '../../../components/admin/dashboard/Dashboard'
@@ -69,6 +70,7 @@ export const importMap = {
   "/components/admin/Icon#Icon": Icon_dfe4008080d895d460898c3a6155e9ba,
   "/components/admin/Logo#Logo": Logo_91a09b539d3c86b0aebf520e7564ce08,
   "/components/admin/ThemeToggle#ThemeToggle": ThemeToggle_fc85bd5ac375c29cf24795ab8778bf43,
+  "/components/admin/AdminFonts#AdminFonts": AdminFonts_1a7dbd9a670a2dd0dc56d863acf43b09,
   "/components/admin/LoginArt#LoginArt": LoginArt_ec4d721f58f0c831981091d6ecf9e0d4,
   "/components/admin/SubmissionCount#SubmissionCount": SubmissionCount_fddedb054eb9f79719b3bfa3a0955b0f,
   "/components/admin/dashboard/Dashboard#Dashboard": Dashboard_af669912e06d01f0ca1b5c3178684fc9,

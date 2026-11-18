@@ -144,88 +144,101 @@ export async function Dashboard({ payload, user, permissions }: Props) {
   const hour = Number(new Intl.DateTimeFormat('tr-TR', { hour: 'numeric', hour12: false, timeZone: 'Europe/Istanbul' }).format(new Date()))
   const greet = hour < 6 ? 'İyi geceler' : hour < 12 ? 'Günaydın' : hour < 18 ? 'İyi günler' : 'İyi akşamlar'
 
+  const two = (n: number) => String(n + 1).padStart(2, '0')
+  const quick = ACTIONS.filter((a) => canCreate(permissions, a.href.split('/')[3]))
+  const lede =
+    editor && (drafts > 0 || newSubs > 0)
+      ? `Bugün ${[drafts > 0 && `${drafts} taslak onayını`, newSubs > 0 && `${newSubs} yeni katkı incelemeni`].filter(Boolean).join(', ')} bekliyor.`
+      : 'Memleketin haberleri ve hafızası, senin elinden geçiyor.'
+
   return (
     <div className="kd-dash">
-      {/* Karşılama */}
-      <section className="kd-hero">
-        <div className="kd-hero-kilim" aria-hidden="true" />
-        <div className="kd-hero-in">
-          <div className="kd-hero-text">
-            <p className="kd-hero-eyebrow"><span>{ROLE_LABEL[role]} paneli</span> · {today}</p>
-            <h1 className="kd-hero-title">
-              {greet}{first ? <>, <em>{first}</em></> : ''}
-            </h1>
-            <p className="kd-hero-sub">
-              {editor && (drafts > 0 || newSubs > 0)
-                ? `Bugün ${[drafts > 0 && `${drafts} taslak onayını`, newSubs > 0 && `${newSubs} yeni katkı incelemeni`].filter(Boolean).join(', ')} bekliyor.`
-                : 'Memleketin haberleri ve hafızası, senin elinden geçiyor.'}
-            </p>
+      {/* Manşet: gazetenin künye satırı + büyük selamlama */}
+      <header className="kd-mast">
+        <div className="kd-mast-bar">
+          <span className="kd-mast-role">{ROLE_LABEL[role]} masası</span>
+          <span className="kd-mast-date">{today}</span>
+          <span className="kd-mast-fill" aria-hidden="true" />
+          {isLockdown && role === 'admin' && (
+            <Link href="/admin/collections/security-logs" className="kd-flag is-alarm"><KdIcon name="lock" size={14} />Acil koruma modu açık</Link>
+          )}
+          {live?.isLive ? (
+            <Link href="/admin/globals/live" className="kd-flag is-live"><span className="kd-live-dot" />Canlı yayındasınız</Link>
+          ) : editor ? (
+            <Link href="/admin/globals/live" className="kd-flag"><KdIcon name="live" size={14} />Canlı yayın kapalı</Link>
+          ) : null}
+          <a className="kd-flag is-site" href="/" target="_blank" rel="noreferrer">Siteyi aç <KdIcon name="external" size={14} /></a>
+        </div>
+
+        <div className="kd-mast-main">
+          <h1 className="kd-mast-title">
+            <span className="kd-line"><span>{greet}{first ? ',' : '.'}</span></span>
+            {first && <span className="kd-line"><em>{first}.</em></span>}
+          </h1>
+          <div className="kd-mast-aside">
+            <p className="kd-mast-lede">{lede}</p>
             {waitingDrafts.length > 0 && (
-              <div className="kd-hero-drafts">
+              <ul className="kd-await">
                 {waitingDrafts.map((w) => (
-                  <Link key={w.slug} href={`/admin/collections/${w.slug}?where[_status][equals]=draft`} className="kd-hero-chip">
-                    <b>{w.count}</b> {w.label.toLocaleLowerCase('tr')} taslağı →
-                  </Link>
+                  <li key={w.slug}>
+                    <Link href={`/admin/collections/${w.slug}?where[_status][equals]=draft`}>
+                      <b>{w.count}</b><span>{w.label.toLocaleLowerCase('tr')} taslağı</span><KdIcon name="arrow" size={16} />
+                    </Link>
+                  </li>
                 ))}
-              </div>
+              </ul>
             )}
-          </div>
-          <div className="kd-hero-side">
-            {isLockdown && role === 'admin' && (
-              <Link href="/admin/collections/security-logs" className="kd-live is-on">
-                <KdIcon name="lock" size={16} />Acil koruma modu AÇIK
-              </Link>
-            )}
-            {live?.isLive ? (
-              <Link href="/admin/globals/live" className="kd-live is-on"><span className="kd-live-dot" />Şu an CANLI yayındasınız</Link>
-            ) : editor ? (
-              <Link href="/admin/globals/live" className="kd-live"><KdIcon name="live" size={18} />Canlı yayın kapalı</Link>
-            ) : null}
-            <a className="kd-hero-site" href="/" target="_blank" rel="noreferrer">Siteyi aç <KdIcon name="external" size={16} /></a>
           </div>
         </div>
-      </section>
+        <div className="kd-kilim" aria-hidden="true" />
+      </header>
 
-      {/* Özet sayılar */}
-      <section className="kd-stats" aria-label="Özet">
+      {/* Rakamlar: tek satır, ince çizgilerle ayrılmış */}
+      <section className="kd-figures" aria-label="Özet">
         {stats.filter((s) => s.show).map((s, i) => (
-          <Link key={s.label} href={s.href} className={`kd-stat${s.accent ? ' is-accent' : ''}`} style={css({ '--i': i })}>
-            <span className="kd-stat-ico"><KdIcon name={s.icon} /></span>
-            <b className="kd-stat-n"><CountUp value={s.value} delay={150 + i * 90} /></b>
-            <span className="kd-stat-l">{s.label}</span>
+          <Link key={s.label} href={s.href} className={`kd-fig${s.accent ? ' is-accent' : ''}`} style={css({ '--i': i })}>
+            <b className="kd-fig-n"><CountUp value={s.value} delay={200 + i * 80} /></b>
+            <span className="kd-fig-l">{s.label}</span>
+            {s.accent && <span className="kd-fig-tag">bekliyor</span>}
           </Link>
         ))}
       </section>
 
-      <div className="kd-dash-grid">
-        {/* Hızlı işlemler */}
-        <section className="kd-panel kd-quick">
-          <h2 className="kd-panel-title">Hızlı ekle</h2>
-          <div className="kd-quick-grid">
-            {ACTIONS.filter((a) => canCreate(permissions, a.href.split('/')[3])).map((a, i) => (
-              <Link key={a.href} href={a.href} className="kd-q" style={css({ '--i': i })}>
-                <span className="kd-q-ico"><KdIcon name={a.icon} /><span className="kd-q-plus"><KdIcon name="plus" size={14} /></span></span>
-                <b>{a.label}</b>
-                <small>{a.hint}</small>
-              </Link>
-            ))}
-          </div>
-        </section>
+      <div className="kd-desk">
+        {/* Hızlı ekle */}
+        {quick.length > 0 && (
+          <section className="kd-quick">
+            <h2 className="kd-h"><span>Hızlı ekle</span></h2>
+            <ul>
+              {quick.map((a, i) => (
+                <li key={a.href} style={css({ '--i': i })}>
+                  <Link href={a.href} className="kd-q">
+                    <span className="kd-q-ico"><KdIcon name={a.icon} size={20} /></span>
+                    <span className="kd-q-body"><b>{a.label}</b><small>{a.hint}</small></span>
+                    <span className="kd-q-plus"><KdIcon name="plus" size={18} /></span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
 
-        {/* Son değişenler */}
-        <section className="kd-panel kd-recent">
-          <h2 className="kd-panel-title">{role === 'author' ? 'Son yazdıkların' : 'Son değişenler'}</h2>
+        {/* Son değişenler: sitedeki "Son eklenenler" listesi gibi */}
+        <section className="kd-latest">
+          <h2 className="kd-h"><span>{role === 'author' ? 'Son yazdıkların' : 'Son değişenler'}</span></h2>
           {recent.length === 0 ? (
-            <p className="kd-empty">Henüz bir şey yok. Yukarıdan ilk içeriği ekleyebilirsin.</p>
+            <p className="kd-empty">Henüz bir şey yok. Soldan ilk içeriği ekleyebilirsin.</p>
           ) : (
-            <ol className="kd-recent-list">
+            <ol>
               {recent.map((r, i) => (
                 <li key={`${r.c}-${r.id}`} style={css({ '--i': i })}>
-                  <Link href={`/admin/collections/${r.c}/${r.id}`}>
-                    <span className={`kd-type t-${r.c}`}>{TYPE_LABEL[r.c]}</span>
-                    <span className="kd-recent-title">{r.title || 'Başlıksız'}</span>
+                  <Link href={`/admin/collections/${r.c}/${r.id}`} className="kd-l">
+                    <span className="kd-l-n">{two(i)}</span>
+                    <span className="kd-l-body">
+                      <b>{r.title || 'Başlıksız'}</b>
+                      <small><span className={`kd-type t-${r.c}`}>{TYPE_LABEL[r.c]}</span><span>{ago(r.updatedAt)}</span></small>
+                    </span>
                     <span className={`kd-status ${r._status === 'published' ? 'is-pub' : 'is-draft'}`}>{r._status === 'published' ? 'Yayında' : 'Taslak'}</span>
-                    <time>{ago(r.updatedAt)}</time>
                   </Link>
                 </li>
               ))}
@@ -234,47 +247,48 @@ export async function Dashboard({ payload, user, permissions }: Props) {
         </section>
       </div>
 
-      {/* Bölümler */}
-      {groups.map((g, gi) => (
-        <section key={g.title} className={`kd-group tone-${g.tone ?? 'red'}`} style={css({ '--g': gi })}>
-          <h2 className="kd-group-title"><span>{g.title}</span></h2>
-          <div className="kd-cards">
-            {g.items.map((e, i) => (
-              <div key={e.slug} className="kd-card" style={css({ '--i': i })}>
-                <Link href={href(e)} className="kd-card-link">
-                  <span className="kd-card-ico"><KdIcon name={e.icon} /></span>
-                  <span className="kd-card-body">
-                    <b>{e.label}</b>
-                    <small>{e.hint}</small>
-                  </span>
-                  {e.kind === 'collection' && <span className="kd-card-n">{(counts[e.slug] ?? 0).toLocaleString('tr-TR')}</span>}
-                  <span className="kd-card-arrow"><KdIcon name="arrow" size={18} /></span>
-                </Link>
-                {e.create && e.kind === 'collection' && canCreate(permissions, e.slug) && (
-                  <Link href={`/admin/collections/${e.slug}/create`} className="kd-card-add" aria-label={`${e.label}: yeni ekle`} title="Yeni ekle">
-                    <KdIcon name="plus" size={16} />
-                  </Link>
-                )}
-              </div>
-            ))}
-          </div>
-        </section>
-      ))}
+      {/* Bölümler: gazetenin iç sayfa dizini gibi */}
+      <section className="kd-index">
+        <h2 className="kd-h"><span>Bölümler</span></h2>
+        <div className="kd-index-cols">
+          {groups.map((g, gi) => (
+            <div key={g.title} className={`kd-col tone-${g.tone ?? 'red'}`} style={css({ '--g': gi })}>
+              <h3>{g.title}</h3>
+              <ul>
+                {g.items.map((e, i) => (
+                  <li key={e.slug} style={css({ '--i': i })}>
+                    <Link href={href(e)} className="kd-row">
+                      <span className="kd-row-ico"><KdIcon name={e.icon} size={18} /></span>
+                      <span className="kd-row-l"><b>{e.label}</b><small>{e.hint}</small></span>
+                      <span className="kd-row-n">{e.kind === 'collection' ? (counts[e.slug] ?? 0).toLocaleString('tr-TR') : <KdIcon name="arrow" size={16} />}</span>
+                    </Link>
+                    {e.create && e.kind === 'collection' && canCreate(permissions, e.slug) && (
+                      <Link href={`/admin/collections/${e.slug}/create`} className="kd-row-add" aria-label={`${e.label}: yeni ekle`} title="Yeni ekle">
+                        <KdIcon name="plus" size={15} />
+                      </Link>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      </section>
 
-      {/* Kısa kullanım rehberi */}
+      {/* Kısa kullanım rehberi: dipnot gibi */}
       <details className="kd-guide">
         <summary>
-          <span className="kd-guide-ico"><KdIcon name="help" size={18} /></span>
+          <KdIcon name="help" size={18} />
           <span>Kısa kullanım rehberi ve ipuçları</span>
         </summary>
-        <ul className="kd-guide-list">
+        <ol className="kd-guide-list">
           <li>İçeriği önce <b>Türkçe</b> yazın. Sağ üstteki <b>dil seçiciden</b> diğer 6 dile (Kurdî, Kirmanckî/Zazakî, English, Deutsch, Nederlands, Français) geçebilirsiniz; çevrilmeyen diller sitede Türkçe görünür.</li>
           <li><b>Kirmanckî (Zazaca)</b> otomatik çevrilmez; sağ üstten <i>Kirmanckî (Zazakî)</i> dilini seçip elle girebilirsiniz.</li>
           <li>Yazdıklarınız her <b>3 saniyede bir</b> otomatik taslak olarak kaydedilir. Hazır olduğunda <b>Yayınla</b> düğmesine basın.</li>
           <li><b>Yazar</b> rolündeyseniz içeriklerinizi taslak olarak kaydedersiniz; bir <b>Editör</b> veya <b>Yönetici</b> kontrol edip yayınlar.</li>
           <li><b>Arşiv</b> kayıtlarında sahibinden <b>yayın izni</b> alındığı kutusu işaretlenmeden kayıt yayınlanamaz.</li>
           <li>Ziyaretçilerin gönderdiği arşiv materyallerini <b>Gelen katkılar</b> bölümünde inceleyip tek tıkla <b>Arşive aktar</b> diyerek taslağa dönüştürebilirsiniz.</li>
-        </ul>
+        </ol>
       </details>
     </div>
   )

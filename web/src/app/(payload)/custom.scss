@@ -69,7 +69,7 @@ h1, h2, h3, h4 {
 
 /* Her sayfa açılışında içerik alttan kayarak gelir */
 .template-default__wrap > *:not(.app-header):not(.payload__modal-container) {
-  animation: kd-enter 0.55s var(--kd-ease) both;
+  animation: kd-enter 0.4s var(--kd-ease) both;
 }
 
 /* ---------- Üst çubuk ---------- */
@@ -115,7 +115,7 @@ h1, h2, h3, h4 {
   gap: 6px;
   height: 34px;
   padding: 0 12px !important;
-  border-radius: 999px !important;
+  border-radius: 3px !important;
   border: 1px solid var(--theme-elevation-150) !important;
   background: var(--theme-elevation-50) !important;
   color: var(--theme-text) !important;
@@ -141,17 +141,18 @@ h1, h2, h3, h4 {
   width: 34px;
   height: 34px;
   border-radius: 50%;
-  background: linear-gradient(135deg, var(--kd-red), var(--kd-purple));
-  color: #fff;
-  font-size: 12px;
-  font-weight: 800;
-  letter-spacing: 0.02em;
-  box-shadow: 0 0 0 2px var(--theme-bg), 0 4px 12px -4px rgba(200, 22, 29, 0.5);
+  background: var(--theme-text);
+  color: var(--theme-bg);
+  font-family: var(--kd-serif, Georgia, serif);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  box-shadow: 0 0 0 2px var(--theme-bg);
   transition: transform 0.35s var(--kd-ease), box-shadow 0.25s;
 }
 .app-header__account:hover .kd-account {
   transform: translateY(-1px) scale(1.05);
-  box-shadow: 0 0 0 2px var(--kd-red), 0 8px 18px -6px rgba(200, 22, 29, 0.65);
+  box-shadow: 0 0 0 2px var(--theme-bg), 0 0 0 4px var(--kd-red);
 }
 .kd-account-initials {
   line-height: 1;

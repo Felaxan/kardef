@@ -696,17 +696,24 @@ a:hover .live-play{transform:scale(1.1)}
 
 /* Sol ve sağ kenar reklamları: yalnızca içeriğin iki yanında yer varken (geniş ekran).
    main içinde başladığı için üstteki menü, kur, son dakika ve duyuru şeritlerinin üstüne binmez;
-   aşağı kaydırırken yapışkan (sticky) olarak takip eder ve alt bilgiye (footer) çarpmadan durur. */
+   aşağı kaydırırken yapışkan (sticky) olarak takip eder ve alt bilgiye (footer) çarpmadan durur.
+   1360–1699 px arası (çoğu dizüstü, %125 ölçek) kenar reklamı 120 px'e iner ve sayfa içeriği
+   iki yandan biraz daralarak yer açar; 1700 px üstünde 160 px ve içerik tam genişlikte kalır. */
 .ad-rail{display:none}
-@media (min-width:1700px){
+@media (min-width:1360px){
+  html:has(.ad-rail .ad){--rail:120px}
+  html:has(.ad-rail .ad) .wrap{max-width:min(1320px,calc(100% - 2 * (var(--rail) + 24px)))}
   main{min-height:650px}
-  .ad-rail{display:block;position:absolute;z-index:15;top:20px;bottom:28px;width:160px;pointer-events:none;animation:railIn .9s var(--ease-out) .45s both}
-  .ad-rail--left{left:max(14px,calc(50% - 660px - 184px))}
-  .ad-rail--right{right:max(14px,calc(50% - 660px - 184px));animation-name:railInR}
+  .ad-rail{display:block;position:absolute;z-index:15;top:20px;bottom:28px;width:var(--rail,120px);pointer-events:none;animation:railIn .9s var(--ease-out) .45s both}
+  .ad-rail--left{left:max(8px,calc(50% - min(1320px,calc(100% - 2 * (var(--rail) + 24px))) / 2 - var(--rail) - 12px))}
+  .ad-rail--right{right:max(8px,calc(50% - min(1320px,calc(100% - 2 * (var(--rail) + 24px))) / 2 - var(--rail) - 12px));animation-name:railInR}
   .ad-rail .ad{position:sticky;top:76px;pointer-events:auto;box-shadow:0 16px 36px -22px rgba(0,0,0,.45)}
-  .ad-rail .ad-item img{max-height:600px;aspect-ratio:160/600;object-fit:cover}
+  .ad-rail .ad-item img{width:100%;max-height:600px;aspect-ratio:160/600;object-fit:cover}
   .ad-rail .ad-label{top:6px;left:6px}
   .ad-rail .ad-dots{right:50%;transform:translateX(50%)}
+}
+@media (min-width:1700px){
+  html:has(.ad-rail .ad){--rail:160px}
 }
 @keyframes railIn{from{opacity:0;transform:translateX(-24px)}}
 @keyframes railInR{from{opacity:0;transform:translateX(24px)}}
