@@ -82,3 +82,33 @@ export const bolgeOptions = [
   { label: 'Avrupa', value: 'avrupa' },
   { label: 'Genel', value: 'genel' },
 ]
+
+/* ---------- Güvenli medya ve bağlantı doğrulama ---------- */
+/** SVG (image/svg+xml) betik çalıştırabildiği için yüklemelerde yalnızca güvenli görsel biçimleri kabul edilir. */
+export const SAFE_IMAGE_MIMES = [
+  'image/jpeg',
+  'image/png',
+  'image/webp',
+  'image/gif',
+  'image/avif',
+  'image/heic',
+  'image/heif',
+  'image/tiff',
+]
+
+/** Bağlantı alanlarında javascript:/data: gibi zararlı şemaları engeller. */
+export const validateSafeUrl = (val: unknown): true | string => {
+  if (typeof val !== 'string' || !val.trim()) return true
+  const s = val.trim()
+  if (/^(https?:\/\/|\/(?!\/))/i.test(s)) return true
+  return 'Geçerli bir internet adresi girin (https:// veya / ile başlamalı).'
+}
+
+/** Kayıt alanı gibi hem bağlantı hem telefon kabul eden alanlarda zararlı şemaları engeller. */
+export const validateSafeUrlOrContact = (val: unknown): true | string => {
+  if (typeof val !== 'string' || !val.trim()) return true
+  const s = val.trim()
+  if (/^(javascript|data|vbscript):/i.test(s)) return 'Geçersiz bağlantı.'
+  return true
+}
+

@@ -12,7 +12,10 @@ const icons: Record<string, React.ReactNode> = {
 export function Share({ title, labels, compact }: { title: string; labels: { share: string; copy: string; copied: string }; compact?: boolean }) {
   const [url, setUrl] = useState('')
   const [copied, setCopied] = useState(false)
-  useEffect(() => setUrl(window.location.href), [])
+  useEffect(() => {
+    const id = window.requestAnimationFrame(() => setUrl(window.location.href))
+    return () => window.cancelAnimationFrame(id)
+  }, [])
   const u = encodeURIComponent(url), tx = encodeURIComponent(title)
   const links = [
     { k: 'wa', label: 'WhatsApp', href: `https://wa.me/?text=${tx}%20${u}` },

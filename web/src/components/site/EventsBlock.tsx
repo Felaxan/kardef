@@ -19,6 +19,7 @@ export function EventsBlock({
 }: { events: EventCard[]; labels: { title: string; all: string; tr: string; eu: string; more: string; none: string }; moreHref: string }) {
   const [filter, setFilter] = useState<Filter>('all')
   const [shown, setShown] = useState<Filter>('all')
+  const [swapped, setSwapped] = useState(false)
   const list = useRef<HTMLOListElement>(null)
   const seg = useRef<HTMLDivElement>(null)
   const ind = useRef<HTMLSpanElement>(null)
@@ -41,6 +42,7 @@ export function EventsBlock({
     if (f === filter) return
     setFilter(f)
     await animateOut(Array.from(list.current?.children ?? []) as HTMLElement[])
+    setSwapped(true)
     setShown(f)
   }
   useEffect(() => {
@@ -71,7 +73,7 @@ export function EventsBlock({
           {visible.map((e, i) => (
             <li
               key={e.href}
-              className={`event${e.eu ? ' eu' : ''}${first.current ? '' : ' in'}`}
+              className={`event${e.eu ? ' eu' : ''}${swapped ? ' in' : ''}`}
               data-reveal=""
               style={{ '--i': i } as React.CSSProperties}
             >

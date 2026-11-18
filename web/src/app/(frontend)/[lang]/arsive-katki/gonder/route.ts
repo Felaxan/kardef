@@ -1,6 +1,15 @@
 import { DEMO } from '@/demo'
 import { cms } from '@/lib/cms'
-import { bodyTooLarge, clientIp, createRateLimiter, SUBMISSION_KINDS, turnstileMode, validateSubmission, type FileInfo } from '@/lib/submission'
+import {
+  bodyTooLarge,
+  clientIp,
+  createRateLimiter,
+  hasValidFileSignature,
+  SUBMISSION_KINDS,
+  turnstileMode,
+  validateSubmission,
+  type FileInfo,
+} from '@/lib/submission'
 
 /*
   Arşive katkı formu gönderimi (ziyaretçi).
@@ -85,12 +94,21 @@ export async function POST(req: Request) {
       : undefined
 
   try {
-    const fileIds: (number | string)[] = []
+    const buffers: { file: File; data: Buffer }[] = []
     for (const f of files) {
+      const bytes = new Uint8Array(await f.arrayBuffer())
+      if (!hasValidFileSignature(bytes, f.type)) {
+        return Response.json({ ok: false, errors: ['files.type'] }, { status: 400 })
+      }
+      buffers.push({ file: f, data: Buffer.from(bytes) })
+    }
+
+    const fileIds: (number | string)[] = []
+    for (const { file: f, data } of buffers) {
       const doc = await payload.create({
         collection: 'submission-files',
         data: {},
-        file: { data: Buffer.from(new Uint8Array(await f.arrayBuffer())), mimetype: f.type, name: f.name, size: f.size },
+        file: { data, mimetype: f.type, name: f.name, size: f.size },
         overrideAccess: true,
       })
       fileIds.push(doc.id)

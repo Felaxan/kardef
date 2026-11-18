@@ -12,12 +12,9 @@ export type Slide = {
 export function HeroSlider({ slides, seconds, labels }: { slides: Slide[]; seconds: number; labels: { prev: string; next: string } }) {
   const [cur, setCur] = useState(0)
   const [paused, setPaused] = useState(false)
-  const [reduce, setReduce] = useState(false)
   const root = useRef<HTMLDivElement>(null)
   const sx = useRef<{ x: number; y: number } | null>(null)
   const n = slides.length
-
-  useEffect(() => { setReduce(window.matchMedia('(prefers-reduced-motion: reduce)').matches) }, [])
 
   // Ekranda değilken dursun
   useEffect(() => {
@@ -81,7 +78,10 @@ export function HeroSlider({ slides, seconds, labels }: { slides: Slide[]; secon
               <span
                 className="tab-bar"
                 key={i === cur ? `a${cur}` : `i${i}`}
-                onAnimationEnd={() => { if (!reduce && i === cur) go(cur + 1) }}
+                onAnimationEnd={() => {
+                  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+                  if (!reduce && i === cur) go(cur + 1)
+                }}
               />
               <span className="tab-n">{String(i + 1).padStart(2, '0')}</span>
               <span className="tab-t">{s.short}</span>

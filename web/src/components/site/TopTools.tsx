@@ -20,6 +20,7 @@ export function withTransition(fn: () => void | Promise<void>) {
 const store = {
   get: (k: string) => { try { return localStorage.getItem(k) } catch { return null } },
   set: (k: string, v: string) => { try { localStorage.setItem(k, v) } catch {} },
+  cookie: (v: string) => { document.cookie = v },
 }
 
 export function TopTools({ lang, labels }: { lang: Lang; labels: { fs: string; theme: string } }) {
@@ -32,14 +33,14 @@ export function TopTools({ lang, labels }: { lang: Lang; labels: { fs: string; t
   // Yazı boyutu: kayıtlı tercihi yükle; sistem teması değişirse simgeyi güncelle
   useEffect(() => {
     const v = Math.min(Math.max(parseInt(store.get('k-fs') || '0', 10) || 0, 0), 2)
-    setFs(v)
+    const raf = window.requestAnimationFrame(() => setFs(v))
     const mq = window.matchMedia('(prefers-color-scheme: dark)')
     const sync = () => {
       const t = document.documentElement.getAttribute('data-theme')
       document.documentElement.classList.toggle('is-dark', t ? t === 'dark' : mq.matches)
     }
     mq.addEventListener?.('change', sync)
-    return () => mq.removeEventListener?.('change', sync)
+    return () => { window.cancelAnimationFrame(raf); mq.removeEventListener?.('change', sync) }
   }, [])
   const applyFs = (i: number) => {
     const root = document.documentElement
@@ -77,7 +78,7 @@ export function TopTools({ lang, labels }: { lang: Lang; labels: { fs: string; t
     setOpen(false)
     if (l === lang) return
     store.set('k-lang', l)
-    document.cookie = `k-lang=${l};path=/;max-age=31536000;samesite=lax`
+    store.cookie(`k-lang=${l};path=/;max-age=31536000;samesite=lax`)
     const url = swapLang(pathname, l) + window.location.hash
     withTransition(() => new Promise<void>((resolve) => { router.push(url, { scroll: false }); setTimeout(resolve, 350) }))
   }

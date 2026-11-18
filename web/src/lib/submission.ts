@@ -82,3 +82,55 @@ export function turnstileMode(env: Record<string, string | undefined>): 'on' | '
   const s = Boolean(env.TURNSTILE_SECRET), k = Boolean(env.NEXT_PUBLIC_TURNSTILE_SITEKEY)
   return s && k ? 'on' : !s && !k ? 'off' : 'misconfigured'
 }
+
+/**
+  Gönderideki serbest yıl metnini ("1978", "1970'ler", "~1985", boş...)
+  Arşiv koleksiyonunun kabul ettiği (1850–2100) sayısal yıla çevirir.
+*/
+export function parseSubmissionYear(raw?: string | null, fallback = new Date().getFullYear()): { year: number; approximate: boolean } {
+  const s = (raw ?? '').trim()
+  if (!s) return { year: fallback, approximate: true }
+  const m = s.match(/\b(18[5-9]\d|19\d\d|20\d\d|2100)\b/)
+  if (!m) return { year: fallback, approximate: true }
+  const year = Number(m[1])
+  const exact = /^\d{4}$/.test(s)
+  return { year, approximate: !exact }
+}
+
+/**
+  Dosya içeriğinin (magic bytes) uzantı/MIME ile uyumlu ve güvenli olduğunu doğrular.
+  Adı .jpg veya .pdf yapılmış .exe, .html, .svg, betik dosyalarını reddeder.
+*/
+export function hasValidFileSignature(bytes: Uint8Array, mime: string): boolean {
+  if (bytes.length < 4) return false
+  // Çalıştırılabilir dosyalar: Windows MZ (.exe/.dll), Linux ELF, kabuk betiği (#!)
+  if (bytes[0] === 0x4d && bytes[1] === 0x5a) return false
+  if (bytes[0] === 0x7f && bytes[1] === 0x45 && bytes[2] === 0x4c && bytes[3] === 0x46) return false
+  if (bytes[0] === 0x23 && bytes[1] === 0x21) return false
+
+  // İlk 256 baytta HTML / SVG / XML / script imzası varsa reddet
+  const head = Buffer.from(bytes.subarray(0, 256)).toString('utf8').trimStart().toLowerCase()
+  if (/^(<!doctype\s+html|<html|<script|<svg|<\?xml)/i.test(head)) return false
+
+  if (mime === 'application/pdf') {
+    return bytes[0] === 0x25 && bytes[1] === 0x50 && bytes[2] === 0x44 && bytes[3] === 0x46
+  }
+  if (mime === 'image/jpeg') {
+    return bytes[0] === 0xff && bytes[1] === 0xd8 && bytes[2] === 0xff
+  }
+  if (mime === 'image/png') {
+    return bytes[0] === 0x89 && bytes[1] === 0x50 && bytes[2] === 0x4e && bytes[3] === 0x47
+  }
+  if (mime === 'image/gif') {
+    return bytes[0] === 0x47 && bytes[1] === 0x49 && bytes[2] === 0x46 && bytes[3] === 0x38
+  }
+  if (mime === 'image/webp') {
+    return (
+      bytes.length >= 12 &&
+      bytes[0] === 0x52 && bytes[1] === 0x49 && bytes[2] === 0x46 && bytes[3] === 0x46 &&
+      bytes[8] === 0x57 && bytes[9] === 0x45 && bytes[10] === 0x42 && bytes[11] === 0x50
+    )
+  }
+  return true
+}
+

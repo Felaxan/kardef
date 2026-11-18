@@ -30,3 +30,20 @@ test('dönme süresi 3–60 saniye, varsayılan 8', () => {
   assert.equal(clampSeconds(undefined), 8)
   assert.equal(clampSeconds(12), 12)
 })
+
+test('reklam bağlantısında javascript: ve zararlı şemalar temizlenir', () => {
+  const res = activeAds(
+    [
+      ad({ advertiser: 'zararlı', link: 'javascript:alert(1)' }),
+      ad({ advertiser: 'protokol-göreli', link: '//evil.example.com' }),
+      ad({ advertiser: 'güvenli-dış', link: 'https://karakocan.net' }),
+      ad({ advertiser: 'güvenli-iç', link: '/tr/kurumlar' }),
+    ],
+    now,
+  )
+  assert.equal(res[0].link, null)
+  assert.equal(res[1].link, null)
+  assert.equal(res[2].link, 'https://karakocan.net')
+  assert.equal(res[3].link, '/tr/kurumlar')
+})
+

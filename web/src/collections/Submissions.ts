@@ -1,6 +1,7 @@
 import path from 'path'
-import type { CollectionConfig, Endpoint, PayloadRequest } from 'payload'
+import type { CollectionConfig, Endpoint, Payload, PayloadRequest } from 'payload'
 import { hiddenFromAuthors, isAdminOrEditor } from '../access'
+import { parseSubmissionYear } from '../lib/submission'
 
 /*
   Ziyaretçilerin arşive katkı formundan gelen gönderiler.
@@ -11,6 +12,15 @@ import { hiddenFromAuthors, isAdminOrEditor } from '../access'
 
 const roleOf = (u: unknown) => (u as { role?: string } | null)?.role
 const editorOrAdmin = (req: PayloadRequest) => ['admin', 'editor'].includes(roleOf(req.user) ?? '')
+
+/** Gönderiye bağlı geçici dosyaları (submissions/ klasöründen) siler; depolama şişmez. */
+async function cleanupSubmissionFiles(payload: Payload, files: unknown[] | null | undefined, req?: PayloadRequest) {
+  for (const f of files ?? []) {
+    const fileId = typeof f === 'object' && f !== null && 'id' in f ? (f as { id: number | string }).id : (f as number | string | null)
+    if (!fileId) continue
+    await payload.delete({ collection: 'submission-files', id: fileId, overrideAccess: true, req }).catch(() => {})
+  }
+}
 
 /** Gönderen türü → arşiv türü */
 const ARCHIVE_TYPE: Record<string, 'photo' | 'audio' | 'video' | 'document'> = {
@@ -56,7 +66,7 @@ const convertEndpoint: Endpoint = {
       mediaIds.push(m.id as number)
     }
 
-    const year = Number(sub.year)
+    const { year, approximate } = parseSubmissionYear(sub.year)
     const title = (sub.description || 'Gönderilen kayıt').split('\n')[0].slice(0, 90)
     const doc = await payload.create({
       collection: 'archive',
@@ -67,7 +77,8 @@ const convertEndpoint: Endpoint = {
         _status: 'draft',
         title,
         type: ARCHIVE_TYPE[sub.kind ?? 'other'] ?? 'document',
-        ...(Number.isFinite(year) && year > 1800 ? { year, approximate: false } : {}),
+        year,
+        approximate,
         files: mediaIds,
         ...(sub.link ? { videoUrl: sub.link } : {}),
         description: rich(sub.description || ''),
@@ -79,8 +90,9 @@ const convertEndpoint: Endpoint = {
 
     await payload.update({
       collection: 'submissions', id, overrideAccess: true, req,
-      data: { status: 'done', archiveItem: doc.id },
+      data: { status: 'done', archiveItem: doc.id, files: [] },
     })
+    await cleanupSubmissionFiles(payload, sub.files, req)
     return Response.json({ archiveId: doc.id })
   },
 }
@@ -109,6 +121,25 @@ export const Submissions: CollectionConfig = {
   defaultSort: '-createdAt',
   access: { read: isAdminOrEditor, create: () => false, update: isAdminOrEditor, delete: isAdminOrEditor },
   endpoints: [convertEndpoint],
+  hooks: {
+    afterChange: [
+      async ({ doc, previousDoc, req }) => {
+        // Katkı reddedildiğinde geçici dosyaları diskten temizle
+        if (doc.status === 'rejected' && previousDoc?.status !== 'rejected' && doc.files?.length) {
+          await cleanupSubmissionFiles(req.payload, doc.files, req)
+        }
+        return doc
+      },
+    ],
+    afterDelete: [
+      async ({ doc, req }) => {
+        // Katkı silindiğinde bağlı geçici dosyaları da sil (yetim dosya kalmasın)
+        if (doc?.files?.length) {
+          await cleanupSubmissionFiles(req.payload, doc.files, req)
+        }
+      },
+    ],
+  },
   fields: [
     {
       name: 'status',

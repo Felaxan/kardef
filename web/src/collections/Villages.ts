@@ -1,5 +1,5 @@
 import type { CollectionConfig } from 'payload'
-import { anyone, isAdminOrEditor, isLoggedIn } from '../access'
+import { anyone, hiddenFromAuthors, isAdminOrEditor } from '../access'
 import { slugField } from '../fields'
 
 export const Villages: CollectionConfig = {
@@ -8,11 +8,12 @@ export const Villages: CollectionConfig = {
   admin: {
     useAsTitle: 'name',
     group: 'Arşiv ve köyler',
+    hidden: hiddenFromAuthors,
     defaultColumns: ['name', 'type', 'updatedAt'],
     description: 'Her köyün ve mahallenin kendi sayfası. Haberler, arşiv kayıtları ve vefat duyuruları köye bağlanabilir.',
   },
   defaultSort: 'name',
-  access: { read: anyone, create: isLoggedIn, update: isLoggedIn, delete: isAdminOrEditor },
+  access: { read: anyone, create: isAdminOrEditor, update: isAdminOrEditor, delete: isAdminOrEditor },
   fields: [
     {
       type: 'row',

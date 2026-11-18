@@ -4,7 +4,7 @@ import React from 'react'
 import { FilterTabs, ListHead, Pager, qs } from '@/components/site/List'
 import { fmt, isLang, t, type Lang } from '@/i18n/ui'
 import { cms, loc } from '@/lib/cms'
-import { announcementTypeLabel, kurumLabel } from '@/lib/labels'
+import { ANNOUNCEMENT_TYPES, announcementTypeLabel, kurumLabel } from '@/lib/labels'
 
 export const dynamic = 'force-dynamic'
 type P = { params: Promise<{ lang: string }>; searchParams: Promise<{ tur?: string; sayfa?: string }> }
@@ -15,7 +15,7 @@ export async function generateMetadata({ params }: P) {
 }
 
 const css = (v: Record<string, string | number>) => v as React.CSSProperties
-const TYPES = ['vefat', 'burs', 'toplanti', 'yardim', 'uyelik', 'genel'] as const
+const TYPES = ANNOUNCEMENT_TYPES
 const PER = 20
 
 export default async function NoticesList({ params, searchParams }: P) {

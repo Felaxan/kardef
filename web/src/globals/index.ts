@@ -1,5 +1,6 @@
 import type { GlobalConfig } from 'payload'
 import { anyone, hiddenFromAuthors, isAdmin, isAdminOrEditor, onlyAdminSees } from '../access'
+import { validateSafeUrl } from '../fields'
 
 export const Homepage: GlobalConfig = {
   slug: 'homepage',
@@ -18,7 +19,7 @@ export const Homepage: GlobalConfig = {
       fields: [
         { name: 'enabled', label: 'Bandı göster', type: 'checkbox', defaultValue: true },
         { name: 'text', label: 'Metin', type: 'text', localized: true },
-        { name: 'link', label: 'Bağlantı (isteğe bağlı)', type: 'text' },
+        { name: 'link', label: 'Bağlantı (isteğe bağlı)', type: 'text', validate: validateSafeUrl },
       ],
     },
     {
@@ -29,7 +30,7 @@ export const Homepage: GlobalConfig = {
       admin: { description: '"Son dakika" işaretli haberlere ek olarak kısa notlar (ör. "Yollar açıldı").' },
       fields: [
         { name: 'text', label: 'Metin', type: 'text', required: true, localized: true },
-        { name: 'link', label: 'Bağlantı', type: 'text' },
+        { name: 'link', label: 'Bağlantı', type: 'text', validate: validateSafeUrl },
       ],
     },
     {
@@ -63,7 +64,7 @@ export const SiteSettings: GlobalConfig = {
             { name: 'phone', label: 'Telefon', type: 'text', admin: { width: '50%' } },
           ],
         },
-        { name: 'whatsapp', label: 'WhatsApp kanal bağlantısı', type: 'text' },
+        { name: 'whatsapp', label: 'WhatsApp kanal bağlantısı', type: 'text', validate: validateSafeUrl },
       ],
     },
     {
@@ -83,7 +84,7 @@ export const SiteSettings: GlobalConfig = {
               options: ['Facebook', 'Instagram', 'YouTube', 'X', 'TikTok'].map((p) => ({ label: p, value: p.toLowerCase() })),
               admin: { width: '30%' },
             },
-            { name: 'url', label: 'Adres', type: 'text', required: true, admin: { width: '70%' } },
+            { name: 'url', label: 'Adres', type: 'text', required: true, validate: validateSafeUrl, admin: { width: '70%' } },
           ],
         },
       ],

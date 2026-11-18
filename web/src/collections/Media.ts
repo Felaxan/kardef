@@ -2,6 +2,7 @@ import path from 'path'
 import type { CollectionConfig } from 'payload'
 import { anyone, isAdminOrEditor, isLoggedIn } from '../access'
 import { DEMO } from '../demo'
+import { SAFE_IMAGE_MIMES } from '../fields'
 
 export const Media: CollectionConfig = {
   slug: 'media',
@@ -14,12 +15,12 @@ export const Media: CollectionConfig = {
   access: {
     read: anyone,
     create: isLoggedIn,
-    update: isLoggedIn,
+    update: isAdminOrEditor,
     delete: isAdminOrEditor,
   },
   upload: {
     staticDir: DEMO ? path.join(process.cwd(), 'demo', 'media') : 'media',
-    mimeTypes: ['image/*', 'audio/*', 'video/*', 'application/pdf'],
+    mimeTypes: [...SAFE_IMAGE_MIMES, 'audio/*', 'video/*', 'application/pdf'],
     adminThumbnail: 'thumbnail',
     focalPoint: true,
     imageSizes: [

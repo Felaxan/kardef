@@ -14,6 +14,7 @@ export const archiveYear = (lang: Lang, a: Pick<ArchiveItem, 'year' | 'approxima
 export const OCCASIONS = ['nisan', 'kina', 'sunnet', 'dogum', 'mezuniyet', 'diger'] as const
 export const occasionLabel = (lang: Lang, kind?: string | null) => t(lang, `occ.${kind || 'diger'}`)
 
+export const ANNOUNCEMENT_TYPES = ['vefat', 'dugun', 'ozel-gun', 'burs', 'toplanti', 'yardim', 'uyelik', 'genel'] as const
 export const announcementTypeLabel = (lang: Lang, type?: string | null) =>
   !type || type === 'genel' ? t(lang, 'not.title') : t(lang, `cat.${type}`)
 

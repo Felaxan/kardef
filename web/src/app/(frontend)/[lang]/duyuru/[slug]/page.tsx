@@ -27,7 +27,8 @@ export default async function AnnouncementPage({ params }: P) {
   const L = (k: string) => t(lang, k)
   const type = a.type ?? 'genel'
   const v = type === 'vefat' ? a.vefat : null
-  const village = v?.village && typeof v.village === 'object' ? (v.village as Village) : null
+  const rawVillage = type === 'vefat' ? a.vefat?.village : type === 'dugun' ? a.dugun?.village : null
+  const village = rawVillage && typeof rawVillage === 'object' ? (rawVillage as Village) : null
   const photo = mediaUrl(v?.photo, 'thumbnail')
   const files = (a.attachments ?? []) as never[]
   const hasBody = hasRichText(a.content) || files.length > 0

@@ -1,6 +1,6 @@
 import type { CollectionConfig } from 'payload'
 import { authorsCannotPublish, contentAccess, setCreatedBy } from '../access'
-import { createdByField, kurumField, publishedAtField, slugField } from '../fields'
+import { createdByField, kurumField, publishedAtField, slugField, validateSafeUrl } from '../fields'
 
 const dt = { pickerAppearance: 'dayAndTime' as const, displayFormat: 'd MMMM yyyy HH:mm' }
 const d = { pickerAppearance: 'dayOnly' as const, displayFormat: 'd MMMM yyyy' }
@@ -76,7 +76,7 @@ export const Announcements: CollectionConfig = {
           type: 'row',
           fields: [
             { name: 'deadline', label: 'Son başvuru', type: 'date', admin: { width: '50%', date: d } },
-            { name: 'applyLink', label: 'Başvuru bağlantısı', type: 'text', admin: { width: '50%' } },
+            { name: 'applyLink', label: 'Başvuru bağlantısı', type: 'text', validate: validateSafeUrl, admin: { width: '50%' } },
           ],
         },
       ],

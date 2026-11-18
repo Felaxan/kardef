@@ -2,6 +2,7 @@ import path from 'path'
 import type { CollectionConfig } from 'payload'
 import { anyone, isAdmin, onlyAdminSees } from '../access'
 import { DEMO } from '../demo'
+import { SAFE_IMAGE_MIMES, validateSafeUrl } from '../fields'
 
 /*
   Reklamlar yalnızca yöneticiye açıktır (panel menüsü ve API dahil).
@@ -16,7 +17,7 @@ export const AdImages: CollectionConfig = {
   access: { read: anyone, create: isAdmin, update: isAdmin, delete: isAdmin },
   upload: {
     staticDir: DEMO ? path.join(process.cwd(), 'demo', 'ad-images') : 'ad-images',
-    mimeTypes: ['image/*'],
+    mimeTypes: SAFE_IMAGE_MIMES,
     imageSizes: [{ name: 'thumbnail', width: 400, height: 200, position: 'centre' }],
     adminThumbnail: 'thumbnail',
   },
@@ -77,7 +78,7 @@ export const AdSlots: CollectionConfig = {
           type: 'row',
           fields: [
             { name: 'advertiser', label: 'Reklam veren', type: 'text', required: true, admin: { width: '50%' } },
-            { name: 'link', label: 'Tıklayınca açılacak adres', type: 'text', admin: { width: '50%' } },
+            { name: 'link', label: 'Tıklayınca açılacak adres', type: 'text', validate: validateSafeUrl, admin: { width: '50%' } },
           ],
         },
         {

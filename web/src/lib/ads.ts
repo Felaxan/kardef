@@ -14,20 +14,29 @@ export type Ad = {
 
 const DAY = 24 * 60 * 60 * 1000
 
+/** Yalnızca güvenli (http/https veya site içi /) bağlantılara izin verir */
+export function safeAdLink(link?: string | null): string | null {
+  if (!link || typeof link !== 'string') return null
+  const s = link.trim()
+  return /^(https?:\/\/|\/(?!\/))/i.test(s) ? s : null
+}
+
 /** Yayındaki reklamlar: etkin, görseli var, başlangıcı geçmiş, bitiş gününün sonu gelmemiş */
 export function activeAds(ads: Ad[], now: Date): Ad[] {
   const t = now.getTime()
-  return ads.filter((a) => {
-    if (!a.active || !a.image) return false
-    if (a.startsAt && new Date(a.startsAt).getTime() > t) return false
-    if (a.endsAt) {
-      // Bitiş bir gündür: o günün sonuna kadar yayında kalır
-      const end = new Date(a.endsAt)
-      const dayEnd = Date.UTC(end.getUTCFullYear(), end.getUTCMonth(), end.getUTCDate()) + DAY
-      if (dayEnd <= t) return false
-    }
-    return true
-  })
+  return ads
+    .filter((a) => {
+      if (!a.active || !a.image) return false
+      if (a.startsAt && new Date(a.startsAt).getTime() > t) return false
+      if (a.endsAt) {
+        // Bitiş bir gündür: o günün sonuna kadar yayında kalır
+        const end = new Date(a.endsAt)
+        const dayEnd = Date.UTC(end.getUTCFullYear(), end.getUTCMonth(), end.getUTCDate()) + DAY
+        if (dayEnd <= t) return false
+      }
+      return true
+    })
+    .map((a) => ({ ...a, link: safeAdLink(a.link) }))
 }
 
 /** Dönme süresi: 3–60 saniye, geçersizse 8 */

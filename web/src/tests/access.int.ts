@@ -57,6 +57,16 @@ await check('yazar gönderi dosyalarını okuyamaz', async () => {
   await forbidden(payload.find({ collection: 'submission-files', overrideAccess: false, user: await userOf('author') }))
 })
 
+// --- Köyler ve medya: yazar canlı köyleri veya mevcut medyayı değiştiremez ---
+await check('yazar köy oluşturamaz', async () => {
+  await forbidden(payload.create({ collection: 'villages', overrideAccess: false, user: await userOf('author'), data: { name: 'Test Köy' } as never }))
+})
+await check('yazar mevcut medyayı değiştiremez', async () => {
+  const m = await payload.find({ collection: 'media', limit: 1, depth: 0 })
+  assert.ok(m.docs[0], 'örnek medya yok')
+  await forbidden(payload.update({ collection: 'media', id: m.docs[0].id, overrideAccess: false, user: await userOf('author'), data: { alt: 'değiştirildi' } }))
+})
+
 for (const [name, ok, msg] of results) console.log(`${ok ? '✔' : '✖'} ${name}${msg ? ` — ${msg}` : ''}`)
 const failed = results.filter((r) => !r[1]).length
 console.log(`int: ${results.length - failed} geçti, ${failed} kaldı`)

@@ -1,6 +1,17 @@
 import assert from 'node:assert/strict'
 import { test } from 'node:test'
-import { bodyTooLarge, clientIp, createRateLimiter, MAX_BODY_BYTES, MAX_FILE_BYTES, MAX_FILES, turnstileMode, validateSubmission } from './submission'
+import {
+  bodyTooLarge,
+  clientIp,
+  createRateLimiter,
+  hasValidFileSignature,
+  MAX_BODY_BYTES,
+  MAX_FILE_BYTES,
+  MAX_FILES,
+  parseSubmissionYear,
+  turnstileMode,
+  validateSubmission,
+} from './submission'
 
 const ok = { name: 'Ali Veli', phone: '05551112233', email: '', description: '1972 düğününden fotoğraf', consent: 'on' }
 const photo = { name: 'foto.jpg', type: 'image/jpeg', size: 2_000_000 }
@@ -80,3 +91,29 @@ test('Turnstile modu', () => {
   assert.equal(turnstileMode({ TURNSTILE_SECRET: 's' }), 'misconfigured')
   assert.equal(turnstileMode({ NEXT_PUBLIC_TURNSTILE_SITEKEY: 'k' }), 'misconfigured')
 })
+
+test('katkı yılı çözümleme: tam yıl, yaklaşık yıl ve boş/geçersiz değer', () => {
+  assert.deepEqual(parseSubmissionYear('1978', 2026), { year: 1978, approximate: false })
+  assert.deepEqual(parseSubmissionYear("1970'ler", 2026), { year: 1970, approximate: true })
+  assert.deepEqual(parseSubmissionYear('~1985 civarı', 2026), { year: 1985, approximate: true })
+  assert.deepEqual(parseSubmissionYear('', 2026), { year: 2026, approximate: true })
+  assert.deepEqual(parseSubmissionYear('1820', 2026), { year: 2026, approximate: true })
+})
+
+test('dosya imzası (magic bytes) sahte .exe, .svg ve .html dosyalarını reddeder', () => {
+  const jpg = new Uint8Array([0xff, 0xd8, 0xff, 0xe0, 0x00, 0x10])
+  const png = new Uint8Array([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a])
+  const pdf = new Uint8Array([0x25, 0x50, 0x44, 0x46, 0x2d, 0x31])
+  const exe = new Uint8Array([0x4d, 0x5a, 0x90, 0x00, 0x03, 0x00])
+  const svg = new Uint8Array(Buffer.from('<svg onload="alert(1)"></svg>'))
+  const html = new Uint8Array(Buffer.from('<!DOCTYPE html><html><script>alert(1)</script></html>'))
+
+  assert.equal(hasValidFileSignature(jpg, 'image/jpeg'), true)
+  assert.equal(hasValidFileSignature(png, 'image/png'), true)
+  assert.equal(hasValidFileSignature(pdf, 'application/pdf'), true)
+  assert.equal(hasValidFileSignature(exe, 'image/jpeg'), false)
+  assert.equal(hasValidFileSignature(svg, 'image/png'), false)
+  assert.equal(hasValidFileSignature(html, 'application/pdf'), false)
+  assert.equal(hasValidFileSignature(png, 'image/jpeg'), false)
+})
+

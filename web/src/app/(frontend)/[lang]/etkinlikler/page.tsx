@@ -31,7 +31,8 @@ export default async function EventsList({ params, searchParams }: P) {
   const past = gecmis === '1'
   const region = (REGIONS as readonly string[]).includes(bolge ?? '') ? bolge : undefined
   const payload = await cms()
-  const now = new Date(Date.now() - 6 * 3600_000).toISOString() // bugün başlayanlar "yaklaşan"da kalsın
+  const cur = new Date()
+  const now = new Date(cur.getTime() - 6 * 3600_000).toISOString() // bugün başlayanlar "yaklaşan"da kalsın
 
   const time: Where = past ? { startDate: { less_than: now } } : { startDate: { greater_than_equal: now } }
   const res = await payload.find({

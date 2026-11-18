@@ -1,6 +1,6 @@
 import type { CollectionConfig } from 'payload'
 import { authorsCannotPublish, contentAccess, setCreatedBy } from '../access'
-import { createdByField, kurumField, slugField } from '../fields'
+import { createdByField, kurumField, slugField, validateSafeUrl, validateSafeUrlOrContact } from '../fields'
 
 export const Events: CollectionConfig = {
   slug: 'events',
@@ -69,6 +69,7 @@ export const Events: CollectionConfig = {
       name: 'onlineLink',
       label: 'Katılım bağlantısı (Zoom, YouTube...)',
       type: 'text',
+      validate: validateSafeUrl,
       admin: { condition: (_, s) => s?.region === 'online' },
     },
     { name: 'image', label: 'Görsel', type: 'upload', relationTo: 'media' },
@@ -79,7 +80,7 @@ export const Events: CollectionConfig = {
       type: 'group',
       fields: [
         { name: 'required', label: 'Katılım için kayıt gerekiyor', type: 'checkbox' },
-        { name: 'link', label: 'Kayıt bağlantısı veya telefon', type: 'text', admin: { condition: (_, s) => Boolean(s?.required) } },
+        { name: 'link', label: 'Kayıt bağlantısı veya telefon', type: 'text', validate: validateSafeUrlOrContact, admin: { condition: (_, s) => Boolean(s?.required) } },
       ],
     },
     slugField(),
