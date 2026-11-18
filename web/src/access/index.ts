@@ -9,27 +9,32 @@ import { APIError } from 'payload'
 */
 export type Role = 'admin' | 'editor' | 'author'
 
-type AnyUser = { id: number | string; role?: Role | null } | null | undefined
-const roleOf = (user: unknown) => (user as AnyUser)?.role
+type AnyUser = { id: number | string; role?: Role | null; suspended?: boolean | null } | null | undefined
+const activeUser = (user: unknown): AnyUser => {
+  const u = user as AnyUser
+  return u && !u.suspended ? u : null
+}
+const roleOf = (user: unknown) => activeUser(user)?.role
 
 export const isAdmin: Access = ({ req: { user } }) => roleOf(user) === 'admin'
 export const isAdminOrEditor: Access = ({ req: { user } }) => {
   const r = roleOf(user)
   return r === 'admin' || r === 'editor'
 }
-export const isLoggedIn: Access = ({ req: { user } }) => Boolean(user)
+export const isLoggedIn: Access = ({ req: { user } }) => Boolean(activeUser(user))
 export const anyone: Access = () => true
 
 /** Ziyaretçiler yalnızca yayınlanmış içeriği görür; giriş yapanlar taslakları da. */
 export const publishedOrLoggedIn: Access = ({ req: { user } }) =>
-  user ? true : { _status: { equals: 'published' } }
+  activeUser(user) ? true : { _status: { equals: 'published' } }
 
 /** Editör ve yönetici her şeyi; yazar yalnızca kendi eklediğini düzenler. */
 export const editorsOrOwn: Access = ({ req: { user } }) => {
-  if (!user) return false
-  const r = roleOf(user)
+  const u = activeUser(user)
+  if (!u) return false
+  const r = u.role
   if (r === 'admin' || r === 'editor') return true
-  return { createdBy: { equals: (user as { id: number | string }).id } }
+  return { createdBy: { equals: u.id } }
 }
 
 /* ---------- Menüde görünürlük ---------- */

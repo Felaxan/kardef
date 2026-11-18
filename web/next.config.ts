@@ -2,11 +2,21 @@ import { withPayload } from '@payloadcms/next/withPayload'
 import type { NextConfig } from 'next'
 import path from 'path'
 import { fileURLToPath } from 'url'
+import { SECURITY_HEADERS } from './src/lib/security'
 
 const __filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(__filename)
 
 const nextConfig: NextConfig = {
+  poweredByHeader: false,
+  async headers() {
+    return [
+      {
+        source: '/:path*',
+        headers: Object.entries(SECURITY_HEADERS).map(([key, value]) => ({ key, value })),
+      },
+    ]
+  },
   images: {
     localPatterns: [
       {

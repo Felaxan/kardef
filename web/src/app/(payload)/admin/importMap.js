@@ -25,6 +25,7 @@ import { CategoryCell as CategoryCell_fce15b32cf85ef458ad636fa0195e1ac } from '.
 import { TranslationStatus as TranslationStatus_3587120a96e0157d0c702d89430314d3 } from '../../../components/admin/TranslationStatus'
 import { ConvertSubmission as ConvertSubmission_b1d367b895f4b92d21d9d3dd196ce40a } from '../../../components/admin/ConvertSubmission'
 import { AdRowLabel as AdRowLabel_46ebaf610c05d05448f70d574064e132 } from '../../../components/admin/AdRowLabel'
+import { SecurityCenter as SecurityCenter_92f24731f3d86bfd3cc989d76b6f5944 } from '../../../components/admin/SecurityCenter'
 import { Icon as Icon_dfe4008080d895d460898c3a6155e9ba } from '../../../components/admin/Icon'
 import { Logo as Logo_91a09b539d3c86b0aebf520e7564ce08 } from '../../../components/admin/Logo'
 import { ThemeToggle as ThemeToggle_fc85bd5ac375c29cf24795ab8778bf43 } from '../../../components/admin/ThemeToggle'
@@ -62,6 +63,7 @@ export const importMap = {
   "/components/admin/TranslationStatus#TranslationStatus": TranslationStatus_3587120a96e0157d0c702d89430314d3,
   "/components/admin/ConvertSubmission#ConvertSubmission": ConvertSubmission_b1d367b895f4b92d21d9d3dd196ce40a,
   "/components/admin/AdRowLabel#AdRowLabel": AdRowLabel_46ebaf610c05d05448f70d574064e132,
+  "/components/admin/SecurityCenter#SecurityCenter": SecurityCenter_92f24731f3d86bfd3cc989d76b6f5944,
   "/components/admin/Icon#Icon": Icon_dfe4008080d895d460898c3a6155e9ba,
   "/components/admin/Logo#Logo": Logo_91a09b539d3c86b0aebf520e7564ce08,
   "/components/admin/ThemeToggle#ThemeToggle": ThemeToggle_fc85bd5ac375c29cf24795ab8778bf43,

@@ -1,6 +1,7 @@
 import type { CollectionConfig } from 'payload'
 import { authorsCannotPublish, contentAccess, setCreatedBy } from '../access'
 import { bolgeOptions, createdByField, kurumField, publishedAtField, slugField } from '../fields'
+import { auditCollectionChange, auditCollectionDelete } from '../lib/security-server'
 
 export const Posts: CollectionConfig = {
   slug: 'posts',
@@ -15,7 +16,11 @@ export const Posts: CollectionConfig = {
   defaultSort: '-publishedAt',
   access: contentAccess,
   versions: { drafts: { autosave: { interval: 3000 } }, maxPerDoc: 30 },
-  hooks: { beforeChange: [setCreatedBy, authorsCannotPublish] },
+  hooks: {
+    beforeChange: [setCreatedBy, authorsCannotPublish],
+    afterChange: [auditCollectionChange('posts')],
+    afterDelete: [auditCollectionDelete('posts')],
+  },
   fields: [
     {
       name: 'title',

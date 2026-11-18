@@ -1,6 +1,7 @@
 import type { CollectionConfig } from 'payload'
 import { authorsCannotPublish, contentAccess, setCreatedBy } from '../access'
 import { createdByField, kurumField, publishedAtField, slugField, validateSafeUrl } from '../fields'
+import { auditCollectionChange, auditCollectionDelete } from '../lib/security-server'
 
 const dt = { pickerAppearance: 'dayAndTime' as const, displayFormat: 'd MMMM yyyy HH:mm' }
 const d = { pickerAppearance: 'dayOnly' as const, displayFormat: 'd MMMM yyyy' }
@@ -17,7 +18,11 @@ export const Announcements: CollectionConfig = {
   defaultSort: '-publishedAt',
   access: contentAccess,
   versions: { drafts: { autosave: { interval: 3000 } }, maxPerDoc: 20 },
-  hooks: { beforeChange: [setCreatedBy, authorsCannotPublish] },
+  hooks: {
+    beforeChange: [setCreatedBy, authorsCannotPublish],
+    afterChange: [auditCollectionChange('announcements')],
+    afterDelete: [auditCollectionDelete('announcements')],
+  },
   fields: [
     {
       name: 'type',

@@ -54,6 +54,8 @@ const GROUPS: Group[] = [
       { slug: 'organizations', label: 'Kurumlar', hint: 'KAR-DEF, AV-KARDEP', icon: 'org', kind: 'collection' },
       { slug: 'homepage', label: 'Ana sayfa', hint: 'Duyuru bandı, son dakika', icon: 'home', kind: 'global' },
       { slug: 'site-settings', label: 'Site ayarları', hint: 'İletişim, sosyal medya, kur şeridi', icon: 'settings', kind: 'global' },
+      { slug: 'security-logs', label: 'Güvenlik merkezi', hint: 'Denetim izi, IP engeli, oturumlar', icon: 'settings', kind: 'collection' },
+      { slug: 'security-settings', label: 'Güvenlik ayarları', hint: 'Acil koruma modu ve alarmlar', icon: 'settings', kind: 'global' },
     ],
   },
 ]

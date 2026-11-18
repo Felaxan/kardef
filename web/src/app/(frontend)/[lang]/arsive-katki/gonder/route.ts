@@ -1,5 +1,7 @@
 import { DEMO } from '@/demo'
 import { cms } from '@/lib/cms'
+import { globalShield, safeRandomFilename, verifyCsrfOrigin } from '@/lib/security'
+import { logSecurityEvent } from '@/lib/security-server'
 import {
   bodyTooLarge,
   clientIp,
@@ -47,12 +49,19 @@ const str = (v: FormDataEntryValue | null, max = 2000) => (typeof v === 'string'
 
 export async function POST(req: Request) {
   if (DEMO) return Response.json({ ok: false, errors: ['demo'] }, { status: 403 })
+  if (globalShield.isLockdown()) return Response.json({ ok: false, errors: ['server'] }, { status: 503 })
+
+  const ip = clientIp(req.headers, process.env.TRUSTED_IP_HEADER)
+  if (globalShield.isIpBlocked(ip)) return Response.json({ ok: false, errors: ['rate'] }, { status: 403 })
+
+  if (!verifyCsrfOrigin(req.method, req.headers, process.env.NEXT_PUBLIC_SERVER_URL)) {
+    return Response.json({ ok: false, errors: ['form'] }, { status: 403 })
+  }
 
   // Gövde okunmadan önce boyut sınırı (bellek taşmasın)
   if (bodyTooLarge(req.headers.get('content-length'))) {
     return Response.json({ ok: false, errors: ['files.size'] }, { status: 413 })
   }
-  const ip = clientIp(req.headers, process.env.TRUSTED_IP_HEADER)
   if (!limit(ip, Date.now())) return Response.json({ ok: false, errors: ['rate'] }, { status: 429 })
 
   let form: FormData
@@ -94,21 +103,28 @@ export async function POST(req: Request) {
       : undefined
 
   try {
-    const buffers: { file: File; data: Buffer }[] = []
+    const buffers: { file: File; data: Buffer; safeName: string }[] = []
     for (const f of files) {
       const bytes = new Uint8Array(await f.arrayBuffer())
       if (!hasValidFileSignature(bytes, f.type)) {
+        void logSecurityEvent(payload, {
+          event: 'file_rejected',
+          severity: 'high',
+          ip,
+          target: 'POST /arsive-katki/gonder',
+          summary: `Şüpheli dosya imzası reddedildi: "${f.name.slice(0, 60)}" (${f.type}, ${f.size} bayt)`,
+        })
         return Response.json({ ok: false, errors: ['files.type'] }, { status: 400 })
       }
-      buffers.push({ file: f, data: Buffer.from(bytes) })
+      buffers.push({ file: f, data: Buffer.from(bytes), safeName: safeRandomFilename(f.name) })
     }
 
     const fileIds: (number | string)[] = []
-    for (const { file: f, data } of buffers) {
+    for (const { file: f, data, safeName } of buffers) {
       const doc = await payload.create({
         collection: 'submission-files',
         data: {},
-        file: { data, mimetype: f.type, name: f.name, size: f.size },
+        file: { data, mimetype: f.type, name: safeName, size: f.size },
         overrideAccess: true,
       })
       fileIds.push(doc.id)

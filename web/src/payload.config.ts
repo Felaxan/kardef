@@ -20,12 +20,16 @@ import { Media } from './collections/Media'
 import { Organizations } from './collections/Organizations'
 import { Posts } from './collections/Posts'
 import { AdImages, AdSlots } from './collections/AdSlots'
+import { SecurityLogs } from './collections/SecurityLogs'
 import { SubmissionFiles, Submissions } from './collections/Submissions'
 import { Users } from './collections/Users'
 import { Villages } from './collections/Villages'
 import { Homepage, SiteSettings } from './globals'
 import { Live } from './globals/Live'
+import { SecuritySettings } from './globals/SecuritySettings'
 import { DEMO } from './demo'
+import { globalShield, resolvePayloadSecret } from './lib/security'
+import { ipFromReq, logSecurityEvent, syncShieldFromSettings } from './lib/security-server'
 import { withAutoTranslate, withAutoTranslateGlobal } from './translate/fields'
 
 const filename = fileURLToPath(import.meta.url)
@@ -84,11 +88,59 @@ export default buildConfig({
   },
 
   // Türkçe içerik yayınlanınca diğer dillere otomatik çeviri (src/translate)
-  collections: [Posts, Events, Announcements, ArchiveItems, Villages, Media, Categories, Organizations, Submissions, SubmissionFiles, AdSlots, AdImages, Users].map(withAutoTranslate),
-  globals: [Homepage, SiteSettings, Live].map(withAutoTranslateGlobal),
+  collections: [Posts, Events, Announcements, ArchiveItems, Villages, Media, Categories, Organizations, Submissions, SubmissionFiles, AdSlots, AdImages, Users, SecurityLogs].map(withAutoTranslate),
+  globals: [Homepage, SiteSettings, Live, SecuritySettings].map(withAutoTranslateGlobal),
   editor: lexicalEditor(),
-  // Maket modunda giriş kapalı olduğu için anahtar zorunlu değil
-  secret: process.env.PAYLOAD_SECRET || (DEMO ? 'kardef-maket-salt-okunur' : ''),
+  graphQL: {
+    disablePlaygroundInProduction: true,
+    disable: true,
+  },
+  onInit: async (payload) => {
+    await syncShieldFromSettings(payload)
+  },
+  hooks: {
+    afterError: [
+      async ({ error, req, collection }) => {
+        const status = (error as { status?: number })?.status
+        const name = (error as { name?: string })?.name || ''
+        const ip = ipFromReq(req)
+        const pathUrl = req?.url || collection?.slug || 'api'
+
+        // Başarısız giriş denemesi: kademeli gecikme + otomatik IP engelleme + loglama
+        if (
+          status === 401 ||
+          /Authentication|InvalidLogin|LockedAuth/i.test(name) ||
+          (collection?.slug === 'users' && String(pathUrl).includes('login'))
+        ) {
+          const { attempts, autoBanned, delayMs } = globalShield.recordFailedLogin(ip)
+          await new Promise((r) => setTimeout(r, delayMs))
+          if (req?.payload) {
+            await logSecurityEvent(req.payload, {
+              event: autoBanned ? 'ip_blocked' : 'login_failed',
+              severity: autoBanned ? 'critical' : attempts >= 3 ? 'high' : 'medium',
+              ip,
+              target: 'POST /api/users/login',
+              summary: autoBanned
+                ? `${ip} adresi ${attempts} başarısız giriş denemesi sonrası 30 dakika otomatik engellendi.`
+                : `Başarısız yönetim paneli giriş denemesi (#${attempts}).`,
+            })
+          }
+        } else if (status === 403 && req?.payload) {
+          const u = req.user as { email?: string; role?: string } | null
+          await logSecurityEvent(req.payload, {
+            event: 'unauthorized',
+            severity: 'medium',
+            ip,
+            userEmail: u?.email,
+            target: `${collection?.slug || 'api'} (${pathUrl})`,
+            summary: `Yetkisiz erişim denemesi (403) engellendi: ${collection?.slug || pathUrl}`,
+          })
+        }
+      },
+    ],
+  },
+  // Maket modunda giriş kapalı; canlı ortamda güçlü PAYLOAD_SECRET zorunlu
+  secret: resolvePayloadSecret(process.env, DEMO),
   typescript: { outputFile: path.resolve(dirname, 'payload-types.ts') },
 
   // Geliştirmede SQLite. Sunucuda @payloadcms/db-postgres ile PostgreSQL'e geçilecek.

@@ -1,6 +1,7 @@
 import type { CollectionConfig } from 'payload'
 import { authorsCannotPublish, contentAccess, setCreatedBy } from '../access'
 import { createdByField, kurumField, slugField, validateSafeUrl, validateSafeUrlOrContact } from '../fields'
+import { auditCollectionChange, auditCollectionDelete } from '../lib/security-server'
 
 export const Events: CollectionConfig = {
   slug: 'events',
@@ -13,7 +14,11 @@ export const Events: CollectionConfig = {
   defaultSort: 'startDate',
   access: contentAccess,
   versions: { drafts: { autosave: { interval: 3000 } }, maxPerDoc: 20 },
-  hooks: { beforeChange: [setCreatedBy, authorsCannotPublish] },
+  hooks: {
+    beforeChange: [setCreatedBy, authorsCannotPublish],
+    afterChange: [auditCollectionChange('events')],
+    afterDelete: [auditCollectionDelete('events')],
+  },
   fields: [
     { name: 'title', label: 'Etkinlik adı', type: 'text', required: true, localized: true },
     {

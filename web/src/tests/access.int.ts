@@ -67,6 +67,40 @@ await check('yazar mevcut medyayı değiştiremez', async () => {
   await forbidden(payload.update({ collection: 'media', id: m.docs[0].id, overrideAccess: false, user: await userOf('author'), data: { alt: 'değiştirildi' } }))
 })
 
+// --- Güvenlik Merkezi (security-logs & security-settings): yalnızca yönetici okuyabilir, kimse log silemez ---
+for (const role of ['editor', 'author'] as const) {
+  await check(`${role} güvenlik kayıtlarını okuyamaz`, async () => {
+    await forbidden(payload.find({ collection: 'security-logs', overrideAccess: false, user: await userOf(role) }))
+  })
+  await check(`${role} güvenlik ayarlarını okuyamaz`, async () => {
+    await forbidden(payload.findGlobal({ slug: 'security-settings', overrideAccess: false, user: await userOf(role) }))
+  })
+  await check(`${role} güvenlik ayarlarını değiştiremez`, async () => {
+    await forbidden(payload.updateGlobal({ slug: 'security-settings', overrideAccess: false, user: await userOf(role), data: { lockdownMode: true } }))
+  })
+}
+await check('ziyaretçi güvenlik kayıtlarını okuyamaz', async () => {
+  await forbidden(payload.find({ collection: 'security-logs', overrideAccess: false }))
+})
+await check('yönetici güvenlik kayıtlarını okuyabilir', async () => {
+  await payload.find({ collection: 'security-logs', overrideAccess: false, user: await userOf('admin') })
+})
+await check('güvenlik kayıtları API üzerinden silinemez veya değiştirilemez (değiştirilemez denetim izi)', async () => {
+  const log = await payload.create({
+    collection: 'security-logs',
+    overrideAccess: true,
+    data: { event: 'login_failed', severity: 'medium', ip: '198.51.100.1', summary: 'Deneme güvenlik kaydı' },
+  })
+  await forbidden(payload.update({ collection: 'security-logs', id: log.id, overrideAccess: false, user: await userOf('admin'), data: { summary: 'Silindi' } }))
+  await forbidden(payload.delete({ collection: 'security-logs', id: log.id, overrideAccess: false, user: await userOf('admin') }))
+})
+await check('askıya alınmış (suspended) kullanıcı içerik ekleyemez ve yetki kullanamaz', async () => {
+  const editor = await userOf('editor')
+  const suspendedEditor = { ...editor, suspended: true }
+  await forbidden(payload.create({ collection: 'posts', overrideAccess: false, user: suspendedEditor, data: { title: 'Test' } as never }))
+  await forbidden(payload.find({ collection: 'submissions', overrideAccess: false, user: suspendedEditor }))
+})
+
 for (const [name, ok, msg] of results) console.log(`${ok ? '✔' : '✖'} ${name}${msg ? ` — ${msg}` : ''}`)
 const failed = results.filter((r) => !r[1]).length
 console.log(`int: ${results.length - failed} geçti, ${failed} kaldı`)

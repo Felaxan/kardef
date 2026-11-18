@@ -1,6 +1,7 @@
 import type { CollectionConfig } from 'payload'
 import { anyone, hiddenFromAuthors, isAdminOrEditor } from '../access'
 import { slugField } from '../fields'
+import { auditCollectionChange, auditCollectionDelete } from '../lib/security-server'
 
 export const Villages: CollectionConfig = {
   slug: 'villages',
@@ -13,7 +14,12 @@ export const Villages: CollectionConfig = {
     description: 'Her köyün ve mahallenin kendi sayfası. Haberler, arşiv kayıtları ve vefat duyuruları köye bağlanabilir.',
   },
   defaultSort: 'name',
+  versions: { maxPerDoc: 20 },
   access: { read: anyone, create: isAdminOrEditor, update: isAdminOrEditor, delete: isAdminOrEditor },
+  hooks: {
+    afterChange: [auditCollectionChange('villages')],
+    afterDelete: [auditCollectionDelete('villages')],
+  },
   fields: [
     {
       type: 'row',

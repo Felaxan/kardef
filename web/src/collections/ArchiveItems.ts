@@ -1,6 +1,7 @@
 import type { CollectionConfig } from 'payload'
 import { authorsCannotPublish, contentAccess, setCreatedBy } from '../access'
 import { createdByField, kurumField, slugField } from '../fields'
+import { auditCollectionChange, auditCollectionDelete } from '../lib/security-server'
 
 export const archiveTypes = [
   { label: 'Fotoğraf', value: 'photo' },
@@ -37,6 +38,8 @@ export const ArchiveItems: CollectionConfig = {
         return data
       },
     ],
+    afterChange: [auditCollectionChange('archive')],
+    afterDelete: [auditCollectionDelete('archive')],
   },
   fields: [
     { name: 'title', label: 'Başlık', type: 'text', required: true, localized: true },

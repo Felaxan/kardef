@@ -1,6 +1,7 @@
 import path from 'path'
 import type { CollectionConfig, Endpoint, Payload, PayloadRequest } from 'payload'
 import { hiddenFromAuthors, isAdminOrEditor } from '../access'
+import { safeResolveUnder } from '../lib/security'
 import { parseSubmissionYear } from '../lib/submission'
 
 /*
@@ -51,11 +52,13 @@ const convertEndpoint: Endpoint = {
       return Response.json({ archiveId: existing, already: true })
     }
 
-    // Dosyaları kapalı klasörden medya kütüphanesine kopyala
+    // Dosyaları kapalı klasörden medya kütüphanesine kopyala (Path Traversal korumalı)
+    const submissionsDir = path.resolve(process.cwd(), 'submissions')
     const mediaIds: number[] = []
     for (const f of sub.files ?? []) {
       if (!f || typeof f !== 'object' || !f.filename) continue
-      const filePath = path.resolve(process.cwd(), 'submissions', f.filename)
+      const filePath = safeResolveUnder(submissionsDir, f.filename)
+      if (!filePath) continue
       const m = await payload.create({
         collection: 'media',
         data: { alt: sub.description?.slice(0, 120) || f.filename, credit: sub.name },

@@ -28,10 +28,11 @@ await db.batch([
   'DELETE FROM payload_preferences',
   'DELETE FROM payload_locked_documents_rels',
   'DELETE FROM payload_locked_documents',
-  // Ziyaretçi gönderileri kişisel veri içerir: makete girmez
+  // Ziyaretçi gönderileri ve güvenlik kayıtları kişisel/hassas veri içerir: makete girmez
   'DELETE FROM submissions_rels',
   'DELETE FROM submissions',
   'DELETE FROM submission_files',
+  'DELETE FROM security_logs',
 ])
 await db.execute('VACUUM')
 db.close()

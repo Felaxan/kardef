@@ -3,6 +3,7 @@ import type { CollectionConfig } from 'payload'
 import { anyone, isAdmin, onlyAdminSees } from '../access'
 import { DEMO } from '../demo'
 import { SAFE_IMAGE_MIMES, validateSafeUrl } from '../fields'
+import { auditCollectionChange, auditCollectionDelete } from '../lib/security-server'
 
 /*
   Reklamlar yalnızca yöneticiye açıktır (panel menüsü ve API dahil).
@@ -36,6 +37,10 @@ export const AdSlots: CollectionConfig = {
       'Sitedeki sabit reklam yerleri. Bir yere tek reklam ya da 20\'ye kadar reklam koyabilirsiniz; birden fazlaysa seçtiğiniz sürede sırayla döner.',
   },
   access: { read: isAdmin, create: isAdmin, update: isAdmin, delete: isAdmin },
+  hooks: {
+    afterChange: [auditCollectionChange('ad-slots')],
+    afterDelete: [auditCollectionDelete('ad-slots')],
+  },
   fields: [
     { name: 'name', label: 'Ad', type: 'text', required: true },
     {

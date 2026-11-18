@@ -80,6 +80,7 @@ export interface Config {
     'ad-slots': AdSlot;
     'ad-images': AdImage;
     users: User;
+    'security-logs': SecurityLog;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -100,6 +101,7 @@ export interface Config {
     'ad-slots': AdSlotsSelect<false> | AdSlotsSelect<true>;
     'ad-images': AdImagesSelect<false> | AdImagesSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
+    'security-logs': SecurityLogsSelect<false> | SecurityLogsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -118,11 +120,13 @@ export interface Config {
     homepage: Homepage;
     'site-settings': SiteSetting;
     live: Live;
+    'security-settings': SecuritySetting;
   };
   globalsSelect: {
     homepage: HomepageSelect<false> | HomepageSelect<true>;
     'site-settings': SiteSettingsSelect<false> | SiteSettingsSelect<true>;
     live: LiveSelect<false> | LiveSelect<true>;
+    'security-settings': SecuritySettingsSelect<false> | SecuritySettingsSelect<true>;
   };
   locale: 'tr' | 'ku' | 'zza' | 'en' | 'de' | 'nl' | 'fr';
   widgets: {
@@ -389,6 +393,10 @@ export interface User {
    */
   kurum?: ('kardef' | 'avkardep' | 'ortak') | null;
   phone?: string | null;
+  /**
+   * İşaretlenirse bu kullanıcı panele giriş yapamaz ve mevcut oturumu geçersiz olur.
+   */
+  suspended?: boolean | null;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -799,6 +807,46 @@ export interface AdImage {
   };
 }
 /**
+ * Yalnızca yöneticilere özel güvenlik ve müdahale merkezi. Kayıtlar değiştirilemez ve silinemez; şifre ve oturum anahtarları otomatik maskelenir.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "security-logs".
+ */
+export interface SecurityLog {
+  id: number;
+  severity: 'low' | 'medium' | 'high' | 'critical';
+  event:
+    | 'login_failed'
+    | 'login_success'
+    | 'unauthorized'
+    | 'rate_limit'
+    | 'ip_blocked'
+    | 'csrf_blocked'
+    | 'file_rejected'
+    | 'audit_create'
+    | 'audit_update'
+    | 'audit_delete'
+    | 'session_revoked'
+    | 'user_suspended'
+    | 'lockdown_changed'
+    | 'backup_created';
+  ip?: string | null;
+  userEmail?: string | null;
+  target?: string | null;
+  summary: string;
+  details?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
@@ -873,6 +921,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'users';
         value: number | User;
+      } | null)
+    | ({
+        relationTo: 'security-logs';
+        value: number | SecurityLog;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -1286,6 +1338,7 @@ export interface UsersSelect<T extends boolean = true> {
   role?: T;
   kurum?: T;
   phone?: T;
+  suspended?: T;
   updatedAt?: T;
   createdAt?: T;
   email?: T;
@@ -1303,6 +1356,21 @@ export interface UsersSelect<T extends boolean = true> {
         createdAt?: T;
         expiresAt?: T;
       };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "security-logs_select".
+ */
+export interface SecurityLogsSelect<T extends boolean = true> {
+  severity?: T;
+  event?: T;
+  ip?: T;
+  userEmail?: T;
+  target?: T;
+  summary?: T;
+  details?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1478,6 +1546,37 @@ export interface Live {
   createdAt?: string | null;
 }
 /**
+ * Acil koruma modu, engellenen IP adresleri ve kritik güvenlik olaylarında bildirim gönderilecek adres.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "security-settings".
+ */
+export interface SecuritySetting {
+  id: number;
+  /**
+   * Açıldığında ziyaretçi form gönderimleri ve yönetici dışındaki tüm yazma/değiştirme işlemleri geçici olarak durdurulur. Sitenin okunması normal devam eder.
+   */
+  lockdownMode?: boolean | null;
+  /**
+   * 15 dakika içinde bu sayıya ulaşan IP adresi 30 dakika otomatik engellenir.
+   */
+  autoBanThreshold?: number | null;
+  /**
+   * Yüksek ve kritik güvenlik olaylarında JSON bildirim gönderilecek HTTPS adresi (isteğe bağlı).
+   */
+  alertWebhookUrl?: string | null;
+  blockedIps?:
+    | {
+        ip: string;
+        reason?: string | null;
+        active?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "homepage_select".
  */
@@ -1562,6 +1661,26 @@ export interface LiveSelect<T extends boolean = true> {
       };
   autoTr?: T;
   retranslate?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "security-settings_select".
+ */
+export interface SecuritySettingsSelect<T extends boolean = true> {
+  lockdownMode?: T;
+  autoBanThreshold?: T;
+  alertWebhookUrl?: T;
+  blockedIps?:
+    | T
+    | {
+        ip?: T;
+        reason?: T;
+        active?: T;
+        id?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
