@@ -79,7 +79,7 @@ export function ContributeForm({
   }
 
   const general = errors.filter((e) => ['rate', 'captcha', 'server', 'demo', 'form'].includes(e))
-  const Err = ({ k }: { k: string }) => (has(k) ? <p className="kf-err" role="alert" data-err={k}>{L[`err.${k}`]}</p> : null)
+  const err = (k: string) => (has(k) ? <p key={k} className="kf-err" role="alert" data-err={k}>{L[`err.${k}`]}</p> : null)
 
   return (
     <form ref={form} className="kf" onSubmit={submit} noValidate>
@@ -97,7 +97,7 @@ export function ContributeForm({
         </div>
 
         <div
-          className={`kf-drop${drag ? ' is-drag' : ''}${has('files.none') || has('files.count') || has('files.size') || has('files.type') ? ' is-err' : ''}`}
+          className={`kf-drop${drag ? ' is-drag' : ''}${has('files.count') || has('files.size') || has('files.type') ? ' is-err' : ''}`}
           onDragOver={(e) => { e.preventDefault(); setDrag(true) }}
           onDragLeave={() => setDrag(false)}
           onDrop={(e) => { e.preventDefault(); setDrag(false); addFiles(e.dataTransfer.files) }}
@@ -120,7 +120,7 @@ export function ContributeForm({
             </ul>
           )}
         </div>
-        {['files.none', 'files.count', 'files.size', 'files.type'].map((k) => <Err key={k} k={k} />)}
+        {['files.count', 'files.size', 'files.type'].map((k) => err(k))}
 
         <div className="kf-row">
           <label className="kf-field">
@@ -135,7 +135,7 @@ export function ContributeForm({
           <textarea name="description" rows={5} maxLength={4000} />
           <small>{L['form.descHint']}</small>
         </label>
-        <Err k="description" />
+        {err("description")}
 
         <div className="kf-row">
           <label className="kf-field">
@@ -159,7 +159,7 @@ export function ContributeForm({
           <span>{L['form.name']} *</span>
           <input name="name" autoComplete="name" maxLength={120} />
         </label>
-        <Err k="name" />
+        {err("name")}
         <div className="kf-row">
           <label className={`kf-field${has('contact') ? ' is-err' : ''}`}>
             <span>{L['form.phone']}</span>
@@ -171,7 +171,7 @@ export function ContributeForm({
           </label>
         </div>
         <p className="kf-hint">{L['form.contactHint']}</p>
-        <Err k="contact" />
+        {err("contact")}
 
         {/* Robot tuzağı: insanlar görmez */}
         <label className="kf-hp" aria-hidden="true">
@@ -182,7 +182,7 @@ export function ContributeForm({
           <input type="checkbox" name="consent" value="on" />
           <span>{L['form.consent']}</span>
         </label>
-        <Err k="consent" />
+        {err("consent")}
         <p className="kf-privacy">{L['form.privacy']}</p>
 
         {siteKey && <div className="cf-turnstile" data-sitekey={siteKey} data-theme="auto" />}

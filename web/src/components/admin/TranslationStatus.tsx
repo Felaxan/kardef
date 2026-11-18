@@ -36,7 +36,7 @@ export const TranslationStatus = ({ enabled }: { enabled?: boolean }) => {
     <div className={`kd-tr-zza is-${zza}`}>
       <span>Kirmanckî (Zazaca)</span>
       <small>{zza === 'yes' ? 'elle girildi' : zza === 'no' ? 'eksik · elle girilecek' : 'elle girilir'}</small>
-      <p className="kd-tr-note">Zazaca otomatik çevrilmez. Sağ üstteki dil seçiciden Kirmanckî'yi seçip metni elle girin; girilmezse sitede Türkçesi görünür.</p>
+      <p className="kd-tr-note">Zazaca otomatik çevrilmez. Sağ üstteki dil seçiciden Kirmanckî’yi seçip metni elle girin; girilmezse sitede Türkçesi görünür.</p>
     </div>
   )
 

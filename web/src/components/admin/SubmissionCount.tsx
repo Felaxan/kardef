@@ -1,5 +1,6 @@
 'use client'
 import { useAuth } from '@payloadcms/ui'
+import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 
 /** Menünün üstünde: bekleyen yeni katkı sayısı (yalnızca editör ve yönetici görür) */
@@ -23,9 +24,9 @@ export const SubmissionCount = () => {
 
   if (!allowed || count === 0) return null
   return (
-    <a className="kd-subcount" href="/admin/collections/submissions?where[status][equals]=new">
+    <Link className="kd-subcount" href="/admin/collections/submissions?where[status][equals]=new">
       <span className="kd-subcount-n">{count}</span>
       <span>yeni arşiv katkısı bekliyor</span>
-    </a>
+    </Link>
   )
 }

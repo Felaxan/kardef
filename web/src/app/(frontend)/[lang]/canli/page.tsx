@@ -16,6 +16,7 @@ export async function generateMetadata({ params }: P) {
 }
 
 const css = (v: Record<string, string | number>) => v as React.CSSProperties
+const isFuture = (iso?: string | null) => Boolean(iso && new Date(iso).getTime() > Date.now())
 
 export default async function LivePage({ params }: P) {
   const { lang } = await params
@@ -24,7 +25,7 @@ export default async function LivePage({ params }: P) {
   const payload = await cms()
   const live = await payload.findGlobal({ slug: 'live', locale: loc(lang), depth: 0 })
   const id = live.isLive ? youTubeId(live.url) : null
-  const upcoming = live.next?.date && new Date(live.next.date).getTime() > Date.now() ? live.next : null
+  const upcoming = isFuture(live.next?.date) ? live.next : null
   const past = (live.past ?? []).map((p) => ({ ...p, yt: youTubeId(p.url) })).filter((p) => p.yt)
 
   return (
