@@ -37,20 +37,39 @@ export function parseRates(json: unknown): Rate[] {
   return out
 }
 
+/**
+  Metin yanıtı çözer. Kaynak bazen yanıtı yarıda kesiyor (geçersiz JSON);
+  o zaman gereken kalemler metinden tek tek çıkarılır. Biri bile eksikse boş liste.
+*/
+export function parseRatesText(text: string): { rates: Rate[]; updatedAt?: string } {
+  const stamp = (raw?: string) => (raw ? raw.replace(' ', 'T') + '+03:00' : undefined)
+  try {
+    const json = JSON.parse(text) as { Update_Date?: string }
+    return { rates: parseRates(json), updatedAt: stamp(json?.Update_Date) }
+  } catch {
+    const picked: Record<string, unknown> = {}
+    for (const src of Object.values(KEY_MAP)) {
+      const m = text.match(new RegExp(String.raw`"${src}"\s*:\s*(\{[^{}]*\})`))
+      if (!m) return { rates: [] }
+      try { picked[src] = JSON.parse(m[1]) } catch { return { rates: [] } }
+    }
+    const date = text.match(/"Update_Date"\s*:\s*"([^"]+)"/)?.[1]
+    return { rates: parseRates(picked), updatedAt: stamp(date) }
+  }
+}
+
 /** Son iyi veriyi hatırlayan önbellek: kaynak hata verirse son iyi veri, hiç yoksa null */
-export function createRatesCache(load: () => Promise<unknown>) {
+export function createRatesCache(load: () => Promise<unknown>, onError?: (e: unknown) => void) {
   let last: RatesData | null = null
   return {
     async get(): Promise<RatesData | null> {
       try {
-        const json = await load()
-        const rates = parseRates(json)
-        if (rates.length) {
-          const raw = (json as { Update_Date?: string }).Update_Date
-          last = { rates, updatedAt: raw ? raw.replace(' ', 'T') + '+03:00' : new Date().toISOString() }
-        }
-      } catch {
+        const body = await load()
+        const parsed = typeof body === 'string' ? parseRatesText(body) : parseRatesText(JSON.stringify(body))
+        if (parsed.rates.length) last = { rates: parsed.rates, updatedAt: parsed.updatedAt ?? new Date().toISOString() }
+      } catch (e) {
         // kaynak çöktü: son iyi veri kalır
+        onError?.(e)
       }
       return last
     },

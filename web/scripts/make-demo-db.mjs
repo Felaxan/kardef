@@ -1,5 +1,5 @@
 // Yerel veritabanından maket kopyası üretir: demo/kardef-demo.db + demo/media
-// Kullanıcıların e-posta ve şifre bilgileri kopyada silinir.
+// Kullanıcıların e-posta ve şifre bilgileri ile ziyaretçi gönderileri kopyada silinir.
 // Çalıştırma (web klasöründe): node scripts/make-demo-db.mjs
 import { createClient } from '@libsql/client'
 import fs from 'fs'
@@ -28,13 +28,20 @@ await db.batch([
   'DELETE FROM payload_preferences',
   'DELETE FROM payload_locked_documents_rels',
   'DELETE FROM payload_locked_documents',
+  // Ziyaretçi gönderileri kişisel veri içerir: makete girmez
+  'DELETE FROM submissions_rels',
+  'DELETE FROM submissions',
+  'DELETE FROM submission_files',
 ])
 await db.execute('VACUUM')
 db.close()
 
-const mediaSrc = path.join(root, 'media')
-const mediaOut = path.join(outDir, 'media')
-fs.rmSync(mediaOut, { recursive: true, force: true })
-if (fs.existsSync(mediaSrc)) fs.cpSync(mediaSrc, mediaOut, { recursive: true })
+// Medya ve reklam görselleri (ziyaretçi gönderileri klasörü kopyalanmaz)
+for (const dir of ['media', 'ad-images']) {
+  const from = path.join(root, dir)
+  const to = path.join(outDir, dir)
+  fs.rmSync(to, { recursive: true, force: true })
+  if (fs.existsSync(from)) fs.cpSync(from, to, { recursive: true })
+}
 
-console.log('Maket hazır:', path.relative(root, out), '+', path.relative(root, mediaOut))
+console.log('Maket hazır:', path.relative(root, out), '+ demo/media + demo/ad-images')

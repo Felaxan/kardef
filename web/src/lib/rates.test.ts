@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
 import { test } from 'node:test'
-import { createRatesCache, num, parseRates, RATE_KEYS } from './rates'
+import { createRatesCache, num, parseRates, parseRatesText, RATE_KEYS } from './rates'
 
 const FIXTURE = {
   Update_Date: '2026-11-18 16:45:03',
@@ -49,4 +49,30 @@ test('kaynak çökerse son iyi veri kullanılır, hiç yoksa null', async () => 
 
   const empty = createRatesCache(async () => { throw new Error('yok') })
   assert.equal(await empty.get(), null)
+})
+
+test('yarıda kesilmiş yanıttan kalemler kurtarılır', () => {
+  const full = JSON.stringify({ ...FIXTURE, XPD: { Buying: 1555.2, Type: 'Palladium', Name: 'GRAMPALADYUM', Selling: 1559.21, Change: 0.4 } })
+  const cut = full.slice(0, full.length - 14)
+  assert.throws(() => JSON.parse(cut))
+  const r = parseRatesText(cut)
+  assert.equal(r.rates.length, 7)
+  assert.equal(r.rates.find((x) => x.key === 'eur')?.sell, 55.3965)
+  assert.equal(r.updatedAt, '2026-11-18T16:45:03+03:00')
+})
+
+test('boşluklu ve kesik yanıt da çözülür', () => {
+  const spaced = JSON.stringify({ ...FIXTURE, XAG: { Selling: 70 } }, null, 2)
+  assert.equal(parseRatesText(spaced.slice(0, -8)).rates.length, 7)
+})
+
+test('kesik yanıtta bir kalem eksikse hiç gösterilmez', () => {
+  const full = JSON.stringify(FIXTURE)
+  const cut = full.slice(0, full.indexOf('"GBP"') + 8)
+  assert.equal(parseRatesText(cut).rates.length, 0)
+})
+
+test('önbellek metin yanıtını da işler', async () => {
+  const cache = createRatesCache(async () => JSON.stringify({ ...FIXTURE, XAG: { Selling: 70, Change: 1 } }).slice(0, -6))
+  assert.equal((await cache.get())?.rates.length, 7)
 })
