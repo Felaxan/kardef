@@ -2,6 +2,8 @@
 
 export const MAX_FILES = 10
 export const MAX_FILE_BYTES = 50 * 1024 * 1024
+/** İstek gövdesi üst sınırı: 10 × 50 MB + form alanları için pay */
+export const MAX_BODY_BYTES = MAX_FILES * MAX_FILE_BYTES + 2 * 1024 * 1024
 export const SUBMISSION_KINDS = ['photo', 'audio', 'video', 'document', 'other'] as const
 export type SubmissionKind = (typeof SUBMISSION_KINDS)[number]
 
@@ -35,8 +37,8 @@ export function validateSubmission(fields: Record<string, string | undefined>, f
   if (!filled(fields.description)) errors.push('description')
   if (!fields.consent) errors.push('consent')
 
-  if (files.length === 0 && !filled(fields.link)) errors.push('files.none')
-  else if (files.length > MAX_FILES) errors.push('files.count')
+  // Dosya şart değil: yalnızca yazılı bir anı da gönderilebilir
+  if (files.length > MAX_FILES) errors.push('files.count')
   else if (files.some((f) => f.size > MAX_FILE_BYTES)) errors.push('files.size')
   else if (files.some((f) => !isAllowedFile(f))) errors.push('files.type')
 
@@ -57,4 +59,26 @@ export function createRateLimiter(max: number, windowMs: number) {
     if (hits.size > 5000) for (const [k, v] of hits) if (!v.some((t) => now - t < windowMs)) hits.delete(k)
     return true
   }
+}
+
+/** Content-Length sınırı aşıyor mu? (gövde okunmadan önce) */
+export function bodyTooLarge(contentLength: string | null): boolean {
+  const n = Number(contentLength)
+  return Number.isFinite(n) && n > MAX_BODY_BYTES
+}
+
+/**
+  Ziyaretçi IP'si: yalnızca kendi sunucumuzun koyduğu başlık okunur.
+  Varsayılan x-real-ip (nginx bunu her istekte üzerine yazar). Cloudflare arkasında
+  TRUSTED_IP_HEADER=cf-connecting-ip yapılır. İstemcinin kendi yazdığı başlıklara güvenilmez.
+*/
+export function clientIp(headers: Headers, trusted: string | undefined): string {
+  const name = (trusted || 'x-real-ip').toLowerCase()
+  return headers.get(name)?.split(',')[0]?.trim() || 'bilinmiyor'
+}
+
+/** Turnstile: iki anahtar da varsa açık, hiçbiri yoksa kapalı, biri eksikse ayar hatası */
+export function turnstileMode(env: Record<string, string | undefined>): 'on' | 'off' | 'misconfigured' {
+  const s = Boolean(env.TURNSTILE_SECRET), k = Boolean(env.NEXT_PUBLIC_TURNSTILE_SITEKEY)
+  return s && k ? 'on' : !s && !k ? 'off' : 'misconfigured'
 }

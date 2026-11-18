@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
 import { test } from 'node:test'
-import { createRateLimiter, MAX_FILE_BYTES, MAX_FILES, validateSubmission } from './submission'
+import { bodyTooLarge, clientIp, createRateLimiter, MAX_BODY_BYTES, MAX_FILE_BYTES, MAX_FILES, turnstileMode, validateSubmission } from './submission'
 
 const ok = { name: 'Ali Veli', phone: '05551112233', email: '', description: '1972 düğününden fotoğraf', consent: 'on' }
 const photo = { name: 'foto.jpg', type: 'image/jpeg', size: 2_000_000 }
@@ -29,9 +29,8 @@ test('geçersiz e-posta iletişim hatası', () => {
   assert.deepEqual(!r.ok && r.errors, ['contact'])
 })
 
-test('ne dosya ne bağlantı varsa hata', () => {
-  const r = validateSubmission(ok, [])
-  assert.deepEqual(!r.ok && r.errors, ['files.none'])
+test('dosyasız, yalnızca yazılı anı da kabul edilir', () => {
+  assert.deepEqual(validateSubmission(ok, []), { ok: true })
 })
 
 test('dosya sayısı, boyutu ve türü denetlenir', () => {
@@ -58,4 +57,26 @@ test('aynı adresten saatte en fazla 5 gönderim', () => {
   assert.equal(limit('1.2.3.4', t0 + 10), false)
   assert.equal(limit('5.6.7.8', t0 + 10), true)
   assert.equal(limit('1.2.3.4', t0 + 60 * 60 * 1000 + 1), true)
+})
+
+test('istek gövdesi sınırı: 10 × 50 MB + pay', () => {
+  assert.ok(MAX_BODY_BYTES >= MAX_FILES * MAX_FILE_BYTES)
+  assert.equal(bodyTooLarge(String(MAX_BODY_BYTES + 1)), true)
+  assert.equal(bodyTooLarge(String(1000)), false)
+  assert.equal(bodyTooLarge(null), false)
+  assert.equal(bodyTooLarge('abc'), false)
+})
+
+test('IP yalnızca güvenilen başlıktan okunur', () => {
+  const h = new Headers({ 'cf-connecting-ip': '6.6.6.6', 'x-forwarded-for': '7.7.7.7, 10.0.0.1', 'x-real-ip': '8.8.8.8' })
+  assert.equal(clientIp(h, undefined), '8.8.8.8')
+  assert.equal(clientIp(h, 'cf-connecting-ip'), '6.6.6.6')
+  assert.equal(clientIp(new Headers({ 'cf-connecting-ip': '6.6.6.6' }), undefined), 'bilinmiyor')
+})
+
+test('Turnstile modu', () => {
+  assert.equal(turnstileMode({}), 'off')
+  assert.equal(turnstileMode({ TURNSTILE_SECRET: 's', NEXT_PUBLIC_TURNSTILE_SITEKEY: 'k' }), 'on')
+  assert.equal(turnstileMode({ TURNSTILE_SECRET: 's' }), 'misconfigured')
+  assert.equal(turnstileMode({ NEXT_PUBLIC_TURNSTILE_SITEKEY: 'k' }), 'misconfigured')
 })

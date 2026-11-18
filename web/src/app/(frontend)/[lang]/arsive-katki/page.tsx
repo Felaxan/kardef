@@ -6,6 +6,7 @@ import { DEMO } from '@/demo'
 import { isLang, t } from '@/i18n/ui'
 import { cms } from '@/lib/cms'
 import { FORM } from '@/i18n/form'
+import { turnstileMode } from '@/lib/submission'
 
 export const dynamic = 'force-dynamic'
 type P = { params: Promise<{ lang: string }> }
@@ -37,7 +38,7 @@ export default async function ContributePage({ params }: P) {
           labels={labels}
           kindLabels={kindLabels}
           villages={villages.docs.map((v) => ({ id: v.id as number, name: v.name }))}
-          siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITEKEY || undefined}
+          siteKey={turnstileMode(process.env) === 'on' ? process.env.NEXT_PUBLIC_TURNSTILE_SITEKEY : undefined}
           demo={DEMO}
         />
       </div>

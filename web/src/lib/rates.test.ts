@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
 import { test } from 'node:test'
-import { createRatesCache, num, parseRates, parseRatesText, RATE_KEYS } from './rates'
+import { createRatesCache, createSwr, num, parseRates, parseRatesText, RATE_KEYS } from './rates'
 
 const FIXTURE = {
   Update_Date: '2026-11-18 16:45:03',
@@ -75,4 +75,37 @@ test('kesik yanıtta bir kalem eksikse hiç gösterilmez', () => {
 test('önbellek metin yanıtını da işler', async () => {
   const cache = createRatesCache(async () => JSON.stringify({ ...FIXTURE, XAG: { Selling: 70, Change: 1 } }).slice(0, -6))
   assert.equal((await cache.get())?.rates.length, 7)
+})
+
+test('kur verisi beklemeden döner, yenileme arka planda yapılır', async () => {
+  let t = 0
+  let calls = 0
+  let release: (v: number) => void = () => {}
+  const swr = createSwr<number>(() => { calls++; return new Promise((r) => { release = r }) }, 1000, () => t)
+
+  assert.equal(swr.get(), null) // ilk istek: veri yok, beklemez
+  assert.equal(calls, 1)
+  release(5)
+  await new Promise((r) => setTimeout(r, 0))
+  assert.equal(swr.get(), 5)
+
+  t = 2000 // süre doldu
+  assert.equal(swr.get(), 5) // eski veri hemen döner
+  assert.equal(calls, 2)
+  assert.equal(swr.get(), 5) // yenileme sürerken ikinci istek kaynağa gitmez
+  assert.equal(calls, 2)
+  release(7)
+  await new Promise((r) => setTimeout(r, 0))
+  assert.equal(swr.get(), 7)
+})
+
+test('yenileme hata verirse eski veri kalır', async () => {
+  let t = 0
+  let fail = false
+  const swr = createSwr<number>(async () => { if (fail) throw new Error('x'); return 3 }, 1000, () => t)
+  swr.get(); await new Promise((r) => setTimeout(r, 0))
+  fail = true; t = 5000
+  assert.equal(swr.get(), 3)
+  await new Promise((r) => setTimeout(r, 0))
+  assert.equal(swr.get(), 3)
 })

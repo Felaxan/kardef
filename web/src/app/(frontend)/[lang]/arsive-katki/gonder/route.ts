@@ -1,6 +1,6 @@
 import { DEMO } from '@/demo'
 import { cms } from '@/lib/cms'
-import { createRateLimiter, SUBMISSION_KINDS, validateSubmission, type FileInfo } from '@/lib/submission'
+import { bodyTooLarge, clientIp, createRateLimiter, SUBMISSION_KINDS, turnstileMode, validateSubmission, type FileInfo } from '@/lib/submission'
 
 /*
   Arşive katkı formu gönderimi (ziyaretçi).
@@ -9,15 +9,17 @@ import { createRateLimiter, SUBMISSION_KINDS, validateSubmission, type FileInfo 
 
 const limit = createRateLimiter(5, 60 * 60 * 1000)
 
-const clientIp = (req: Request) =>
-  req.headers.get('cf-connecting-ip') ||
-  req.headers.get('x-real-ip') ||
-  req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
-  'yerel'
-
+let warned = false
 async function turnstileOk(token: string | null, ip: string): Promise<boolean> {
-  const secret = process.env.TURNSTILE_SECRET
-  if (!secret) return true // anahtar yoksa (geliştirme) atlanır
+  const mode = turnstileMode(process.env)
+  if (mode !== 'on') {
+    if (!warned && (mode === 'misconfigured' || process.env.NODE_ENV === 'production')) {
+      warned = true
+      console.warn(`[arşive katkı] Turnstile ${mode === 'off' ? 'kapalı' : 'eksik ayarlı (iki anahtar da gerekli)'}; robot doğrulaması atlanıyor`)
+    }
+    return true
+  }
+  const secret = process.env.TURNSTILE_SECRET as string
   if (!token) return false
   try {
     const res = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
@@ -37,7 +39,11 @@ const str = (v: FormDataEntryValue | null, max = 2000) => (typeof v === 'string'
 export async function POST(req: Request) {
   if (DEMO) return Response.json({ ok: false, errors: ['demo'] }, { status: 403 })
 
-  const ip = clientIp(req)
+  // Gövde okunmadan önce boyut sınırı (bellek taşmasın)
+  if (bodyTooLarge(req.headers.get('content-length'))) {
+    return Response.json({ ok: false, errors: ['files.size'] }, { status: 413 })
+  }
+  const ip = clientIp(req.headers, process.env.TRUSTED_IP_HEADER)
   if (!limit(ip, Date.now())) return Response.json({ ok: false, errors: ['rate'] }, { status: 429 })
 
   let form: FormData
@@ -84,7 +90,7 @@ export async function POST(req: Request) {
       const doc = await payload.create({
         collection: 'submission-files',
         data: {},
-        file: { data: Buffer.from(await f.arrayBuffer()), mimetype: f.type, name: f.name, size: f.size },
+        file: { data: Buffer.from(new Uint8Array(await f.arrayBuffer())), mimetype: f.type, name: f.name, size: f.size },
         overrideAccess: true,
       })
       fileIds.push(doc.id)

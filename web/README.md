@@ -97,6 +97,12 @@ kopyadan gelir, yönetim paneli ve içerik yazma kapalıdır. Ortam değişkeni 
 
 ## Sunucuya geçerken
 
+- **Veritabanı şeması:** geliştirmede şema kendiliğinden güncellenir (push), canlıda güncellenmez.
+  Yayına çıkmadan önce `npm run payload migrate:create` ile başlangıç geçişi oluşturulmalı ve
+  her dağıtımda `npm run payload migrate` çalıştırılmalı (reklam, katkı, canlı yayın tabloları ve `zza` dili için şart).
+- **Arşive katkı formu:** nginx'te `client_max_body_size 520m;` ve `proxy_set_header X-Real-IP $remote_addr;`
+  olmalı. Cloudflare Turnstile anahtarları `.env`'e girilmeli (bkz. `.env.example`).
+
 - Veritabanı: `@payloadcms/db-sqlite` yerine `@payloadcms/db-postgres` (payload.config.ts'te tek satır).
 - Medya: `media/` klasörü yedeklenmeli ya da S3/R2 depolama eklentisi kullanılmalı.
 - E-posta: şifre sıfırlama için bir e-posta bağdaştırıcısı (ör. SMTP / Brevo) eklenmeli.

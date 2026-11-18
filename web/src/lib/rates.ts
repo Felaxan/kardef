@@ -75,3 +75,25 @@ export function createRatesCache(load: () => Promise<unknown>, onError?: (e: unk
     },
   }
 }
+
+/**
+  Beklemeyen önbellek (stale-while-revalidate): get() her zaman eldekini hemen döner;
+  süre dolduysa arka planda tek bir yenileme başlatır. Yenileme hata verirse eski veri kalır.
+*/
+export function createSwr<T>(load: () => Promise<T | null>, ttl: number, now: () => number = Date.now) {
+  let value: T | null = null
+  let at = -Infinity
+  let pending = false
+  return {
+    get(): T | null {
+      if (!pending && now() - at >= ttl) {
+        pending = true
+        load()
+          .then((v) => { if (v != null) value = v })
+          .catch(() => {})
+          .finally(() => { at = now(); pending = false })
+      }
+      return value
+    },
+  }
+}
