@@ -69,6 +69,7 @@ export default buildConfig({
     locales: [
       { code: 'tr', label: 'Türkçe' },
       { code: 'ku', label: 'Kurdî' },
+      { code: 'zza', label: 'Kirmanckî (Zazakî)' },
       { code: 'en', label: 'English' },
       { code: 'de', label: 'Deutsch' },
       { code: 'nl', label: 'Nederlands' },

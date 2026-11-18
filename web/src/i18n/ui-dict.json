@@ -539,6 +539,49 @@
    "foot.photos": "Photos",
    "foot.rights": "Les documents d'archives sont publiés avec autorisation.",
    "totop": "Haut de page"
+  },
+  "zza": {
+   "_note": "Zazaca taslak — Zazaca bilen biri kontrol etmeli",
+   "skip": "Şo zerreyê pelî",
+   "top.fs": "Gırdiya nuşteyî",
+   "top.theme": "Tema roşne / tarî",
+   "brand.tag": "Platformê Xeber û Arşîwî",
+   "search.ph": "Xeber, dewe, name yan serre bigêre",
+   "search.btn": "Bigêre",
+   "cta.katki": "Arşîwî rê destek bide",
+   "nav.gundem": "Rojev",
+   "nav.haberler": "Xeberî",
+   "nav.etkinlikler": "Aktîvîteyî",
+   "nav.duyurular": "Daxuyanî",
+   "nav.arsiv": "Arşîw",
+   "nav.sozlu": "Tarîxo Fekkî",
+   "nav.koyler": "Dewî",
+   "nav.kurumlar": "Dezgehî",
+   "ticker": "Deqîqaya peyêne",
+   "side.latest": "Peyênî ke ameyî",
+   "more.all": "Hemîne bivîne",
+   "sec.gundem": "Rojev",
+   "ev.all": "Hemî",
+   "ev.online": "Serxet",
+   "arc.kicker": "Arşîw",
+   "type.photo": "Fotograf",
+   "type.doc": "Belge",
+   "type.audio": "Qeydê vengî",
+   "type.video": "Video",
+   "type.oral": "Tarîxo fekkî",
+   "not.title": "Daxuyanî",
+   "not.all": "Daxuyanîyî hemî",
+   "cat.vefat": "Merdene",
+   "cat.burs": "Burs",
+   "cat.toplanti": "Kombîyayîş",
+   "cat.yardim": "Ardim",
+   "cat.uyelik": "Endamîye",
+   "vil.title": "Rehberê dewan",
+   "vil.btn": "Bıvîne",
+   "org.title": "Dezgehê ma",
+   "join.b2": "Abone be",
+   "foot.iletisim": "Têkilî",
+   "totop": "Şo serî"
   }
  },
  "ku": {
@@ -564,6 +607,31 @@
    "Pêncşem",
    "În",
    "Şemî"
+  ]
+ },
+ "zza": {
+  "months": [
+   "Çele",
+   "Sibat",
+   "Adar",
+   "Nîsane",
+   "Gulane",
+   "Heziran",
+   "Temuz",
+   "Tebax",
+   "Keşkelun",
+   "Tışrino Verên",
+   "Tışrino Peyên",
+   "Kanûn"
+  ],
+  "days": [
+   "Bazar",
+   "Dışeme",
+   "Sêşeme",
+   "Çarşeme",
+   "Pancşeme",
+   "Êne",
+   "Şeme"
   ]
  }
 }

@@ -14,7 +14,8 @@
     "seed": "cross-env NODE_OPTIONS=--no-deprecation payload run src/seed/index.ts",
     "seed:enrich": "cross-env NODE_OPTIONS=--no-deprecation payload run src/seed/enrich-run.ts",
     "translate:all": "cross-env NODE_OPTIONS=--no-deprecation payload run src/translate/all.ts",
-    "lint": "cross-env NODE_OPTIONS=--no-deprecation eslint ."
+    "lint": "cross-env NODE_OPTIONS=--no-deprecation eslint .",
+    "test": "tsx --test \"src/**/*.test.ts\""
   },
   "engines": {
     "node": ">=20.18.1"

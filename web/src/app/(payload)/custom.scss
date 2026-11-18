@@ -836,3 +836,20 @@ a.nav__link:hover::before,
   line-height: 1.5;
   color: var(--theme-elevation-600);
 }
+.kd-tr-zza {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 4px 8px;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px dashed var(--theme-elevation-150);
+  font-size: 13px;
+  font-weight: 600;
+  &::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: var(--theme-elevation-250); }
+  small { font-weight: 500; font-size: 12px; color: var(--theme-elevation-500); }
+  .kd-tr-note { grid-column: 1 / -1; font-weight: 400; }
+  &.is-yes::before { background: #2f9e5b; }
+  &.is-no::before { background: #d98a1f; }
+  &.is-no small { color: #b86e0c; }
+}

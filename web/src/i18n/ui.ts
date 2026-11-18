@@ -1,16 +1,16 @@
 import base from './ui-dict.json'
 
-export const LOCALES = ['tr', 'ku', 'en', 'de', 'nl', 'fr'] as const
+export const LOCALES = ['tr', 'ku', 'zza', 'en', 'de', 'nl', 'fr'] as const
 export type Lang = (typeof LOCALES)[number]
 export const DEFAULT_LANG: Lang = 'tr'
 export const isLang = (v: string): v is Lang => (LOCALES as readonly string[]).includes(v)
 
 export const LANG_NAMES: Record<Lang, string> = {
-  tr: 'Türkçe', ku: 'Kurdî', en: 'English', de: 'Deutsch', nl: 'Nederlands', fr: 'Français',
+  tr: 'Türkçe', ku: 'Kurdî', zza: 'Kirmanckî (Zazakî)', en: 'English', de: 'Deutsch', nl: 'Nederlands', fr: 'Français',
 }
 
 /* Prototipte olmayan, sitenin yeni sayfaları için eklenen metinler */
-const extra: Record<Lang, Record<string, string>> = {
+const extra: Partial<Record<Lang, Record<string, string>>> & Record<'tr', Record<string, string>> = {
   tr: {
     'search.results': 'Arama sonuçları', 'search.none': 'Sonuç bulunamadı.', 'back.home': 'Ana sayfaya dön',
     related: 'Diğer haberler', 'ev.when': 'Ne zaman', 'ev.where': 'Nerede', 'ev.register': 'Kayıt', 'ev.join': 'Katılım bağlantısı',
@@ -89,7 +89,7 @@ const dict = base.dict as Record<Lang, Record<string, string>>
 
 /** Arayüz metni: seçilen dil, yoksa Türkçe */
 export const t = (lang: Lang, key: string): string =>
-  extra[lang][key] ?? dict[lang]?.[key] ?? extra.tr[key] ?? dict.tr[key] ?? key
+  extra[lang]?.[key] ?? dict[lang]?.[key] ?? extra.tr[key] ?? dict.tr[key] ?? key
 
 /** Dönem adı: 1960'lar, 1960s, 1960er... */
 export function decadeLabel(lang: Lang, y: number): string {
@@ -100,6 +100,7 @@ export function decadeLabel(lang: Lang, y: number): string {
       return `${y}${y === 2000 ? "'ler" : lar}`
     }
     case 'ku': return `Salên ${y}an`
+    case 'zza': return `Serranê ${y}an`
     case 'en': return `${y}s`
     case 'de': return `${y}er`
     case 'nl': return y < 2000 ? `jaren '${String(y).slice(2)}` : `jaren ${y}`
@@ -107,16 +108,19 @@ export function decadeLabel(lang: Lang, y: number): string {
   }
 }
 
-const LOCALE_TAG: Record<Exclude<Lang, 'ku'>, string> = { tr: 'tr-TR', en: 'en-GB', de: 'de-DE', nl: 'nl-NL', fr: 'fr-FR' }
-const KU = base.ku as { months: string[]; days: string[] }
+const LOCALE_TAG: Record<Exclude<Lang, 'ku' | 'zza'>, string> = { tr: 'tr-TR', en: 'en-GB', de: 'de-DE', nl: 'nl-NL', fr: 'fr-FR' }
+type Names = { months: string[]; days: string[] }
+/** Intl'de olmayan diller: ay ve gün adları elle */
+const MANUAL: Partial<Record<Lang, Names>> = { ku: base.ku as Names, zza: (base as { zza?: Names }).zza }
 const cap = (s: string, loc: string) => (s ? s.charAt(0).toLocaleUpperCase(loc) + s.slice(1) : s)
 
 type Kind = 'full' | 'date' | 'dm' | 'month' | 'weekday' | 'time' | 'datetime'
-/** Tarihleri seçilen dile göre yazar (Kurmancî elle). Saat dilimi: Türkiye. */
+/** Tarihleri seçilen dile göre yazar (Kurmancî ve Zazaca elle). Saat dilimi: Türkiye. */
 export function fmt(lang: Lang, input: string | Date | null | undefined, kind: Kind = 'date', tz = 'Europe/Istanbul'): string {
   if (!input) return ''
   const d = typeof input === 'string' ? new Date(input) : input
-  if (lang === 'ku') {
+  const KU = MANUAL[lang]
+  if (KU) {
     const parts = new Intl.DateTimeFormat('en-GB', { timeZone: tz, day: 'numeric', month: 'numeric', year: 'numeric', weekday: 'short', hour: '2-digit', minute: '2-digit', hour12: false }).formatToParts(d)
     const get = (t: string) => parts.find((p) => p.type === t)?.value ?? ''
     const day = +get('day'), m = +get('month') - 1, year = get('year')
@@ -132,7 +136,7 @@ export function fmt(lang: Lang, input: string | Date | null | undefined, kind: K
       default: return `${day} ${KU.months[m]} ${year}`
     }
   }
-  const loc = LOCALE_TAG[lang]
+  const loc = LOCALE_TAG[lang as keyof typeof LOCALE_TAG]
   const o: Intl.DateTimeFormatOptions =
     kind === 'full' ? { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }
     : kind === 'dm' ? { day: 'numeric', month: 'long' }

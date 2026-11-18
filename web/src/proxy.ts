@@ -1,7 +1,7 @@
 import { NextResponse, type NextRequest } from 'next/server'
 import { DEMO } from './demo'
 
-const LANGS = ['tr', 'ku', 'en', 'de', 'nl', 'fr']
+const LANGS = ['tr', 'ku', 'zza', 'en', 'de', 'nl', 'fr']
 const PANEL_COOKIE = 'payload-lng'
 
 /*
