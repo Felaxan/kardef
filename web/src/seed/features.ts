@@ -41,6 +41,28 @@ async function bannerPng(w: number, h: number, bg: string, line1: string, line2:
   return sharp(Buffer.from(svg)).png().toBuffer()
 }
 
+/** Sol ve sağ kenar reklam yerleri (geniş ekran, dikey) — yoksa eklenir */
+async function seedRails(payload: Payload) {
+  for (const [key, name, bg, l1, l2] of [
+    ['left', 'Sol kenar', '#C8161D', 'Reklam alanı', 'Sol kenar · 160×600'],
+    ['right', 'Sağ kenar', '#5E2B8C', 'Reklam alanı', 'Sağ kenar · 160×600'],
+  ] as const) {
+    const have = await payload.find({ collection: 'ad-slots', where: { key: { equals: key } }, limit: 1, depth: 0, overrideAccess: true })
+    if (have.totalDocs) continue
+    const image = await payload.create({
+      collection: 'ad-images',
+      data: { alt: `${l1} — ${l2}` },
+      file: { data: await bannerPng(320, 1200, bg, l1, l2), mimetype: 'image/png', name: `ornek-reklam-${key}.png`, size: 0 },
+      overrideAccess: true,
+    })
+    await payload.create({
+      collection: 'ad-slots', overrideAccess: true,
+      data: { name, key, seconds: 8, enabled: true, ads: [{ advertiser: `Örnek ${name.toLocaleLowerCase('tr')} reklamı`, image: image.id, link: '/tr/kurumlar', active: true }] },
+    })
+    payload.logger.info(`${name} reklam yeri eklendi`)
+  }
+}
+
 async function seedAds(payload: Payload) {
   const have = await payload.find({ collection: 'ad-slots', limit: 10, depth: 0, overrideAccess: true })
   if (have.totalDocs > 0) return
@@ -84,6 +106,7 @@ async function seedLive(payload: Payload) {
 
 export async function seedFeatures(payload: Payload) {
   await seedAds(payload)
+  await seedRails(payload)
   await seedLive(payload)
 
   const village = (await payload.find({ collection: 'villages', limit: 1, depth: 0 })).docs[0]

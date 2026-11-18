@@ -1,6 +1,7 @@
 /* Reklam seçme kuralları (sunucu ve istemci ortak, saf fonksiyonlar) */
 
-export type AdSlotKey = 'top' | 'feed' | 'side'
+export const AD_SLOT_KEYS = ['top', 'feed', 'side', 'left', 'right'] as const
+export type AdSlotKey = (typeof AD_SLOT_KEYS)[number]
 
 export type Ad = {
   image: string

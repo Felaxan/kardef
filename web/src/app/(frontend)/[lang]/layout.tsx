@@ -94,6 +94,8 @@ export default async function SiteLayout({ children, params }: { children: React
         <ScrollChrome lang={lang} items={navItems(lang, Boolean(live.isLive && live.url))} cta={t(lang, 'cta.katki')} totop={t(lang, 'totop')} siteName={siteName} />
         <main id="main">
           <AdPlacement slot="top" lang={lang} className="wrap ad-wrap ad-wrap--top" />
+          <AdPlacement slot="left" lang={lang} className="ad-rail ad-rail--left" />
+          <AdPlacement slot="right" lang={lang} className="ad-rail ad-rail--right" />
           {children}
         </main>
         <Footer lang={lang} siteName={siteName} note={settings.footerNote || t(lang, 'foot.about')} credits={credits.length ? [`Wikimedia Commons — ${credits.join(', ')}`] : []} />

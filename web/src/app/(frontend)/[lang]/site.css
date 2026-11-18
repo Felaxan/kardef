@@ -692,3 +692,18 @@ a:hover .live-play{transform:scale(1.1)}
 @keyframes kfDraw{to{stroke-dashoffset:0}}
 .kf-done .btn{background:var(--ink);color:var(--bg)}
 @media (max-width:640px){.kf-row{grid-template-columns:1fr}.kf-group{padding:18px}}
+
+/* Sol ve sağ kenar reklamları: yalnızca içeriğin iki yanında yer varken (geniş ekran) */
+.ad-rail{display:none}
+@media (min-width:1700px){
+  .ad-rail{display:block;position:fixed;z-index:20;top:max(130px,calc(50vh - 300px));width:160px;animation:railIn .9s var(--ease-out) .6s both}
+  .ad-rail--left{left:calc(50% - 660px - 184px)}
+  .ad-rail--right{right:calc(50% - 660px - 184px);animation-name:railInR}
+  .ad-rail .ad-item img{max-height:600px;aspect-ratio:160/600;object-fit:cover}
+  .ad-rail .ad-label{top:6px;left:6px}
+  .ad-rail .ad-dots{right:50%;transform:translateX(50%)}
+}
+@keyframes railIn{from{opacity:0;transform:translateX(-24px)}}
+@keyframes railInR{from{opacity:0;transform:translateX(24px)}}
+@media print{.ad-rail{display:none}}
+

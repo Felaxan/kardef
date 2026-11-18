@@ -57,6 +57,8 @@ export const AdSlots: CollectionConfig = {
             { label: 'Üst bant (menünün altı)', value: 'top' },
             { label: 'Haberlerin arası', value: 'feed' },
             { label: 'Haber sayfasının yanı', value: 'side' },
+            { label: 'Sol kenar (geniş ekran, dikey 160×600)', value: 'left' },
+            { label: 'Sağ kenar (geniş ekran, dikey 160×600)', value: 'right' },
           ],
         },
         {

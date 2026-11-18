@@ -754,7 +754,7 @@ export interface SubmissionFile {
 export interface AdSlot {
   id: number;
   name: string;
-  key: 'top' | 'feed' | 'side';
+  key: 'top' | 'feed' | 'side' | 'left' | 'right';
   /**
    * Birden fazla reklam varsa
    */

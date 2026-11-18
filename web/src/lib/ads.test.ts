@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict'
 import { test } from 'node:test'
 import { activeAds, clampSeconds, type Ad } from './ads'
+import { AD_SLOT_KEYS } from './ads'
 
 const now = new Date('2026-12-10T12:00:00Z')
 const ad = (o: Partial<Ad>): Ad => ({ image: '/a.jpg', advertiser: 'X', active: true, ...o })
@@ -47,3 +48,7 @@ test('reklam bağlantısında javascript: ve zararlı şemalar temizlenir', () =
   assert.equal(res[3].link, '/tr/kurumlar')
 })
 
+
+test('sol ve sağ yan reklam yerleri tanımlı', () => {
+  assert.deepEqual([...AD_SLOT_KEYS].sort(), ['feed', 'left', 'right', 'side', 'top'])
+})
