@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import type { Where } from 'payload'
 import React from 'react'
+import { AdPlacement } from '@/components/site/AdPlacement'
 import { FilterTabs, ListHead, Pager, qs } from '@/components/site/List'
 import { fmt, isLang, t, type Lang } from '@/i18n/ui'
 import { cms, isMedia, loc, mediaUrl } from '@/lib/cms'
@@ -68,6 +69,8 @@ export default async function NewsList({ params, searchParams }: P) {
               .filter((tb) => tb.count > 0),
           ]}
         />
+
+        <AdPlacement slot="feed" lang={lang} className="ad-wrap" />
 
         {res.docs.length === 0 && <p className="empty">{L('search.none')}</p>}
 

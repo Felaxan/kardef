@@ -1,6 +1,7 @@
 import { Libre_Franklin, Source_Serif_4 } from 'next/font/google'
 import { notFound } from 'next/navigation'
 import React from 'react'
+import { AdPlacement } from '@/components/site/AdPlacement'
 import { Footer } from '@/components/site/Footer'
 import { Header, navItems, type TickerItem } from '@/components/site/Header'
 import { IconSprite } from '@/components/site/Icons'
@@ -71,7 +72,10 @@ export default async function SiteLayout({ children, params }: { children: React
           notice={home.notice?.enabled ? { text: home.notice.text || '', link: home.notice.link } : null}
         />
         <ScrollChrome lang={lang} items={navItems(lang)} cta={t(lang, 'cta.katki')} totop={t(lang, 'totop')} siteName={siteName} />
-        <main id="main">{children}</main>
+        <main id="main">
+          <AdPlacement slot="top" lang={lang} className="wrap ad-wrap ad-wrap--top" />
+          {children}
+        </main>
         <Footer lang={lang} siteName={siteName} note={settings.footerNote || t(lang, 'foot.about')} credits={credits.length ? [`Wikimedia Commons — ${credits.join(', ')}`] : []} />
         <SmoothScroll />
         <Motion />

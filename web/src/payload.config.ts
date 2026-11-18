@@ -19,6 +19,7 @@ import { Events } from './collections/Events'
 import { Media } from './collections/Media'
 import { Organizations } from './collections/Organizations'
 import { Posts } from './collections/Posts'
+import { AdImages, AdSlots } from './collections/AdSlots'
 import { Users } from './collections/Users'
 import { Villages } from './collections/Villages'
 import { Homepage, SiteSettings } from './globals'
@@ -80,7 +81,7 @@ export default buildConfig({
   },
 
   // Türkçe içerik yayınlanınca diğer dillere otomatik çeviri (src/translate)
-  collections: [Posts, Events, Announcements, ArchiveItems, Villages, Media, Categories, Organizations, Users].map(withAutoTranslate),
+  collections: [Posts, Events, Announcements, ArchiveItems, Villages, Media, Categories, Organizations, AdSlots, AdImages, Users].map(withAutoTranslate),
   globals: [Homepage, SiteSettings].map(withAutoTranslateGlobal),
   editor: lexicalEditor(),
   // Maket modunda giriş kapalı olduğu için anahtar zorunlu değil

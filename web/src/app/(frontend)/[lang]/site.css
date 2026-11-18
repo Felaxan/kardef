@@ -550,3 +550,26 @@ footer{margin-top:72px;background:var(--bg-soft);border-top:1px solid var(--line
   .ticker-view{overflow-x:auto}
   .slide img{transform:none !important}
 }
+
+/* ---------- Reklam yerleri ---------- */
+.ad-wrap{margin-block:28px}
+.ad-wrap--top{margin-block:18px 6px}
+.ad-wrap--side{margin:28px 0 0;max-width:340px}
+.ad{position:relative;border-radius:6px;overflow:hidden;background:var(--bg-soft);isolation:isolate}
+.ad-label{position:absolute;z-index:3;top:8px;left:8px;padding:2px 7px;border-radius:3px;background:rgba(0,0,0,.55);color:#fff;font-size:.625rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;pointer-events:none}
+.ad-stage{position:relative;display:grid}
+.ad-item{grid-area:1/1;opacity:0;visibility:hidden;transform:scale(1.015);transition:opacity .7s var(--ease-out),transform 1.2s var(--ease-out),visibility 0s .7s}
+.ad-item.is-on{opacity:1;visibility:visible;transform:none;transition:opacity .7s var(--ease-out),transform 1.2s var(--ease-out)}
+.ad-item a,.ad-item picture{display:block}
+.ad-item img{display:block;width:100%;height:auto;max-height:180px;object-fit:cover}
+.ad--side .ad-item img{max-height:none;aspect-ratio:4/5}
+.ad-item a{outline-offset:-3px}
+.ad-item a:hover img{filter:brightness(1.04)}
+.ad-dots{position:absolute;z-index:3;right:10px;bottom:10px;display:flex;gap:6px}
+.ad-dots button{width:22px;height:4px;padding:0;border:0;border-radius:2px;background:rgba(255,255,255,.45);cursor:pointer;overflow:hidden}
+.ad-dots button span{display:block;height:100%;width:0;background:#fff}
+.ad-dots button.is-on span{animation:adFill linear forwards}
+.ad:hover .ad-dots button.is-on span{animation-play-state:paused}
+@keyframes adFill{to{width:100%}}
+@media (max-width:640px){.ad-item img{max-height:140px}}
+@media (prefers-reduced-motion: reduce){.ad-item,.ad-item.is-on{transition:opacity .2s;transform:none}.ad-dots button.is-on span{animation:none;width:100%}}

@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
+import { AdPlacement } from '@/components/site/AdPlacement'
 import React from 'react'
 import { ArchiveExplorer, type ArcCard, type DecadeBar } from '@/components/site/ArchiveExplorer'
 import { EventsBlock, type EventCard } from '@/components/site/EventsBlock'
@@ -205,6 +206,8 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
       </section>
 
       {/* Arşiv */}
+      <AdPlacement slot="feed" lang={lang} className="wrap ad-wrap" />
+
       <section className="band" id="arsiv" aria-labelledby="arsiv-baslik">
         <div className="wrap">
           <header className="arc-head">

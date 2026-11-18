@@ -75,6 +75,8 @@ export interface Config {
     media: Media;
     categories: Category;
     organizations: Organization;
+    'ad-slots': AdSlot;
+    'ad-images': AdImage;
     users: User;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
@@ -91,6 +93,8 @@ export interface Config {
     media: MediaSelect<false> | MediaSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     organizations: OrganizationsSelect<false> | OrganizationsSelect<true>;
+    'ad-slots': AdSlotsSelect<false> | AdSlotsSelect<true>;
+    'ad-images': AdImagesSelect<false> | AdImagesSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
@@ -685,6 +689,67 @@ export interface Organization {
   createdAt: string;
 }
 /**
+ * Sitedeki sabit reklam yerleri. Bir yere tek reklam ya da 20'ye kadar reklam koyabilirsiniz; birden fazlaysa seçtiğiniz sürede sırayla döner.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ad-slots".
+ */
+export interface AdSlot {
+  id: number;
+  name: string;
+  key: 'top' | 'feed' | 'side';
+  /**
+   * Birden fazla reklam varsa
+   */
+  seconds?: number | null;
+  enabled?: boolean | null;
+  ads?:
+    | {
+        advertiser: string;
+        link?: string | null;
+        image: number | AdImage;
+        mobileImage?: (number | null) | AdImage;
+        startsAt?: string | null;
+        endsAt?: string | null;
+        active?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Reklam yerlerinde kullanılan görseller.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ad-images".
+ */
+export interface AdImage {
+  id: number;
+  alt?: string | null;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
+  sizes?: {
+    thumbnail?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+  };
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
@@ -739,6 +804,14 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'organizations';
         value: number | Organization;
+      } | null)
+    | ({
+        relationTo: 'ad-slots';
+        value: number | AdSlot;
+      } | null)
+    | ({
+        relationTo: 'ad-images';
+        value: number | AdImage;
       } | null)
     | ({
         relationTo: 'users';
@@ -1051,6 +1124,62 @@ export interface OrganizationsSelect<T extends boolean = true> {
   retranslate?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ad-slots_select".
+ */
+export interface AdSlotsSelect<T extends boolean = true> {
+  name?: T;
+  key?: T;
+  seconds?: T;
+  enabled?: T;
+  ads?:
+    | T
+    | {
+        advertiser?: T;
+        link?: T;
+        image?: T;
+        mobileImage?: T;
+        startsAt?: T;
+        endsAt?: T;
+        active?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ad-images_select".
+ */
+export interface AdImagesSelect<T extends boolean = true> {
+  alt?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  url?: T;
+  thumbnailURL?: T;
+  filename?: T;
+  mimeType?: T;
+  filesize?: T;
+  width?: T;
+  height?: T;
+  focalX?: T;
+  focalY?: T;
+  sizes?:
+    | T
+    | {
+        thumbnail?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
+      };
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

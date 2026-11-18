@@ -27,7 +27,54 @@ async function exists(payload: Payload, collection: 'announcements', slug: strin
   return r.totalDocs > 0
 }
 
+/** Örnek reklam görseli: "Reklamınız burada" banner'ı (sharp ile üretilir) */
+async function bannerPng(w: number, h: number, bg: string, line1: string, line2: string): Promise<Buffer> {
+  const sharp = (await import('sharp')).default
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}">
+    <rect width="100%" height="100%" fill="${bg}"/>
+    <g fill="none" stroke="rgba(255,255,255,.18)" stroke-width="2">
+      ${Array.from({ length: 14 }, (_, i) => `<path d="M${i * 90 - 40} ${h} l${h / 2} -${h / 2} l${h / 2} ${h / 2}"/>`).join('')}
+    </g>
+    <text x="50%" y="${h / 2 - 6}" text-anchor="middle" font-family="Arial, sans-serif" font-weight="800" font-size="${Math.round(Math.min(h / 4.2, w / 12))}" fill="#fff">${line1}</text>
+    <text x="50%" y="${h / 2 + h / 5}" text-anchor="middle" font-family="Arial, sans-serif" font-size="${Math.round(Math.min(h / 9, w / 26))}" fill="rgba(255,255,255,.85)">${line2}</text>
+  </svg>`
+  return sharp(Buffer.from(svg)).png().toBuffer()
+}
+
+async function seedAds(payload: Payload) {
+  const have = await payload.find({ collection: 'ad-slots', limit: 10, depth: 0, overrideAccess: true })
+  if (have.totalDocs > 0) return
+  const img = async (name: string, w: number, h: number, bg: string, l1: string, l2: string) =>
+    payload.create({
+      collection: 'ad-images',
+      data: { alt: `${l1} — ${l2}` },
+      file: { data: await bannerPng(w, h, bg, l1, l2), mimetype: 'image/png', name, size: 0 },
+      overrideAccess: true,
+    })
+  const a = await img('ornek-reklam-1.png', 1600, 200, '#C8161D', 'Reklamınız burada', 'KAR-DEF sitesinde reklam için bize ulaşın')
+  const b = await img('ornek-reklam-2.png', 1600, 200, '#5E2B8C', 'Avrupa\'daki hemşehrilerimize ulaşın', 'AV-KARDEP · reklam alanı')
+  const side = await img('ornek-reklam-yan.png', 800, 1000, '#1f1f22', 'Reklam alanı', 'Haber sayfalarının yanında')
+  await payload.create({
+    collection: 'ad-slots', overrideAccess: true,
+    data: {
+      name: 'Üst bant', key: 'top', seconds: 6, enabled: true,
+      ads: [
+        { advertiser: 'Örnek reklam 1', image: a.id, link: '/tr/kurumlar', active: true },
+        { advertiser: 'Örnek reklam 2', image: b.id, link: '/tr/kurumlar', active: true },
+      ],
+    },
+  })
+  await payload.create({ collection: 'ad-slots', overrideAccess: true, data: { name: 'Haberlerin arası', key: 'feed', seconds: 8, enabled: true, ads: [] } })
+  await payload.create({
+    collection: 'ad-slots', overrideAccess: true,
+    data: { name: 'Haber sayfasının yanı', key: 'side', seconds: 8, enabled: true, ads: [{ advertiser: 'Örnek yan reklam', image: side.id, active: true }] },
+  })
+  payload.logger.info('Örnek reklam yerleri eklendi')
+}
+
 export async function seedFeatures(payload: Payload) {
+  await seedAds(payload)
+
   const village = (await payload.find({ collection: 'villages', limit: 1, depth: 0 })).docs[0]
 
   if (!(await exists(payload, 'announcements', 'ayse-ile-mehmet-evleniyor'))) {

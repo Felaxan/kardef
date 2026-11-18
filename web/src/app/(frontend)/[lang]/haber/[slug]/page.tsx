@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { AdPlacement } from '@/components/site/AdPlacement'
 import React from 'react'
 import { AutoNote, Crumbs, Prose } from '@/components/site/Article'
 import { Ico } from '@/components/site/Icons'
@@ -115,6 +116,7 @@ export default async function NewsPage({ params }: P) {
               </li>
             ))}
           </ol>
+          <AdPlacement slot="side" lang={lang} className="ad-wrap ad-wrap--side" />
         </aside>
       </div>
 

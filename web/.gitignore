@@ -41,6 +41,8 @@ next-env.d.ts
 .env
 
 /media
+/ad-images
+/submissions
 
 # Playwright
 node_modules/
