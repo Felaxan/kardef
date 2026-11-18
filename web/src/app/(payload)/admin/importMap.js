@@ -28,9 +28,9 @@ import { AdRowLabel as AdRowLabel_46ebaf610c05d05448f70d574064e132 } from '../..
 import { Icon as Icon_dfe4008080d895d460898c3a6155e9ba } from '../../../components/admin/Icon'
 import { Logo as Logo_91a09b539d3c86b0aebf520e7564ce08 } from '../../../components/admin/Logo'
 import { ThemeToggle as ThemeToggle_fc85bd5ac375c29cf24795ab8778bf43 } from '../../../components/admin/ThemeToggle'
-import { Welcome as Welcome_72e830871eb26c77002633e2e2cc9dea } from '../../../components/admin/Welcome'
 import { LoginArt as LoginArt_ec4d721f58f0c831981091d6ecf9e0d4 } from '../../../components/admin/LoginArt'
 import { SubmissionCount as SubmissionCount_fddedb054eb9f79719b3bfa3a0955b0f } from '../../../components/admin/SubmissionCount'
+import { Dashboard as Dashboard_af669912e06d01f0ca1b5c3178684fc9 } from '../../../components/admin/dashboard/Dashboard'
 import { CollectionCards as CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1 } from '@payloadcms/next/rsc'
 
 /** @type import('payload').ImportMap */
@@ -65,8 +65,8 @@ export const importMap = {
   "/components/admin/Icon#Icon": Icon_dfe4008080d895d460898c3a6155e9ba,
   "/components/admin/Logo#Logo": Logo_91a09b539d3c86b0aebf520e7564ce08,
   "/components/admin/ThemeToggle#ThemeToggle": ThemeToggle_fc85bd5ac375c29cf24795ab8778bf43,
-  "/components/admin/Welcome#Welcome": Welcome_72e830871eb26c77002633e2e2cc9dea,
   "/components/admin/LoginArt#LoginArt": LoginArt_ec4d721f58f0c831981091d6ecf9e0d4,
   "/components/admin/SubmissionCount#SubmissionCount": SubmissionCount_fddedb054eb9f79719b3bfa3a0955b0f,
+  "/components/admin/dashboard/Dashboard#Dashboard": Dashboard_af669912e06d01f0ca1b5c3178684fc9,
   "@payloadcms/next/rsc#CollectionCards": CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1
 }

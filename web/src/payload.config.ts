@@ -55,7 +55,7 @@ export default buildConfig({
         Logo: '/components/admin/Logo#Logo',
         Icon: '/components/admin/Icon#Icon',
       },
-      beforeDashboard: ['/components/admin/Welcome#Welcome'],
+      views: { dashboard: { Component: '/components/admin/dashboard/Dashboard#Dashboard' } },
       beforeNavLinks: ['/components/admin/SubmissionCount#SubmissionCount'],
       beforeLogin: ['/components/admin/LoginArt#LoginArt'],
       actions: ['/components/admin/ThemeToggle#ThemeToggle'],
