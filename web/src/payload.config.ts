@@ -23,6 +23,7 @@ import { AdImages, AdSlots } from './collections/AdSlots'
 import { Users } from './collections/Users'
 import { Villages } from './collections/Villages'
 import { Homepage, SiteSettings } from './globals'
+import { Live } from './globals/Live'
 import { DEMO } from './demo'
 import { withAutoTranslate, withAutoTranslateGlobal } from './translate/fields'
 
@@ -82,7 +83,7 @@ export default buildConfig({
 
   // Türkçe içerik yayınlanınca diğer dillere otomatik çeviri (src/translate)
   collections: [Posts, Events, Announcements, ArchiveItems, Villages, Media, Categories, Organizations, AdSlots, AdImages, Users].map(withAutoTranslate),
-  globals: [Homepage, SiteSettings].map(withAutoTranslateGlobal),
+  globals: [Homepage, SiteSettings, Live].map(withAutoTranslateGlobal),
   editor: lexicalEditor(),
   // Maket modunda giriş kapalı olduğu için anahtar zorunlu değil
   secret: process.env.PAYLOAD_SECRET || (DEMO ? 'kardef-maket-salt-okunur' : ''),

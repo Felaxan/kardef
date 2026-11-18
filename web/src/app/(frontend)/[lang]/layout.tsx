@@ -43,13 +43,14 @@ export default async function SiteLayout({ children, params }: { children: React
   const lang: Lang = raw
   const payload = await cms()
 
-  const [settings, home, breaking, media, ratesData] = await Promise.all([
+  const [settings, home, breaking, media, ratesData, live] = await Promise.all([
     // Çevrilmemiş alanlar boş gelsin; yerine arayüz metni kullanılır
     payload.findGlobal({ slug: 'site-settings', locale: loc(lang), fallbackLocale: false }),
     payload.findGlobal({ slug: 'homepage', locale: loc(lang) }),
     payload.find({ collection: 'posts', where: { breaking: { equals: true } }, sort: '-publishedAt', limit: 6, depth: 0, locale: loc(lang), overrideAccess: false }),
     payload.find({ collection: 'media', where: { credit: { exists: true } }, limit: 50, depth: 0, pagination: false }),
     getRates(),
+    payload.findGlobal({ slug: 'live', depth: 0 }),
   ])
 
   const ticker: TickerItem[] = [
@@ -87,9 +88,10 @@ export default async function SiteLayout({ children, params }: { children: React
           tagline={settings.tagline || t(lang, 'brand.tag')}
           ticker={ticker}
           rates={rates}
+          live={Boolean(live.isLive && live.url)}
           notice={home.notice?.enabled ? { text: home.notice.text || '', link: home.notice.link } : null}
         />
-        <ScrollChrome lang={lang} items={navItems(lang)} cta={t(lang, 'cta.katki')} totop={t(lang, 'totop')} siteName={siteName} />
+        <ScrollChrome lang={lang} items={navItems(lang, Boolean(live.isLive && live.url))} cta={t(lang, 'cta.katki')} totop={t(lang, 'totop')} siteName={siteName} />
         <main id="main">
           <AdPlacement slot="top" lang={lang} className="wrap ad-wrap ad-wrap--top" />
           {children}

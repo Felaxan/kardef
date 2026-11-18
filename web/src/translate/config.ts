@@ -27,6 +27,7 @@ export const COLLECTION_FIELDS: Record<string, FieldSpec[]> = {
 export const GLOBAL_FIELDS: Record<string, FieldSpec[]> = {
   homepage: [text('notice.text')],
   'site-settings': [text('tagline'), text('footerNote')],
+  live: [text('title'), text('description'), text('next.title')],
 }
 
 /** Hiç çevrilmeyecek özel adlar (köy adları veritabanından ayrıca eklenir) */

@@ -5,7 +5,7 @@ import { Ico } from './Icons'
 import { NavBar, type NavItem } from './NavBar'
 import { TopTools } from './TopTools'
 
-export const navItems = (lang: Lang): NavItem[] => [
+export const navItems = (lang: Lang, live = false): NavItem[] => [
   { href: `/${lang}`, label: t(lang, 'nav.gundem') },
   { href: `/${lang}/haberler`, label: t(lang, 'nav.haberler') },
   { href: `/${lang}/etkinlikler`, label: t(lang, 'nav.etkinlikler') },
@@ -14,6 +14,7 @@ export const navItems = (lang: Lang): NavItem[] => [
   { href: `/${lang}/sozlu-tarih`, label: t(lang, 'nav.sozlu') },
   { href: `/${lang}/koyler`, label: t(lang, 'nav.koyler') },
   { href: `/${lang}/kurumlar`, label: t(lang, 'nav.kurumlar') },
+  { href: `/${lang}/canli`, label: t(lang, 'nav.canli'), live },
 ]
 
 export type TickerItem = { text: string; href?: string; time?: string }
@@ -21,12 +22,12 @@ export type RateItem = { key: string; label: string; value: string; change: numb
 export type RatesStrip = { title: string; updated: string; items: RateItem[] }
 
 export function Header({
-  lang, siteName, tagline, ticker, notice, rates,
+  lang, siteName, tagline, ticker, notice, rates, live = false,
 }: {
-  lang: Lang; siteName: string; tagline: string; ticker: TickerItem[]; rates?: RatesStrip | null
+  lang: Lang; siteName: string; tagline: string; ticker: TickerItem[]; rates?: RatesStrip | null; live?: boolean
   notice?: { text: string; link?: string | null } | null
 }) {
-  const items = navItems(lang)
+  const items = navItems(lang, live)
   const tickerList = (hidden?: boolean) => (
     <ul className="ticker-list" aria-hidden={hidden || undefined}>
       {ticker.map((it, i) => (

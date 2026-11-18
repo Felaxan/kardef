@@ -39,12 +39,7 @@ export function richTextPlain(v: unknown): string {
   return out.join(' ')
 }
 
-/** YouTube bağlantısından video kimliği */
-export function youTubeId(url?: string | null): string | null {
-  if (!url) return null
-  const m = url.match(/(?:youtu\.be\/|v=|shorts\/|embed\/)([\w-]{11})/)
-  return m ? m[1] : null
-}
+export { youTubeId } from './youtube'
 
 /** Ses dalgası çubukları (sunucuda sabit, her kayıtta aynı) */
 export function waveBars(seed: number, n = 44): number[] {

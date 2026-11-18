@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { AdPlacement } from '@/components/site/AdPlacement'
+import { LiveBox } from '@/components/site/LiveBox'
 import React from 'react'
 import { ArchiveExplorer, type ArcCard, type DecadeBar } from '@/components/site/ArchiveExplorer'
 import { EventsBlock, type EventCard } from '@/components/site/EventsBlock'
@@ -25,7 +26,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
   const payload = await cms()
   const now = new Date()
 
-  const [featured, latest, events, notices, archive, villages, orgs, home, settings] = await Promise.all([
+  const [featured, latest, events, notices, archive, villages, orgs, home, settings, live] = await Promise.all([
     payload.find({ collection: 'posts', where: { featured: { equals: true } }, sort: '-publishedAt', limit: 4, depth: 1, locale, overrideAccess: false }),
     payload.find({ collection: 'posts', sort: '-publishedAt', limit: 12, depth: 1, locale, overrideAccess: false }),
     payload.find({ collection: 'events', where: { startDate: { greater_than_equal: new Date(now.getTime() - 864e5).toISOString() } }, sort: 'startDate', limit: 4, depth: 0, locale, overrideAccess: false }),
@@ -35,7 +36,9 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
     payload.find({ collection: 'organizations', sort: 'founded', limit: 10, depth: 1, locale }),
     payload.findGlobal({ slug: 'homepage', locale }),
     payload.findGlobal({ slug: 'site-settings', locale }),
+    payload.findGlobal({ slug: 'live', locale, depth: 0 }),
   ])
+  const liveId = live.isLive ? youTubeId(live.url) : null
 
   /* ---------- Manşet ---------- */
   const heroPosts: Post[] = [...featured.docs]
@@ -139,6 +142,8 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
   return (
     <>
       <h1 className="sr">{settings.siteName} — {settings.tagline}</h1>
+
+      {liveId && <LiveBox lang={lang} id={liveId} title={live.title} />}
 
       {/* Manşet + son eklenenler */}
       <section className="wrap hero" aria-label={L('nav.gundem')}>

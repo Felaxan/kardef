@@ -72,8 +72,19 @@ async function seedAds(payload: Payload) {
   payload.logger.info('Örnek reklam yerleri eklendi')
 }
 
+async function seedLive(payload: Payload) {
+  const live = await payload.findGlobal({ slug: 'live', depth: 0 })
+  if (live.next?.date || live.url) return
+  await payload.updateGlobal({
+    slug: 'live',
+    data: { isLive: false, next: { date: inDays(4, 20), title: 'Federasyon genel kurulu canlı yayını' } },
+  })
+  payload.logger.info('Canlı yayın örneği eklendi')
+}
+
 export async function seedFeatures(payload: Payload) {
   await seedAds(payload)
+  await seedLive(payload)
 
   const village = (await payload.find({ collection: 'villages', limit: 1, depth: 0 })).docs[0]
 

@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 
-export type NavItem = { href: string; label: string; section?: string }
+export type NavItem = { href: string; label: string; section?: string; live?: boolean }
 
 /** Ana menü: fareyi takip eden kırmızı çizgi + ana sayfada bulunulan bölümü işaretleme */
 export function NavBar({ items, lang }: { items: NavItem[]; lang: string }) {
@@ -58,11 +58,12 @@ export function NavBar({ items, lang }: { items: NavItem[]; lang: string }) {
           key={it.href + it.label}
           href={it.href}
           ref={(el) => { refs.current[i] = el }}
-          className={i === active ? 'is-active' : undefined}
+          className={[i === active ? 'is-active' : '', it.live ? 'is-live' : ''].filter(Boolean).join(' ') || undefined}
           onMouseEnter={() => setHover(i)}
           onFocus={() => setHover(i)}
           scroll={!it.section}
         >
+          {it.live && <span className="live-dot" aria-hidden="true" />}
           {it.label}
         </Link>
       ))}

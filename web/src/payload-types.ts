@@ -113,10 +113,12 @@ export interface Config {
   globals: {
     homepage: Homepage;
     'site-settings': SiteSetting;
+    live: Live;
   };
   globalsSelect: {
     homepage: HomepageSelect<false> | HomepageSelect<true>;
     'site-settings': SiteSettingsSelect<false> | SiteSettingsSelect<true>;
+    live: LiveSelect<false> | LiveSelect<true>;
   };
   locale: 'tr' | 'ku' | 'zza' | 'en' | 'de' | 'nl' | 'fr';
   widgets: {
@@ -1333,6 +1335,55 @@ export interface SiteSetting {
   createdAt?: string | null;
 }
 /**
+ * YouTube'da yayını başlatın, bağlantısını buraya yapıştırıp "Şu an yayında" kutusunu işaretleyin. Menüde kırmızı CANLI işareti yanar ve ana sayfada yayın kutusu çıkar. Yayın bitince kutuyu kaldırın.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "live".
+ */
+export interface Live {
+  id: number;
+  isLive?: boolean | null;
+  /**
+   * Ör. https://www.youtube.com/live/… ya da https://youtu.be/…
+   */
+  url?: string | null;
+  title?: string | null;
+  description?: string | null;
+  /**
+   * Yayın yokken sayfada gösterilir.
+   */
+  next?: {
+    date?: string | null;
+    title?: string | null;
+  };
+  /**
+   * Yayın bitince kaydını buraya ekleyin; sayfada izlenebilir.
+   */
+  past?:
+    | {
+        title: string;
+        url: string;
+        date?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  autoTr?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  /**
+   * İşaretleyip kaydederseniz bütün diller Türkçe metinden yeniden çevrilir (elle düzeltilenler dahil).
+   */
+  retranslate?: boolean | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "homepage_select".
  */
@@ -1385,6 +1436,35 @@ export interface SiteSettingsSelect<T extends boolean = true> {
     | {
         enabled?: T;
         items?: T;
+      };
+  autoTr?: T;
+  retranslate?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "live_select".
+ */
+export interface LiveSelect<T extends boolean = true> {
+  isLive?: T;
+  url?: T;
+  title?: T;
+  description?: T;
+  next?:
+    | T
+    | {
+        date?: T;
+        title?: T;
+      };
+  past?:
+    | T
+    | {
+        title?: T;
+        url?: T;
+        date?: T;
+        id?: T;
       };
   autoTr?: T;
   retranslate?: T;
