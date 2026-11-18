@@ -62,7 +62,8 @@ html.fs-1{font-size:112.5%}
 html.fs-2{font-size:125%}
 html.lenis,html.lenis body{height:auto}
 .lenis.lenis-smooth{scroll-behavior:auto !important}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);font-size:1rem;line-height:1.55;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;overflow-x:hidden}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);font-size:1rem;line-height:1.55;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;overflow-x:clip}
+main{position:relative}
 a{color:inherit;text-decoration:none}
 img{display:block;max-width:100%}
 button,input{font:inherit;color:inherit}
@@ -147,8 +148,8 @@ a:hover .ul,a.ul:hover,.ul:focus-visible{background-size:100% 1px}
 .brand-tag{margin-top:6px;font-size:.875rem;font-weight:500;color:var(--muted)}
 .head-actions{display:flex;align-items:center;gap:12px}
 
-.search{display:flex;align-items:center;height:46px;border:1px solid var(--line);border-radius:3px;background:var(--bg-soft);transition:border-color .3s,background .3s,width .5s var(--ease-out);width:300px}
-.search:focus-within{border-color:var(--ink);background:var(--bg);width:380px}
+.search{display:flex;align-items:center;height:46px;border:1px solid var(--line);border-radius:3px;background:var(--bg-soft);transition:border-color .3s,background .3s,width .5s var(--ease-out);width:332px}
+.search:focus-within{border-color:var(--ink);background:var(--bg);width:392px}
 .search .ico{margin-left:14px;color:var(--muted);font-size:1.05rem}
 .search input{flex:1;min-width:0;height:100%;border:0;background:none;padding:0 12px;font-size:.9375rem;outline:none}
 .search input::placeholder{color:var(--muted)}
@@ -571,7 +572,7 @@ footer{margin-top:72px;background:var(--bg-soft);border-top:1px solid var(--line
 
 /* ---------- Reklam yerleri ---------- */
 .ad-wrap{margin-block:28px}
-.ad-wrap--top{margin-block:18px 6px}
+.ad-wrap--top{margin-block:20px 16px}
 .ad-wrap--side{margin:28px 0 0;max-width:340px}
 .ad{position:relative;border-radius:6px;overflow:hidden;background:var(--bg-soft);isolation:isolate}
 .ad-label{position:absolute;z-index:3;top:8px;left:8px;padding:2px 7px;border-radius:3px;background:rgba(0,0,0,.55);color:#fff;font-size:.625rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;pointer-events:none}
@@ -693,12 +694,16 @@ a:hover .live-play{transform:scale(1.1)}
 .kf-done .btn{background:var(--ink);color:var(--bg)}
 @media (max-width:640px){.kf-row{grid-template-columns:1fr}.kf-group{padding:18px}}
 
-/* Sol ve sağ kenar reklamları: yalnızca içeriğin iki yanında yer varken (geniş ekran) */
+/* Sol ve sağ kenar reklamları: yalnızca içeriğin iki yanında yer varken (geniş ekran).
+   main içinde başladığı için üstteki menü, kur, son dakika ve duyuru şeritlerinin üstüne binmez;
+   aşağı kaydırırken yapışkan (sticky) olarak takip eder ve alt bilgiye (footer) çarpmadan durur. */
 .ad-rail{display:none}
 @media (min-width:1700px){
-  .ad-rail{display:block;position:fixed;z-index:20;top:max(130px,calc(50vh - 300px));width:160px;animation:railIn .9s var(--ease-out) .6s both}
-  .ad-rail--left{left:calc(50% - 660px - 184px)}
-  .ad-rail--right{right:calc(50% - 660px - 184px);animation-name:railInR}
+  main{min-height:650px}
+  .ad-rail{display:block;position:absolute;z-index:15;top:20px;bottom:28px;width:160px;pointer-events:none;animation:railIn .9s var(--ease-out) .45s both}
+  .ad-rail--left{left:max(14px,calc(50% - 660px - 184px))}
+  .ad-rail--right{right:max(14px,calc(50% - 660px - 184px));animation-name:railInR}
+  .ad-rail .ad{position:sticky;top:76px;pointer-events:auto;box-shadow:0 16px 36px -22px rgba(0,0,0,.45)}
   .ad-rail .ad-item img{max-height:600px;aspect-ratio:160/600;object-fit:cover}
   .ad-rail .ad-label{top:6px;left:6px}
   .ad-rail .ad-dots{right:50%;transform:translateX(50%)}

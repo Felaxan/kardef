@@ -270,6 +270,18 @@ a.nav__link:hover::before,
   background: var(--kd-red-soft);
   color: var(--kd-red);
 }
+.kd-chip--mor {
+  background: rgba(94, 43, 140, 0.14);
+  color: #7a45ad;
+}
+html[data-theme='dark'] .kd-chip--mor {
+  background: rgba(181, 139, 224, 0.16);
+  color: #b58be0;
+}
+.kd-chip--gri {
+  background: var(--theme-elevation-100);
+  color: var(--theme-elevation-700);
+}
 .kd-cell-empty {
   color: var(--theme-elevation-400);
 }
@@ -280,6 +292,11 @@ a.nav__link:hover::before,
 /* ---------- Formlar ---------- */
 .render-fields > * {
   animation: kd-enter 0.5s var(--kd-ease) both;
+}
+.render-fields > *:focus-within,
+.field-type:focus-within {
+  position: relative;
+  z-index: 30;
 }
 @for $i from 1 through 14 {
   .render-fields > *:nth-child(#{$i}) {
@@ -322,6 +339,10 @@ a.nav__link:hover::before,
 }
 .rs__menu {
   animation: kd-pop 0.25s var(--kd-ease) both;
+  z-index: 50 !important;
+}
+.react-datepicker-popper {
+  z-index: 60 !important;
 }
 .popup-button-list__button {
   transition: background-color 0.15s, padding-left 0.3s var(--kd-ease);
@@ -561,6 +582,26 @@ a.nav__link:hover::before,
 }
 
 /* Logo (şifre sıfırlama gibi diğer kısa ekranlarda) */
+.template-minimal:not(.login) .template-minimal__wrap {
+  position: relative;
+  overflow: hidden;
+  max-width: 460px;
+  margin: 0 auto;
+  padding: 40px 32px 34px;
+  border-radius: 14px;
+  background: var(--theme-elevation-50);
+  border: 1px solid var(--theme-elevation-150);
+  animation: kd-enter 0.6s var(--kd-ease) both;
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 14px;
+    background: var(--kd-kilim) repeat-x left center / 32px 14px;
+  }
+}
 .kd-logo {
   display: flex;
   align-items: center;
@@ -900,5 +941,302 @@ a.nav__link:hover::before,
   background: #1f8a4c;
   color: #fff;
   font-weight: 800;
+}
+
+/* ---------- Reklam satırı başlığı (AdRowLabel) ---------- */
+.kd-adrow {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px 10px;
+  b {
+    font-weight: 700;
+    color: var(--theme-text);
+  }
+  small {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 2px 8px;
+    border-radius: 999px;
+    font-size: 11.5px;
+    font-weight: 600;
+    background: rgba(31, 138, 76, 0.14);
+    color: #1f8a4c;
+    &::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: currentColor;
+    }
+  }
+  &.is-off {
+    b { color: var(--theme-elevation-500); }
+    small {
+      background: var(--theme-elevation-100);
+      color: var(--theme-elevation-500);
+    }
+  }
+}
+html[data-theme='dark'] .kd-adrow:not(.is-off) small {
+  color: #4cc283;
+}
+
+/* ---------- Güvenlik ve Müdahale Merkezi (SecurityCenter) ---------- */
+.kd-sec {
+  margin-bottom: 26px;
+  animation: kd-enter 0.55s var(--kd-ease) both;
+}
+.kd-sec-banner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px 22px;
+  margin-bottom: 16px;
+  border-radius: 14px;
+  background: var(--theme-elevation-50);
+  border: 1px solid var(--theme-elevation-150);
+  border-left: 4px solid #1f8a4c;
+  transition: border-color 0.3s, background 0.3s;
+  &.is-lockdown {
+    border-color: color-mix(in srgb, var(--kd-red) 45%, transparent);
+    border-left-color: var(--kd-red);
+    background: var(--kd-red-soft);
+  }
+}
+.kd-sec-banner-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+  strong {
+    font-size: 16px;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+  }
+}
+.kd-sec-dot {
+  position: relative;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #1f8a4c;
+  flex: none;
+  &.is-alert {
+    background: var(--kd-red);
+    &::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background: var(--kd-red);
+      animation: kd-ping 1.6s var(--kd-ease) infinite;
+    }
+  }
+}
+.kd-sec-metrics {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 16px;
+  font-size: 13px;
+  color: var(--theme-elevation-600);
+  b {
+    color: var(--theme-text);
+    font-weight: 800;
+    font-variant-numeric: tabular-nums;
+  }
+}
+.kd-sec-banner-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.kd-sec-toast {
+  margin: 0 0 16px;
+  padding: 11px 16px;
+  border-radius: 10px;
+  font-size: 13.5px;
+  font-weight: 700;
+  animation: kd-pop 0.3s var(--kd-ease) both;
+  &.is-ok {
+    background: color-mix(in srgb, #1f8a4c 15%, transparent);
+    border: 1px solid color-mix(in srgb, #1f8a4c 35%, transparent);
+  }
+  &.is-err {
+    background: var(--kd-red-soft);
+    border: 1px solid color-mix(in srgb, var(--kd-red) 35%, transparent);
+    color: var(--kd-red);
+  }
+}
+.kd-sec-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  gap: 16px;
+}
+.kd-sec-card {
+  padding: 20px;
+  border-radius: 14px;
+  background: var(--theme-elevation-0);
+  border: 1px solid var(--theme-elevation-100);
+  animation: kd-enter 0.6s var(--kd-ease) 0.1s both;
+}
+.kd-sec-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 14px;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--theme-elevation-600);
+  &::before {
+    content: '';
+    width: 14px;
+    height: 3px;
+    border-radius: 2px;
+    background: var(--kd-red);
+  }
+}
+.kd-sec-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+.kd-sec-input {
+  flex: 1 1 130px;
+  height: 38px;
+  padding: 0 12px;
+  border-radius: 8px;
+  border: 1px solid var(--theme-elevation-150);
+  background: var(--theme-elevation-50);
+  color: var(--theme-text);
+  font: inherit;
+  font-size: 13px;
+  transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+  &:focus {
+    outline: none;
+    border-color: var(--kd-red);
+    background: var(--theme-elevation-0);
+    box-shadow: 0 0 0 3px var(--kd-red-soft);
+  }
+}
+.kd-sec-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 38px;
+  padding: 0 14px;
+  border-radius: 8px;
+  border: 1px solid var(--theme-elevation-200);
+  background: var(--theme-elevation-50);
+  color: var(--theme-text);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: transform 0.25s var(--kd-ease), background 0.2s, border-color 0.2s, color 0.2s, box-shadow 0.25s;
+  &:hover:not(:disabled) {
+    transform: translateY(-1px);
+    border-color: var(--theme-elevation-350);
+  }
+  &:active:not(:disabled) {
+    transform: scale(0.97);
+  }
+  &:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+  }
+  &--danger {
+    background: var(--kd-red);
+    border-color: var(--kd-red);
+    color: #fff;
+    &:hover:not(:disabled) {
+      background: var(--kd-red-dark);
+      border-color: var(--kd-red-dark);
+      box-shadow: 0 8px 18px -10px var(--kd-red);
+    }
+  }
+  &--safe {
+    background: #1f8a4c;
+    border-color: #1f8a4c;
+    color: #fff;
+    &:hover:not(:disabled) {
+      filter: brightness(1.08);
+    }
+  }
+  &--sm {
+    height: 30px;
+    padding: 0 10px;
+    border-radius: 6px;
+    font-size: 12px;
+  }
+}
+.kd-sec-empty {
+  margin: 0;
+  font-size: 13px;
+  color: var(--theme-elevation-500);
+}
+.kd-sec-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.kd-sec-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 0;
+  border-top: 1px solid var(--theme-elevation-100);
+  font-size: 13px;
+  &:first-child {
+    border-top: 0;
+    padding-top: 2px;
+  }
+}
+.kd-sec-row-main {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  small {
+    font-size: 12px;
+    color: var(--theme-elevation-500);
+  }
+}
+.kd-sec-user {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+.kd-sec-badge {
+  display: inline-block;
+  padding: 1px 7px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+  background: var(--theme-elevation-100);
+  color: var(--theme-elevation-700);
+  &.is-danger {
+    background: var(--kd-red-soft);
+    color: var(--kd-red);
+  }
+  &.is-warn {
+    background: rgba(217, 138, 31, 0.16);
+    color: #d98a1f;
+  }
+}
+.kd-sec-row-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  flex: none;
 }
 

@@ -12,5 +12,7 @@ export async function CategoryCell({ cellData, payload }: DefaultServerCellCompo
   const doc = await payload
     .findByID({ collection: 'categories', id: id as number, depth: 0, locale: 'tr', overrideAccess: true })
     .catch(() => null)
-  return <span className="kd-chip">{doc?.name ?? '—'}</span>
+  if (!doc?.name) return <span className="kd-cell-empty">—</span>
+  const tone = (doc as { color?: string }).color || 'kirmizi'
+  return <span className={`kd-chip kd-chip--${tone}`}>{doc.name}</span>
 }

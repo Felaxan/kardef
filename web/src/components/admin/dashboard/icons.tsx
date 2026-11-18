@@ -20,6 +20,9 @@ const P: Record<string, string> = {
   arrow: 'M5 12h14M13 6l6 6-6 6',
   draft: 'M4 20h4L19 9l-4-4L4 16v4zm9-13l4 4',
   external: 'M14 4h6v6M20 4l-9 9M18 14v5H5V6h5',
+  shield: 'M12 3l7 3v5c0 5-3.2 8.8-7 10-3.8-1.2-7-5-7-10V6l7-3zm-2.5 9l2 2 3.5-4',
+  lock: 'M7 11V8a5 5 0 0110 0v3m-11 0h12a1 1 0 011 1v7a1 1 0 01-1 1H6a1 1 0 01-1-1v-7a1 1 0 011-1zm6 3.5v2',
+  help: 'M12 21a9 9 0 100-18 9 9 0 000 18zm-1.8-11a2 2 0 113.5 1.3c-.7.7-1.7 1.1-1.7 2.2m0 3h.01',
 }
 
 export type IconName = keyof typeof P

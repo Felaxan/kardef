@@ -1,13 +1,14 @@
 import Link from 'next/link'
 import type { CollectionSlug, GlobalSlug, Payload, SanitizedPermissions } from 'payload'
 import React from 'react'
+import { globalShield } from '@/lib/security'
 import { CountUp } from './CountUp'
 import { KdIcon, type IconName } from './icons'
 
 /*
   KAR-DEF yönetim paneli ana sayfası (Payload'un varsayılan panosunun yerine).
   Rol ne izin veriyorsa o görünür: yazar kendi taslaklarını, editör onay bekleyenleri,
-  yönetici her şeyi (reklam ve ayarlar dahil) görür.
+  yönetici her şeyi (reklam, güvenlik ve ayarlar dahil) görür.
 */
 
 type User = { id: number | string; name?: string; role?: 'admin' | 'editor' | 'author' }
@@ -47,15 +48,15 @@ const GROUPS: Group[] = [
     ],
   },
   {
-    title: 'Yönetim ve ayarlar',
+    title: 'Yönetim ve güvenlik',
     tone: 'ink',
     items: [
       { slug: 'users', label: 'Kullanıcılar', hint: 'Yönetici, editör, yazar', icon: 'users', kind: 'collection', create: true },
       { slug: 'organizations', label: 'Kurumlar', hint: 'KAR-DEF, AV-KARDEP', icon: 'org', kind: 'collection' },
       { slug: 'homepage', label: 'Ana sayfa', hint: 'Duyuru bandı, son dakika', icon: 'home', kind: 'global' },
       { slug: 'site-settings', label: 'Site ayarları', hint: 'İletişim, sosyal medya, kur şeridi', icon: 'settings', kind: 'global' },
-      { slug: 'security-logs', label: 'Güvenlik merkezi', hint: 'Denetim izi, IP engeli, oturumlar', icon: 'settings', kind: 'collection' },
-      { slug: 'security-settings', label: 'Güvenlik ayarları', hint: 'Acil koruma modu ve alarmlar', icon: 'settings', kind: 'global' },
+      { slug: 'security-logs', label: 'Güvenlik merkezi', hint: 'Denetim izi, IP engeli, oturumlar', icon: 'shield', kind: 'collection' },
+      { slug: 'security-settings', label: 'Güvenlik ayarları', hint: 'Acil koruma modu ve alarmlar', icon: 'lock', kind: 'global' },
     ],
   },
 ]
@@ -96,15 +97,19 @@ export async function Dashboard({ payload, user, permissions }: Props) {
 
   // Özet sayılar
   const nowIso = new Date().toISOString()
-  const [posts, notices, upcoming, archive, drafts, newSubs, live] = await Promise.all([
+  const [posts, notices, upcoming, archive, draftCounts, newSubs, live] = await Promise.all([
     count('posts', { _status: { equals: 'published' } }),
     count('announcements', { _status: { equals: 'published' } }),
     count('events', { and: [{ _status: { equals: 'published' } }, { startDate: { greater_than_equal: nowIso } }] }),
     count('archive', { _status: { equals: 'published' } }),
-    Promise.all(CONTENT.map((c) => count(c, { and: [{ _status: { equals: 'draft' } }, ...(mine ? [mine] : [])] }))).then((a) => a.reduce((x, y) => x + y, 0)),
+    Promise.all(CONTENT.map(async (c) => ({ slug: c, label: TYPE_LABEL[c], count: await count(c, { and: [{ _status: { equals: 'draft' } }, ...(mine ? [mine] : [])] }) }))),
     editor ? count('submissions', { status: { equals: 'new' } }) : Promise.resolve(0),
     payload.findGlobal({ slug: 'live' as GlobalSlug, depth: 0 }).catch(() => null) as Promise<{ isLive?: boolean; title?: string } | null>,
   ])
+  const drafts = draftCounts.reduce((sum, x) => sum + x.count, 0)
+  const waitingDrafts = draftCounts.filter((x) => x.count > 0)
+  const firstDraftSlug = waitingDrafts[0]?.slug ?? 'posts'
+  const isLockdown = globalShield.isLockdown()
 
   // Son değişenler (yazar yalnızca kendi kayıtlarını görür)
   const recentLists = await Promise.all(
@@ -130,7 +135,7 @@ export async function Dashboard({ payload, user, permissions }: Props) {
     { label: 'Duyuru', value: notices, icon: 'bell', href: '/admin/collections/announcements', show: true },
     { label: 'Yaklaşan etkinlik', value: upcoming, icon: 'calendar', href: '/admin/collections/events', show: true },
     { label: 'Arşiv kaydı', value: archive, icon: 'archive', href: '/admin/collections/archive', show: true },
-    { label: editor ? 'Onay bekleyen taslak' : 'Taslağım', value: drafts, icon: 'draft', href: '/admin/collections/posts?where[_status][equals]=draft', accent: drafts > 0, show: true },
+    { label: editor ? 'Onay bekleyen taslak' : 'Taslağım', value: drafts, icon: 'draft', href: `/admin/collections/${firstDraftSlug}?where[_status][equals]=draft`, accent: drafts > 0, show: true },
     { label: 'Yeni katkı', value: newSubs, icon: 'inbox', href: '/admin/collections/submissions?where[status][equals]=new', accent: newSubs > 0, show: editor },
   ]
 
@@ -155,8 +160,22 @@ export async function Dashboard({ payload, user, permissions }: Props) {
                 ? `Bugün ${[drafts > 0 && `${drafts} taslak onayını`, newSubs > 0 && `${newSubs} yeni katkı incelemeni`].filter(Boolean).join(', ')} bekliyor.`
                 : 'Memleketin haberleri ve hafızası, senin elinden geçiyor.'}
             </p>
+            {waitingDrafts.length > 0 && (
+              <div className="kd-hero-drafts">
+                {waitingDrafts.map((w) => (
+                  <Link key={w.slug} href={`/admin/collections/${w.slug}?where[_status][equals]=draft`} className="kd-hero-chip">
+                    <b>{w.count}</b> {w.label.toLocaleLowerCase('tr')} taslağı →
+                  </Link>
+                ))}
+              </div>
+            )}
           </div>
           <div className="kd-hero-side">
+            {isLockdown && role === 'admin' && (
+              <Link href="/admin/collections/security-logs" className="kd-live is-on">
+                <KdIcon name="lock" size={16} />Acil koruma modu AÇIK
+              </Link>
+            )}
             {live?.isLive ? (
               <Link href="/admin/globals/live" className="kd-live is-on"><span className="kd-live-dot" />Şu an CANLI yayındasınız</Link>
             ) : editor ? (
@@ -241,6 +260,22 @@ export async function Dashboard({ payload, user, permissions }: Props) {
           </div>
         </section>
       ))}
+
+      {/* Kısa kullanım rehberi */}
+      <details className="kd-guide">
+        <summary>
+          <span className="kd-guide-ico"><KdIcon name="help" size={18} /></span>
+          <span>Kısa kullanım rehberi ve ipuçları</span>
+        </summary>
+        <ul className="kd-guide-list">
+          <li>İçeriği önce <b>Türkçe</b> yazın. Sağ üstteki <b>dil seçiciden</b> diğer 6 dile (Kurdî, Kirmanckî/Zazakî, English, Deutsch, Nederlands, Français) geçebilirsiniz; çevrilmeyen diller sitede Türkçe görünür.</li>
+          <li><b>Kirmanckî (Zazaca)</b> otomatik çevrilmez; sağ üstten <i>Kirmanckî (Zazakî)</i> dilini seçip elle girebilirsiniz.</li>
+          <li>Yazdıklarınız her <b>3 saniyede bir</b> otomatik taslak olarak kaydedilir. Hazır olduğunda <b>Yayınla</b> düğmesine basın.</li>
+          <li><b>Yazar</b> rolündeyseniz içeriklerinizi taslak olarak kaydedersiniz; bir <b>Editör</b> veya <b>Yönetici</b> kontrol edip yayınlar.</li>
+          <li><b>Arşiv</b> kayıtlarında sahibinden <b>yayın izni</b> alındığı kutusu işaretlenmeden kayıt yayınlanamaz.</li>
+          <li>Ziyaretçilerin gönderdiği arşiv materyallerini <b>Gelen katkılar</b> bölümünde inceleyip tek tıkla <b>Arşive aktar</b> diyerek taslağa dönüştürebilirsiniz.</li>
+        </ul>
+      </details>
     </div>
   )
 }

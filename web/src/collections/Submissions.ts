@@ -114,7 +114,7 @@ export const Submissions: CollectionConfig = {
   labels: { singular: 'Gelen katkı', plural: 'Gelen katkılar' },
   admin: {
     useAsTitle: 'name',
-    group: 'İçerik',
+    group: 'Arşiv ve köyler',
     hidden: hiddenFromAuthors,
     defaultColumns: ['name', 'kind', 'status', 'createdAt'],
     description:

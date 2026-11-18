@@ -204,7 +204,7 @@ export function createSecurityShield(opts?: {
   autoBanDurationMs?: number
 }) {
   const authMax = opts?.authMaxPer10Min ?? 12
-  const apiMax = opts?.apiMaxPerMin ?? 120
+  const apiMax = opts?.apiMaxPerMin ?? 300
   const banThreshold = opts?.failedLoginAutoBanThreshold ?? 6
   const banDurationMs = opts?.autoBanDurationMs ?? 30 * 60 * 1000 // 30 dakika
 

@@ -48,6 +48,7 @@ export default buildConfig({
   serverURL: DEMO ? '' : process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000',
   admin: {
     user: Users.slug,
+    suppressHydrationWarning: true,
     importMap: { baseDir: path.resolve(dirname) },
     dateFormat: 'd MMMM yyyy, HH:mm',
     meta: {

@@ -112,6 +112,12 @@ export const auditCollectionChange =
   (slug: string): CollectionAfterChangeHook =>
   async ({ doc, operation, req, context }) => {
     if (context?.skipAudit || context?.skipTranslate || !req?.user) return doc
+    // 3 saniyede bir çalışan otomatik taslak kaydı (autosave) denetim izini şişirmesin ve SQLite kilidi oluşturmasın
+    const isAutosave =
+      req.url?.includes('autosave=true') ||
+      (req.query as { autosave?: string | boolean } | undefined)?.autosave === 'true' ||
+      (req.query as { autosave?: string | boolean } | undefined)?.autosave === true
+    if (isAutosave && operation === 'update') return doc
     const user = req.user as { email?: string; role?: string }
     const title = (doc as { title?: string; name?: string; email?: string })?.title ||
       (doc as { name?: string })?.name ||

@@ -64,7 +64,9 @@ export function proxy(req: NextRequest) {
 
     // Durum değiştiren API isteklerinde CSRF (Origin/Referer) kontrolü
     if (!verifyCsrfOrigin(req.method, req.headers, process.env.NEXT_PUBLIC_SERVER_URL)) {
-      return withSecurityHeaders(new NextResponse('Geçersiz istek kaynağı (CSRF koruması)', { status: 403 }))
+      return withSecurityHeaders(
+        Response.json({ error: 'Geçersiz istek kaynağı (CSRF koruması)', errors: [{ message: 'Geçersiz istek kaynağı (CSRF koruması)' }] }, { status: 403 }) as unknown as NextResponse,
+      )
     }
 
     // Giriş ve şifre sıfırlama uçlarında sıkı hız sınırı (Brute-Force / Credential Stuffing koruması)
@@ -79,12 +81,15 @@ export function proxy(req: NextRequest) {
 
     // Genel API hız sınırı
     if (!globalShield.checkApiRate(ip)) {
-      return withSecurityHeaders(new NextResponse('Çok fazla istek gönderildi.', { status: 429 }))
+      return withSecurityHeaders(
+        Response.json({ error: 'Çok fazla istek gönderildi.', errors: [{ message: 'Çok fazla istek gönderildi.' }] }, { status: 429 }) as unknown as NextResponse,
+      )
     }
 
     // Toplu veri çekme (Scraping) koruması: aşırı yüksek limit/depth parametrelerini sınırla
     if (req.method === 'GET') {
-      const { clamped, limit, depth } = clampApiQueryLimits(searchParams, 100, 2)
+      const hasSession = Boolean(req.cookies.get('payload-token')?.value)
+      const { clamped, limit, depth } = clampApiQueryLimits(searchParams, hasSession ? 300 : 100, hasSession ? 3 : 2)
       if (clamped) {
         const cleanUrl = req.nextUrl.clone()
         if (limit !== undefined) cleanUrl.searchParams.set('limit', String(limit))

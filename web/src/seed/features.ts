@@ -30,13 +30,17 @@ async function exists(payload: Payload, collection: 'announcements', slug: strin
 /** Örnek reklam görseli: "Reklamınız burada" banner'ı (sharp ile üretilir) */
 async function bannerPng(w: number, h: number, bg: string, line1: string, line2: string): Promise<Buffer> {
   const sharp = (await import('sharp')).default
+  const fs1 = Math.round(Math.min(h / 4.2, Math.max(30, w / 11)))
+  const fs2 = Math.round(Math.min(h / 9, Math.max(20, w / 24)))
+  const y1 = Math.round(h / 2 - fs2 * 0.45)
+  const y2 = Math.round(y1 + fs1 * 0.65 + fs2 * 0.9)
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}">
     <rect width="100%" height="100%" fill="${bg}"/>
     <g fill="none" stroke="rgba(255,255,255,.18)" stroke-width="2">
       ${Array.from({ length: 14 }, (_, i) => `<path d="M${i * 90 - 40} ${h} l${h / 2} -${h / 2} l${h / 2} ${h / 2}"/>`).join('')}
     </g>
-    <text x="50%" y="${h / 2 - 6}" text-anchor="middle" font-family="Arial, sans-serif" font-weight="800" font-size="${Math.round(Math.min(h / 4.2, w / 12))}" fill="#fff">${line1}</text>
-    <text x="50%" y="${h / 2 + h / 5}" text-anchor="middle" font-family="Arial, sans-serif" font-size="${Math.round(Math.min(h / 9, w / 26))}" fill="rgba(255,255,255,.85)">${line2}</text>
+    <text x="50%" y="${y1}" text-anchor="middle" font-family="Arial, sans-serif" font-weight="800" font-size="${fs1}" fill="#fff">${line1}</text>
+    <text x="50%" y="${y2}" text-anchor="middle" font-family="Arial, sans-serif" font-size="${fs2}" fill="rgba(255,255,255,.85)">${line2}</text>
   </svg>`
   return sharp(Buffer.from(svg)).png().toBuffer()
 }
