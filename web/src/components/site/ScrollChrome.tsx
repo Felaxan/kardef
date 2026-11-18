@@ -51,7 +51,7 @@ export function ScrollChrome({
           <nav className="mini-nav" aria-label="Kısa menü">
             {items.map((it) => <Link key={it.href + it.label} href={it.href} scroll={!it.section}>{it.label}</Link>)}
           </nav>
-          <Link href={`/${lang}#katki`} className="btn btn-brand btn-sm"><span>{cta}</span><Ico name="arrow" /></Link>
+          <Link href={`/${lang}/arsive-katki`} className="btn btn-brand btn-sm"><span>{cta}</span><Ico name="arrow" /></Link>
         </div>
         <span className="progress" ref={prog} />
       </div>

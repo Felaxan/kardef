@@ -70,7 +70,7 @@ export function Header({
               <input id="q" name="q" type="search" placeholder={t(lang, 'search.ph')} />
               <button type="submit">{t(lang, 'search.btn')}</button>
             </form>
-            <Link href={`/${lang}#katki`} className="btn btn-brand"><span>{t(lang, 'cta.katki')}</span><Ico name="arrow" /></Link>
+            <Link href={`/${lang}/arsive-katki`} className="btn btn-brand"><span>{t(lang, 'cta.katki')}</span><Ico name="arrow" /></Link>
           </div>
         </div>
         <nav className="nav intro" style={{ '--d': 3 } as React.CSSProperties} aria-label="Menü">

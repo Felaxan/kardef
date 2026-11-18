@@ -23,12 +23,14 @@ import { BoldFeatureClient as BoldFeatureClient_e70f5e05f09f93e00b997edb1ef0c864
 import { ItalicFeatureClient as ItalicFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
 import { CategoryCell as CategoryCell_fce15b32cf85ef458ad636fa0195e1ac } from '../../../components/admin/CategoryCell'
 import { TranslationStatus as TranslationStatus_3587120a96e0157d0c702d89430314d3 } from '../../../components/admin/TranslationStatus'
+import { ConvertSubmission as ConvertSubmission_b1d367b895f4b92d21d9d3dd196ce40a } from '../../../components/admin/ConvertSubmission'
 import { AdRowLabel as AdRowLabel_46ebaf610c05d05448f70d574064e132 } from '../../../components/admin/AdRowLabel'
 import { Icon as Icon_dfe4008080d895d460898c3a6155e9ba } from '../../../components/admin/Icon'
 import { Logo as Logo_91a09b539d3c86b0aebf520e7564ce08 } from '../../../components/admin/Logo'
 import { ThemeToggle as ThemeToggle_fc85bd5ac375c29cf24795ab8778bf43 } from '../../../components/admin/ThemeToggle'
 import { Welcome as Welcome_72e830871eb26c77002633e2e2cc9dea } from '../../../components/admin/Welcome'
 import { LoginArt as LoginArt_ec4d721f58f0c831981091d6ecf9e0d4 } from '../../../components/admin/LoginArt'
+import { SubmissionCount as SubmissionCount_fddedb054eb9f79719b3bfa3a0955b0f } from '../../../components/admin/SubmissionCount'
 import { CollectionCards as CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1 } from '@payloadcms/next/rsc'
 
 /** @type import('payload').ImportMap */
@@ -58,11 +60,13 @@ export const importMap = {
   "@payloadcms/richtext-lexical/client#ItalicFeatureClient": ItalicFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
   "/components/admin/CategoryCell#CategoryCell": CategoryCell_fce15b32cf85ef458ad636fa0195e1ac,
   "/components/admin/TranslationStatus#TranslationStatus": TranslationStatus_3587120a96e0157d0c702d89430314d3,
+  "/components/admin/ConvertSubmission#ConvertSubmission": ConvertSubmission_b1d367b895f4b92d21d9d3dd196ce40a,
   "/components/admin/AdRowLabel#AdRowLabel": AdRowLabel_46ebaf610c05d05448f70d574064e132,
   "/components/admin/Icon#Icon": Icon_dfe4008080d895d460898c3a6155e9ba,
   "/components/admin/Logo#Logo": Logo_91a09b539d3c86b0aebf520e7564ce08,
   "/components/admin/ThemeToggle#ThemeToggle": ThemeToggle_fc85bd5ac375c29cf24795ab8778bf43,
   "/components/admin/Welcome#Welcome": Welcome_72e830871eb26c77002633e2e2cc9dea,
   "/components/admin/LoginArt#LoginArt": LoginArt_ec4d721f58f0c831981091d6ecf9e0d4,
+  "/components/admin/SubmissionCount#SubmissionCount": SubmissionCount_fddedb054eb9f79719b3bfa3a0955b0f,
   "@payloadcms/next/rsc#CollectionCards": CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1
 }

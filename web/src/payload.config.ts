@@ -20,6 +20,7 @@ import { Media } from './collections/Media'
 import { Organizations } from './collections/Organizations'
 import { Posts } from './collections/Posts'
 import { AdImages, AdSlots } from './collections/AdSlots'
+import { SubmissionFiles, Submissions } from './collections/Submissions'
 import { Users } from './collections/Users'
 import { Villages } from './collections/Villages'
 import { Homepage, SiteSettings } from './globals'
@@ -55,6 +56,7 @@ export default buildConfig({
         Icon: '/components/admin/Icon#Icon',
       },
       beforeDashboard: ['/components/admin/Welcome#Welcome'],
+      beforeNavLinks: ['/components/admin/SubmissionCount#SubmissionCount'],
       beforeLogin: ['/components/admin/LoginArt#LoginArt'],
       actions: ['/components/admin/ThemeToggle#ThemeToggle'],
     },
@@ -82,7 +84,7 @@ export default buildConfig({
   },
 
   // Türkçe içerik yayınlanınca diğer dillere otomatik çeviri (src/translate)
-  collections: [Posts, Events, Announcements, ArchiveItems, Villages, Media, Categories, Organizations, AdSlots, AdImages, Users].map(withAutoTranslate),
+  collections: [Posts, Events, Announcements, ArchiveItems, Villages, Media, Categories, Organizations, Submissions, SubmissionFiles, AdSlots, AdImages, Users].map(withAutoTranslate),
   globals: [Homepage, SiteSettings, Live].map(withAutoTranslateGlobal),
   editor: lexicalEditor(),
   // Maket modunda giriş kapalı olduğu için anahtar zorunlu değil

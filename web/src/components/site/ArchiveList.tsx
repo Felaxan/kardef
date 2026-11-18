@@ -112,7 +112,7 @@ export async function ArchiveList({ lang, base, oral, donem, tur, sayfa }: {
           <Pager lang={lang} page={page} pages={res.totalPages} href={(p) => qs(base, { donem: decade, tur: type, sayfa: p })} />
           <div className="arc-list-cta" data-reveal="">
             <p>{L('arc.wanted.p')}</p>
-            <Link className="btn btn-brand" href={`/${lang}#katki`}><span>{L('cta.katki')}</span></Link>
+            <Link className="btn btn-brand" href={`/${lang}/arsive-katki`}><span>{L('cta.katki')}</span></Link>
           </div>
         </div>
       </section>

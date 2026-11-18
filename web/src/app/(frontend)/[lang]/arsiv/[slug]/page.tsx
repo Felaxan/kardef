@@ -158,7 +158,7 @@ export default async function ArchivePage({ params }: P) {
                   {other.map((m) => <li key={m.id}><a href={m.url || '#'} target="_blank" rel="noreferrer"><Ico name="file" />{m.filename}</a></li>)}
                 </ul>
               )}
-              <Link className="btn btn-brand" href={`/${lang}#katki`}><span>{L('cta.katki')}</span><Ico name="arrow" /></Link>
+              <Link className="btn btn-brand" href={`/${lang}/arsive-katki`}><span>{L('cta.katki')}</span><Ico name="arrow" /></Link>
             </aside>
           </div>
         </div>

@@ -36,7 +36,7 @@ export function Footer({ lang, siteName, note, credits }: { lang: Lang; siteName
             <ul>
               <li><Link href={`/${lang}/koyler`}>{L('nav.koyler')}</Link></li>
               <li><Link href={`/${lang}/arsiv`}>{L('nav.arsiv')}</Link></li>
-              <li><Link href={`/${lang}#katki`}>{L('cta.katki')}</Link></li>
+              <li><Link href={`/${lang}/arsive-katki`}>{L('cta.katki')}</Link></li>
               <li><Link href="/admin">Panel</Link></li>
             </ul>
           </div>

@@ -37,6 +37,26 @@ await check('yönetici reklam yerlerini okuyabilir', async () => {
   await payload.find({ collection: 'ad-slots', overrideAccess: false, user: await userOf('admin') })
 })
 
+// --- Gelen katkılar: ziyaretçiye ve yazara kapalı ---
+await check('ziyaretçi gelen katkıları okuyamaz', async () => {
+  await forbidden(payload.find({ collection: 'submissions', overrideAccess: false }))
+})
+await check('ziyaretçi API ile katkı oluşturamaz (yalnızca form)', async () => {
+  await forbidden(payload.create({ collection: 'submissions', overrideAccess: false, data: { name: 'x', description: 'y' } as never }))
+})
+await check('yazar gelen katkıları okuyamaz', async () => {
+  await forbidden(payload.find({ collection: 'submissions', overrideAccess: false, user: await userOf('author') }))
+})
+await check('editör gelen katkıları okuyabilir', async () => {
+  await payload.find({ collection: 'submissions', overrideAccess: false, user: await userOf('editor') })
+})
+await check('ziyaretçi gönderi dosyalarını okuyamaz', async () => {
+  await forbidden(payload.find({ collection: 'submission-files', overrideAccess: false }))
+})
+await check('yazar gönderi dosyalarını okuyamaz', async () => {
+  await forbidden(payload.find({ collection: 'submission-files', overrideAccess: false, user: await userOf('author') }))
+})
+
 for (const [name, ok, msg] of results) console.log(`${ok ? '✔' : '✖'} ${name}${msg ? ` — ${msg}` : ''}`)
 const failed = results.filter((r) => !r[1]).length
 console.log(`int: ${results.length - failed} geçti, ${failed} kaldı`)

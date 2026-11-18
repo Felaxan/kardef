@@ -75,6 +75,8 @@ export interface Config {
     media: Media;
     categories: Category;
     organizations: Organization;
+    submissions: Submission;
+    'submission-files': SubmissionFile;
     'ad-slots': AdSlot;
     'ad-images': AdImage;
     users: User;
@@ -93,6 +95,8 @@ export interface Config {
     media: MediaSelect<false> | MediaSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     organizations: OrganizationsSelect<false> | OrganizationsSelect<true>;
+    submissions: SubmissionsSelect<false> | SubmissionsSelect<true>;
+    'submission-files': SubmissionFilesSelect<false> | SubmissionFilesSelect<true>;
     'ad-slots': AdSlotsSelect<false> | AdSlotsSelect<true>;
     'ad-images': AdImagesSelect<false> | AdImagesSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
@@ -691,6 +695,49 @@ export interface Organization {
   createdAt: string;
 }
 /**
+ * Ziyaretçilerin "Arşive katkı ver" formuyla gönderdikleri. Dosyalara bakın, uygunsa "Arşive aktar" deyin: taslak arşiv kaydı oluşur, yayınlamadan önce düzenleyebilirsiniz.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "submissions".
+ */
+export interface Submission {
+  id: number;
+  status: 'new' | 'review' | 'done' | 'rejected';
+  note?: string | null;
+  archiveItem?: (number | null) | Archive;
+  name: string;
+  phone?: string | null;
+  email?: string | null;
+  kind?: ('photo' | 'audio' | 'video' | 'document' | 'other') | null;
+  year?: string | null;
+  village?: (number | null) | Village;
+  description: string;
+  link?: string | null;
+  files?: (number | SubmissionFile)[] | null;
+  consent?: boolean | null;
+  ip?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "submission-files".
+ */
+export interface SubmissionFile {
+  id: number;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
+}
+/**
  * Sitedeki sabit reklam yerleri. Bir yere tek reklam ya da 20'ye kadar reklam koyabilirsiniz; birden fazlaysa seçtiğiniz sürede sırayla döner.
  *
  * This interface was referenced by `Config`'s JSON-Schema
@@ -806,6 +853,14 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'organizations';
         value: number | Organization;
+      } | null)
+    | ({
+        relationTo: 'submissions';
+        value: number | Submission;
+      } | null)
+    | ({
+        relationTo: 'submission-files';
+        value: number | SubmissionFile;
       } | null)
     | ({
         relationTo: 'ad-slots';
@@ -1126,6 +1181,45 @@ export interface OrganizationsSelect<T extends boolean = true> {
   retranslate?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "submissions_select".
+ */
+export interface SubmissionsSelect<T extends boolean = true> {
+  status?: T;
+  note?: T;
+  archiveItem?: T;
+  name?: T;
+  phone?: T;
+  email?: T;
+  kind?: T;
+  year?: T;
+  village?: T;
+  description?: T;
+  link?: T;
+  files?: T;
+  consent?: T;
+  ip?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "submission-files_select".
+ */
+export interface SubmissionFilesSelect<T extends boolean = true> {
+  updatedAt?: T;
+  createdAt?: T;
+  url?: T;
+  thumbnailURL?: T;
+  filename?: T;
+  mimeType?: T;
+  filesize?: T;
+  width?: T;
+  height?: T;
+  focalX?: T;
+  focalY?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

@@ -113,7 +113,7 @@ export default async function VillagePage({ params }: P) {
 
       <section className="wrap" data-reveal=""><div className="vil-send">
         <p>{L('vil.send')}</p>
-        <Link className="btn btn-brand" href={`/${lang}#katki`}><span>{L('cta.katki')}</span><Ico name="arrow" /></Link>
+        <Link className="btn btn-brand" href={`/${lang}/arsive-katki`}><span>{L('cta.katki')}</span><Ico name="arrow" /></Link>
       </div></section>
     </article>
   )

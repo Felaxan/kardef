@@ -227,7 +227,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
             total={items.length}
             cards={arcCards}
             side={arcSide}
-            contributeHref={`/${lang}#katki`}
+            contributeHref={`/${lang}/arsive-katki`}
             openAllHref={`/${lang}/arsiv`}
             labels={{
               alldec: L('arc.alldec'), records: L('arc.records'), openall: L('arc.openall'),
