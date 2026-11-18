@@ -10,9 +10,11 @@
   --gap: 22px;
   display: flex;
   flex-direction: column;
-  gap: 30px;
-  padding: 8px 0 60px;
-  max-width: 1320px;
+  gap: 28px;
+  width: 100%;
+  max-width: 1420px;
+  margin: 0 auto;
+  padding: 20px var(--gutter-h, 32px) 64px;
 }
 
 .kd-ico {

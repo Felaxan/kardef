@@ -49,6 +49,7 @@ export default buildConfig({
   admin: {
     user: Users.slug,
     suppressHydrationWarning: true,
+    avatar: { Component: '/components/admin/AccountAvatar#AccountAvatar' },
     importMap: { baseDir: path.resolve(dirname) },
     dateFormat: 'd MMMM yyyy, HH:mm',
     meta: {
