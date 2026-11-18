@@ -89,5 +89,30 @@ export const SiteSettings: GlobalConfig = {
       ],
     },
     { name: 'footerNote', label: 'Alt bilgi notu', type: 'textarea', localized: true },
+    {
+      name: 'rates',
+      label: 'Altın ve döviz şeridi',
+      type: 'group',
+      admin: { description: 'Sitenin üstünde kayan şerit. Fiyatlar 30 dakikada bir piyasa verisinden güncellenir (TL karşılığı).' },
+      fields: [
+        { name: 'enabled', label: 'Şeridi göster', type: 'checkbox', defaultValue: true },
+        {
+          name: 'items',
+          label: 'Gösterilecek kalemler',
+          type: 'select',
+          hasMany: true,
+          defaultValue: ['gram', 'ceyrek', 'yarim', 'tam', 'eur', 'usd', 'gbp'],
+          options: [
+            { label: 'Gram altın', value: 'gram' },
+            { label: 'Çeyrek altın', value: 'ceyrek' },
+            { label: 'Yarım altın', value: 'yarim' },
+            { label: 'Tam altın', value: 'tam' },
+            { label: 'Euro', value: 'eur' },
+            { label: 'Dolar', value: 'usd' },
+            { label: 'Sterlin', value: 'gbp' },
+          ],
+        },
+      ],
+    },
   ],
 }

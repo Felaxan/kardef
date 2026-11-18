@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation'
 import React from 'react'
 import { AdPlacement } from '@/components/site/AdPlacement'
 import { Footer } from '@/components/site/Footer'
-import { Header, navItems, type TickerItem } from '@/components/site/Header'
+import { Header, navItems, type RatesStrip, type TickerItem } from '@/components/site/Header'
 import { IconSprite } from '@/components/site/Icons'
 import { Motion } from '@/components/site/Motion'
 import { PrePaint } from '@/components/site/PrePaint'
@@ -11,6 +11,7 @@ import { ScrollChrome } from '@/components/site/ScrollChrome'
 import { SmoothScroll } from '@/components/site/SmoothScroll'
 import { fmt, isLang, LOCALES, t, type Lang } from '@/i18n/ui'
 import { cms, loc } from '@/lib/cms'
+import { getRates } from '@/lib/rates-server'
 import './site.css'
 import './pages.css'
 import './details.css'
@@ -42,12 +43,13 @@ export default async function SiteLayout({ children, params }: { children: React
   const lang: Lang = raw
   const payload = await cms()
 
-  const [settings, home, breaking, media] = await Promise.all([
+  const [settings, home, breaking, media, ratesData] = await Promise.all([
     // Çevrilmemiş alanlar boş gelsin; yerine arayüz metni kullanılır
     payload.findGlobal({ slug: 'site-settings', locale: loc(lang), fallbackLocale: false }),
     payload.findGlobal({ slug: 'homepage', locale: loc(lang) }),
     payload.find({ collection: 'posts', where: { breaking: { equals: true } }, sort: '-publishedAt', limit: 6, depth: 0, locale: loc(lang), overrideAccess: false }),
     payload.find({ collection: 'media', where: { credit: { exists: true } }, limit: 50, depth: 0, pagination: false }),
+    getRates(),
   ])
 
   const ticker: TickerItem[] = [
@@ -56,6 +58,21 @@ export default async function SiteLayout({ children, params }: { children: React
   ]
   const credits = [...new Set(media.docs.map((m) => m.credit).filter((c): c is string => !!c).map((c) => c.replace(/, Wikimedia Commons$/, '')))]
   const siteName = settings.siteName || 'KAR-DEF'
+
+  // Altın ve döviz şeridi (yönetici açıp kapatır, kalemleri seçer)
+  const shown = settings.rates?.items?.length ? settings.rates.items : null
+  const money = (v: number, gold: boolean) =>
+    `₺${v.toLocaleString('tr-TR', { minimumFractionDigits: gold ? 0 : 2, maximumFractionDigits: gold ? 0 : 2 })}`
+  const rates: RatesStrip | null =
+    settings.rates?.enabled !== false && ratesData
+      ? {
+          title: t(lang, 'rate.title'),
+          updated: `${t(lang, 'rate.updated')} ${fmt(lang, ratesData.updatedAt, 'time')}`,
+          items: ratesData.rates
+            .filter((r) => !shown || (shown as string[]).includes(r.key))
+            .map((r) => ({ key: r.key, label: t(lang, `rate.${r.key}`), value: money(r.sell, !['eur', 'usd', 'gbp'].includes(r.key)), change: r.change })),
+        }
+      : null
 
   return (
     <html lang={lang} className={`${franklin.variable} ${serif.variable}`} suppressHydrationWarning>
@@ -69,6 +86,7 @@ export default async function SiteLayout({ children, params }: { children: React
           siteName={siteName}
           tagline={settings.tagline || t(lang, 'brand.tag')}
           ticker={ticker}
+          rates={rates}
           notice={home.notice?.enabled ? { text: home.notice.text || '', link: home.notice.link } : null}
         />
         <ScrollChrome lang={lang} items={navItems(lang)} cta={t(lang, 'cta.katki')} totop={t(lang, 'totop')} siteName={siteName} />

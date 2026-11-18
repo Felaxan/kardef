@@ -180,6 +180,24 @@ a:hover .ul,a.ul:hover,.ul:focus-visible{background-size:100% 1px}
 .ticker-list time{font-weight:700;font-size:.8125rem;color:var(--muted);font-variant-numeric:tabular-nums}
 .ticker-list a:hover{color:var(--brand-text)}
 
+/* Altın ve döviz şeridi */
+.rates{background:var(--bg-sunk,var(--bg-soft));border-bottom:1px solid var(--line);font-variant-numeric:tabular-nums}
+.rates-in{display:flex;align-items:center;gap:14px;height:34px}
+.rates-view{flex:1;min-width:0;overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 30px,#000 calc(100% - 40px),transparent);mask-image:linear-gradient(90deg,transparent,#000 30px,#000 calc(100% - 40px),transparent)}
+.rates-track{display:flex;width:max-content;animation:ticker var(--ticker-dur,40s) linear infinite}
+.rates:hover .rates-track{animation-play-state:paused}
+.rates-list{display:flex;margin:0;padding:0;list-style:none}
+.rates-list li{display:flex;align-items:baseline;gap:7px;padding-right:30px;white-space:nowrap;font-size:.8125rem}
+.r-name{color:var(--muted);font-weight:600}
+.rates-list b{font-weight:700;color:var(--ink)}
+.r-ch{font-size:.71875rem;font-weight:700}
+.is-up .r-ch{color:#1f8a4c}
+.is-down .r-ch{color:var(--brand-text)}
+.is-flat .r-ch{color:var(--muted)}
+.is-dark .is-up .r-ch{color:#4cc283}
+.rates-time{flex:none;font-size:.6875rem;font-weight:600;color:var(--muted);padding-left:14px;border-left:1px solid var(--line)}
+@media (max-width:640px){.rates-time{display:none}}
+
 .langnote{background:var(--bg-soft);border-bottom:1px solid var(--line);font-size:.875rem;color:var(--ink-2)}
 .langnote .wrap{padding-top:10px;padding-bottom:10px}
 
@@ -547,7 +565,7 @@ footer{margin-top:72px;background:var(--bg-soft);border-top:1px solid var(--line
 /* Hareket istemeyen kullanıcılar için */
 @media (prefers-reduced-motion: reduce){
   *,*::before,*::after{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important;transition-delay:0s !important;scroll-behavior:auto !important}
-  .ticker-view{overflow-x:auto}
+  .ticker-view,.rates-view{overflow-x:auto}
   .slide img{transform:none !important}
 }
 

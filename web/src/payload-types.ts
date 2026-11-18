@@ -1309,6 +1309,13 @@ export interface SiteSetting {
       }[]
     | null;
   footerNote?: string | null;
+  /**
+   * Sitenin üstünde kayan şerit. Fiyatlar 30 dakikada bir piyasa verisinden güncellenir (TL karşılığı).
+   */
+  rates?: {
+    enabled?: boolean | null;
+    items?: ('gram' | 'ceyrek' | 'yarim' | 'tam' | 'eur' | 'usd' | 'gbp')[] | null;
+  };
   autoTr?:
     | {
         [k: string]: unknown;
@@ -1373,6 +1380,12 @@ export interface SiteSettingsSelect<T extends boolean = true> {
         id?: T;
       };
   footerNote?: T;
+  rates?:
+    | T
+    | {
+        enabled?: T;
+        items?: T;
+      };
   autoTr?: T;
   retranslate?: T;
   updatedAt?: T;

@@ -17,11 +17,13 @@ export const navItems = (lang: Lang): NavItem[] => [
 ]
 
 export type TickerItem = { text: string; href?: string; time?: string }
+export type RateItem = { key: string; label: string; value: string; change: number }
+export type RatesStrip = { title: string; updated: string; items: RateItem[] }
 
 export function Header({
-  lang, siteName, tagline, ticker, notice,
+  lang, siteName, tagline, ticker, notice, rates,
 }: {
-  lang: Lang; siteName: string; tagline: string; ticker: TickerItem[]
+  lang: Lang; siteName: string; tagline: string; ticker: TickerItem[]; rates?: RatesStrip | null
   notice?: { text: string; link?: string | null } | null
 }) {
   const items = navItems(lang)
@@ -74,6 +76,31 @@ export function Header({
           <NavBar items={items} lang={lang} />
         </nav>
       </header>
+
+      {rates && rates.items.length > 0 && (
+        <div className="rates intro" style={{ '--d': 4 } as React.CSSProperties} aria-label={rates.title}>
+          <div className="wrap rates-in">
+            <div className="rates-view">
+              <div className="rates-track" style={{ '--ticker-dur': `${Math.max(rates.items.length * 6, 30)}s` } as React.CSSProperties}>
+                {[false, true].map((hidden) => (
+                  <ul key={String(hidden)} className="rates-list" aria-hidden={hidden || undefined}>
+                    {rates.items.map((r) => (
+                      <li key={r.key} className={r.change > 0 ? 'is-up' : r.change < 0 ? 'is-down' : 'is-flat'}>
+                        <span className="r-name">{r.label}</span>
+                        <b>{r.value}</b>
+                        <span className="r-ch" aria-label={`${r.change > 0 ? '+' : ''}${r.change}%`}>
+                          {r.change > 0 ? '▲' : r.change < 0 ? '▼' : '•'} {Math.abs(r.change).toLocaleString('tr-TR', { maximumFractionDigits: 2 })}%
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                ))}
+              </div>
+            </div>
+            <span className="rates-time">{rates.updated}</span>
+          </div>
+        </div>
+      )}
 
       {ticker.length > 0 && (
         <div className="ticker intro" style={{ '--d': 4 } as React.CSSProperties}>
