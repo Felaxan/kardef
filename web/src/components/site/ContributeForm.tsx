@@ -11,9 +11,9 @@ const mb = (n: number) =>
 
 /** Arşive katkı formu: anında doğrulama, sürükle-bırak dosya listesi, yükleme ilerlemesi */
 export function ContributeForm({
-  action, labels: L, kindLabels, villages, siteKey, demo,
+  action, privacyHref, labels: L, kindLabels, villages, siteKey, demo,
 }: {
-  action: string; labels: Labels; kindLabels: Record<string, string>; villages: Village[]; siteKey?: string; demo?: boolean
+  action: string; privacyHref: string; labels: Labels; kindLabels: Record<string, string>; villages: Village[]; siteKey?: string; demo?: boolean
 }) {
   const form = useRef<HTMLFormElement>(null)
   const [files, setFiles] = useState<File[]>([])
@@ -33,7 +33,7 @@ export function ContributeForm({
     e.preventDefault()
     if (demo) return setErrors(['demo'])
     const fd = new FormData(form.current!)
-    const fields = Object.fromEntries(['name', 'phone', 'email', 'description', 'link', 'consent'].map((k) => [k, String(fd.get(k) ?? '')]))
+    const fields = Object.fromEntries(['name', 'phone', 'email', 'description', 'link', 'consent', 'privacy'].map((k) => [k, String(fd.get(k) ?? '')]))
     const v = validateSubmission(fields, files.map((f) => ({ name: f.name, type: f.type, size: f.size })))
     if (!v.ok) {
       setErrors(v.errors)
@@ -183,6 +183,15 @@ export function ContributeForm({
           <span>{L['form.consent']}</span>
         </label>
         {err("consent")}
+        <label className={`kf-consent${has('privacy') ? ' is-err' : ''}`}>
+          <input type="checkbox" name="privacy" value="on" />
+          <span>
+            {L['form.privacy.pre']}
+            <a href={privacyHref} target="_blank" rel="noopener" onClick={(e) => e.stopPropagation()}>{L['form.privacy.link']}</a>
+            {L['form.privacy.post']}
+          </span>
+        </label>
+        {err("privacy")}
         <p className="kf-privacy">{L['form.privacy']}</p>
 
         {siteKey && <div className="cf-turnstile" data-sitekey={siteKey} data-theme="auto" />}

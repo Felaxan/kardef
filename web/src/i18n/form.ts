@@ -4,6 +4,7 @@
 */
 export const FORM: Record<string, Record<string, string>> = {
   tr: {
+    "form.privacy.pre": "", "form.privacy.link": "KVKK Aydınlatma Metni", "form.privacy.post": "'ni okudum; iletişim bilgilerimin ve gönderdiğim içeriğin bu metinde anlatıldığı şekilde işlenmesini kabul ediyorum.", "err.privacy": "Aydınlatma metnini okuduğunuzu onaylayın.",
     'form.title': 'Arşive katkı ver',
     'form.lede': 'Sandıkta duran fotoğraflar, mektuplar, ses ve video kayıtları ortak hafızamızın parçası. Gönderin; editörlerimiz inceleyip künyesiyle arşive eklesin. Asılları sizde kalır.',
     'form.who': 'Siz', 'form.what': 'Gönderdiğiniz',
@@ -32,6 +33,7 @@ export const FORM: Record<string, Record<string, string>> = {
     'err.demo': 'Bu maket sürümünde gönderim kapalı.', 'err.form': 'Gönderi okunamadı. Lütfen tekrar deneyin.',
   },
   ku: {
+    "form.privacy.pre": "", "form.privacy.link": "Agahdariya parastina daneyan", "form.privacy.post": " min xwend; ez qebûl dikim ku agahiyên min ên têkiliyê û naveroka ku ez dişînim li gorî wê werin bikaranîn.", "err.privacy": "Ji kerema xwe agahdariya parastina daneyan erê bikin.",
     'form.title': 'Beşdarî arşîvê bibe',
     'form.lede': 'Wêne, name, tomarên deng û vîdyoyên di sindoqan de beşek ji bîra me ya hevpar in. Ji me re bişînin; edîtorên me wê lê binêrin û bixin arşîvê. Eslê wan li cem we dimîne.',
     'form.who': 'Hûn', 'form.what': 'Tiştê ku hûn dişînin',
@@ -58,6 +60,7 @@ export const FORM: Record<string, Record<string, string>> = {
     'err.form': 'Şandin nehat xwendin. Dîsa biceribînin.',
   },
   zza: {
+    "form.privacy.pre": "", "form.privacy.link": "Metnê KVKK", "form.privacy.post": " mı wend; ez qebul kena ke melumatê mı yê têkilîye û muhtevaya ke ez rışena goreyê na metnî bıgureyê.", "err.privacy": "Metnê KVKK qebul kerê.",
     'form.title': 'Arşîwî rê destek bide',
     'form.lede': 'Fotografî, mektubî, qeydê veng û videoyî ke sindoqan de yê, para vîrê ma yê hevpareyî yê. Ma rê bışawe; edîtorê ma bıvînê û arşîw de bıkerê. Esılê înan lewê şıma de maneno.',
     'form.who': 'Şıma', 'form.what': 'Çiyo ke şawenê',
@@ -84,6 +87,7 @@ export const FORM: Record<string, Record<string, string>> = {
     'err.form': 'Şawıtış nêwanîya. Reyna bıcerebnê.',
   },
   en: {
+    "form.privacy.pre": "I have read the ", "form.privacy.link": "Privacy Notice", "form.privacy.post": " and agree that my contact details and the material I send are processed as described there.", "err.privacy": "Please confirm you have read the privacy notice.",
     'form.title': 'Contribute to the archive',
     'form.lede': 'Photos, letters, audio and video recordings kept in old chests are part of our shared memory. Send them in; our editors will review and add them to the archive. You keep the originals.',
     'form.who': 'You', 'form.what': 'What you are sending',
@@ -110,6 +114,7 @@ export const FORM: Record<string, Record<string, string>> = {
     'err.demo': 'Submissions are disabled in this preview.', 'err.form': 'The submission could not be read. Please try again.',
   },
   de: {
+    "form.privacy.pre": "Ich habe die ", "form.privacy.link": "Datenschutzerklärung", "form.privacy.post": " gelesen und bin einverstanden, dass meine Kontaktdaten und eingesandten Inhalte wie dort beschrieben verarbeitet werden.", "err.privacy": "Bitte bestätigen Sie die Datenschutzerklärung.",
     'form.title': 'Zum Archiv beitragen',
     'form.lede': 'Fotos, Briefe, Ton- und Videoaufnahmen aus alten Truhen sind Teil unseres gemeinsamen Gedächtnisses. Schicken Sie sie uns; unsere Redaktion prüft sie und nimmt sie ins Archiv auf. Die Originale bleiben bei Ihnen.',
     'form.who': 'Sie', 'form.what': 'Ihre Einsendung',
@@ -136,6 +141,7 @@ export const FORM: Record<string, Record<string, string>> = {
     'err.form': 'Die Einsendung konnte nicht gelesen werden.',
   },
   nl: {
+    "form.privacy.pre": "Ik heb de ", "form.privacy.link": "privacyverklaring", "form.privacy.post": " gelezen en ga ermee akkoord dat mijn contactgegevens en ingezonden materiaal worden verwerkt zoals daar beschreven.", "err.privacy": "Bevestig dat u de privacyverklaring heeft gelezen.",
     'form.title': 'Bijdragen aan het archief',
     'form.lede': 'Foto’s, brieven, geluids- en video-opnames uit oude kisten zijn deel van ons gedeelde geheugen. Stuur ze in; onze redactie bekijkt ze en voegt ze toe aan het archief. U houdt de originelen.',
     'form.who': 'U', 'form.what': 'Uw inzending',
@@ -162,6 +168,7 @@ export const FORM: Record<string, Record<string, string>> = {
     'err.form': 'De inzending kon niet worden gelezen.',
   },
   fr: {
+    "form.privacy.pre": "J’ai lu la ", "form.privacy.link": "politique de confidentialité", "form.privacy.post": " et j’accepte que mes coordonnées et les contenus envoyés soient traités comme indiqué.", "err.privacy": "Veuillez confirmer la politique de confidentialité.",
     'form.title': 'Contribuer aux archives',
     'form.lede': 'Photos, lettres, enregistrements audio et vidéo rangés dans les vieux coffres font partie de notre mémoire commune. Envoyez-les ; notre rédaction les examinera et les ajoutera aux archives. Vous gardez les originaux.',
     'form.who': 'Vous', 'form.what': 'Votre envoi',

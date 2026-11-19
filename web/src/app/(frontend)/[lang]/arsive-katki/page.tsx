@@ -35,6 +35,7 @@ export default async function ContributePage({ params }: P) {
         <ListHead lang={lang} kicker={t(lang, 'nav.arsiv')} title={t(lang, 'form.title')} lede={t(lang, 'form.lede')} />
         <ContributeForm
           action={`/${lang}/arsive-katki/gonder`}
+          privacyHref={`/${lang}/gizlilik#kvkk`}
           labels={labels}
           kindLabels={kindLabels}
           villages={villages.docs.map((v) => ({ id: v.id as number, name: v.name }))}

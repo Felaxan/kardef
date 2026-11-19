@@ -47,6 +47,10 @@ export function Footer({ lang, siteName, note, credits }: { lang: Lang; siteName
         <div className="foot-bottom">
           <span>© {new Date().getFullYear()} KAR-DEF · AV-KARDEP</span>
           <span>{L('foot.rights')}</span>
+          <span className="foot-legal">
+            <Link href={`/${lang}/gizlilik#kvkk`}>{L('foot.privacy')}</Link>
+            <Link href={`/${lang}/gizlilik#cerez`}>{L('foot.cookies')}</Link>
+          </span>
         </div>
       </div>
     </footer>

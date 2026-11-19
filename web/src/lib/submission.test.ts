@@ -13,7 +13,7 @@ import {
   validateSubmission,
 } from './submission'
 
-const ok = { name: 'Ali Veli', phone: '05551112233', email: '', description: '1972 düğününden fotoğraf', consent: 'on' }
+const ok = { name: 'Ali Veli', phone: '05551112233', email: '', description: '1972 düğününden fotoğraf', consent: 'on', privacy: 'on' }
 const photo = { name: 'foto.jpg', type: 'image/jpeg', size: 2_000_000 }
 
 test('geçerli gönderim kabul edilir', () => {
@@ -25,9 +25,9 @@ test('dosyasız ama bağlantılı gönderim kabul edilir', () => {
 })
 
 test('zorunlu alanlar eksikse hangi alan olduğu söylenir', () => {
-  const r = validateSubmission({ ...ok, name: ' ', description: '', consent: '' }, [photo])
+  const r = validateSubmission({ ...ok, name: ' ', description: '', consent: '', privacy: '' }, [photo])
   assert.equal(r.ok, false)
-  assert.deepEqual(!r.ok && [...r.errors].sort(), ['consent', 'description', 'name'])
+  assert.deepEqual(!r.ok && [...r.errors].sort(), ['consent', 'description', 'name', 'privacy'])
 })
 
 test('telefon ve e-posta ikisi de boşsa iletişim hatası', () => {

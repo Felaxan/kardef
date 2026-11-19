@@ -719,3 +719,7 @@ a:hover .live-play{transform:scale(1.1)}
 @keyframes railInR{from{opacity:0;transform:translateX(24px)}}
 @media print{.ad-rail{display:none}}
 
+.kf-consent a{color:var(--brand-text);text-decoration:underline;text-underline-offset:3px}
+.foot-legal{display:flex;gap:16px;flex-wrap:wrap}
+.foot-legal a{color:inherit;text-decoration:underline;text-underline-offset:3px;opacity:.85;transition:opacity .2s}
+.foot-legal a:hover{opacity:1}

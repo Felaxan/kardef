@@ -3,6 +3,7 @@ import React from 'react'
 import { DateTile } from '@/components/site/Article'
 import { Ico } from '@/components/site/Icons'
 import { ListHead } from '@/components/site/List'
+import { LiveEmbed } from '@/components/site/LiveEmbed'
 import { fmt, isLang, t } from '@/i18n/ui'
 import { cms, loc } from '@/lib/cms'
 import { youTubeId } from '@/lib/youtube'
@@ -37,11 +38,13 @@ export default async function LivePage({ params }: P) {
           <section className="live-stage intro" style={css({ '--d': 4 })}>
             <span className="live-badge"><span className="live-dot" aria-hidden="true" />{L('live.badge')}</span>
             <div className="live-frame">
-              <iframe
-                src={`https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0`}
+              <LiveEmbed
+                id={id}
                 title={live.title || L('live.title')}
-                allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
-                allowFullScreen
+                load={L('live.load')}
+                note={L('live.loadNote')}
+                privacyHref={`/${lang}/gizlilik#cerez`}
+                privacyLabel={L('foot.cookies')}
               />
             </div>
             <a className="live-yt" href={`https://www.youtube.com/watch?v=${id}`} target="_blank" rel="noreferrer">{L('live.onyt')} <Ico name="arrow" /></a>

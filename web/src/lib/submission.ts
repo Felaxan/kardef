@@ -18,7 +18,7 @@ export const ACCEPT = 'image/*,audio/*,video/*,application/pdf'
 
 export type FileInfo = { name: string; type: string; size: number }
 export type SubmissionError =
-  | 'name' | 'contact' | 'description' | 'consent' | 'files.none' | 'files.count' | 'files.size' | 'files.type'
+  | 'name' | 'contact' | 'description' | 'consent' | 'privacy' | 'files.none' | 'files.count' | 'files.size' | 'files.type'
 export type Validation = { ok: true } | { ok: false; errors: SubmissionError[] }
 
 const filled = (v?: string | null) => Boolean(v && v.trim())
@@ -36,6 +36,7 @@ export function validateSubmission(fields: Record<string, string | undefined>, f
   if (!phoneOk && !emailOk) errors.push('contact')
   if (!filled(fields.description)) errors.push('description')
   if (!fields.consent) errors.push('consent')
+  if (!fields.privacy) errors.push('privacy')
 
   // Dosya şart değil: yalnızca yazılı bir anı da gönderilebilir
   if (files.length > MAX_FILES) errors.push('files.count')

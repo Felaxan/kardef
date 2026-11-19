@@ -88,6 +88,7 @@ export async function POST(req: Request) {
     kind: str(form.get('kind'), 20),
     village: str(form.get('village'), 20),
     consent: str(form.get('consent'), 10),
+    privacy: str(form.get('privacy'), 10),
   }
   const files = form.getAll('files').filter((f): f is File => typeof f === 'object' && f !== null && 'size' in f && f.size > 0)
   const infos: FileInfo[] = files.map((f) => ({ name: f.name, type: f.type, size: f.size }))
