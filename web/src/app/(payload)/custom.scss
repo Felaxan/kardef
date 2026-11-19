@@ -88,7 +88,7 @@ h1, h2, h3, h4 {
 .step-nav span.step-nav__home,
 .step-nav__home span,
 .kd-topbrand,
-.kd-topbrand * {
+.kd-topbrand :not(img) {
   width: auto !important;
   height: auto !important;
   max-width: none !important;
@@ -109,6 +109,12 @@ h1, h2, h3, h4 {
 }
 
 /* Üst çubuktaki dil seçici (Yerel ayar: Türkçe) */
+.app-header__localizer.localizer {
+  right: calc(var(--gutter-h) + 48px) !important;
+}
+.app-header__localizer-spacing {
+  margin-right: 14px;
+}
 .app-header .localizer-button {
   display: inline-flex !important;
   align-items: center;
@@ -1006,7 +1012,8 @@ html[data-theme='dark'] .kd-chip--mor {
   min-height: 26px !important;
   max-width: 26px !important;
   max-height: 26px !important;
-  border-radius: 50%;
+  border-radius: 50% !important;
+  overflow: hidden !important;
   object-fit: cover;
   background: #fff;
   box-shadow: 0 0 0 2px var(--theme-elevation-50);
