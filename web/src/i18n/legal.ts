@@ -1,6 +1,6 @@
 /*
   KVKK aydınlatma metni ve çerez politikası (/[lang]/gizlilik).
-  Türkçe metin esastır; en, de, nl, fr çeviridir. Kurmancî ve Zazaca için Türkçe gösterilir.
+  Türkçe metin esastır; diğerleri çeviridir (Zazaca taslak, kontrol edilmeli).
   {org} → veri sorumlusu kurumların adı, {mail} → başvuru e-postası (Kurumlar kayıtlarından gelir).
   Yayına almadan önce bir hukukçuya okutulmalı.
 */
@@ -242,7 +242,98 @@ const fr: LegalText = {
   noMail: 'l’une des adresses de la page Organisations',
 }
 
-/** Kurmancî ve Zazaca: hukuki metin Türkçe gösterilir */
-export const LEGAL: Record<Lang, LegalText> = { tr, ku: tr, zza: tr, en, de, nl, fr }
+const ku: LegalText = {
+  title: 'Nepenîtî û KVKK',
+  lede: 'Em bi zimanekî sade vedibêjin ka em kîjan daneyên kesane çima bi kar tînin, çiqas diparêzin û mafên we çi ne.',
+  updated: 'Nûkirina dawî',
+  kvkk: 'Agahdariya Parastina Daneyan',
+  cookies: 'Polîtîkaya Çerezan',
+  kvkkSections: [
+    { h: 'Berpirsiyarê daneyan', p: ['Li gorî Qanûna Parastina Daneyên Kesane ya hejmar 6698 (KVKK), berpirsiyarê daneyan {org} e. Ev nivîs hatiye amadekirin da ku we li ser daneyên we yên kesane agahdar bike, dema hûn malperê bi kar tînin û beşdarî arşîvê dibin.'] },
+    { h: 'Em kîjan daneyan bi kar tînin?', list: [
+      'Forma beşdariya arşîvê: nav û paşnavê we, telefon û/an e-nameya we, wêne, deng, vîdyo, belge û danasînên ku hûn dişînin, û navnîşana IP ya we di dema şandinê de.',
+      'Kesên di naverokê de: wêne, deng û navê kesên ku di wêne û tomaran de xuya dikin an navê wan derbas dibe.',
+      'Tomarên ewlehiyê: navnîşana IP, dîrok, dem û karê ku li malperê û panela rêveberiyê hatiye kirin.',
+      'Bikarhênerên panela rêveberiyê (edîtor û rêveber): nav, e-name û karên di panelê de.',
+    ] },
+    { h: 'Ji bo çi?', list: [
+      'Ji bo ku em naveroka we binirxînin, rast bikin û heke hewce be bigihîjin we.',
+      'Ji bo ku naveroka ku we destûr daye, bi nasnameya wê (navê bexşdar û kesên di tomarê de jî tê de) di arşîva dîjîtal de biweşînin.',
+      'Ji bo parastina malperê li hember êrîş, şandinên sexte û xirab-bikaranînê.',
+      'Ji bo bicîhanîna erkên me yên qanûnî.',
+    ] },
+    { h: 'Bingehên qanûnî', p: ['Daneyên we li gorî xala 5an a KVKKê li ser van bingehan tên bikaranîn: razîbûna we ya eşkere ji bo weşandina naverokê di arşîvê de; têkiliya bi we re ji ber forma ku we şandiye; berjewendiya rewa ya berpirsiyarê daneyan ji bo ewlehiya agahiyan; û erkên qanûnî. Telefon û e-nameya we li ser malperê nayên weşandin.'] },
+    { h: 'Ji kê re tên şandin?', p: [
+      'Daneyên we nayên firotin û ji bo reklamê bi kesî re nayên parvekirin. Malper li ser serverekê li Tirkiyeyê ye. Tenê edîtorên me yên destûrdar wan dibînin; heke qanûn bixwaze, dikarin ji saziyên giştî yên destûrdar re bên dayîn.',
+      'Weşanên zindî û hin vîdyo bi riya YouTube (Google) tên nîşandan. Dema hûn vîdyoyekê dest pê dikin an wêneyên pêşdîtinê bar dibin, navnîşana IP ya we digihîje Googleê. Heke kontrola robotan vekirî be, form Cloudflare Turnstile bi kar tîne û agahiyên gerokê digihîjin Cloudflareê. Serverên van pêşkêşkeran li derveyî welêt in.',
+    ] },
+    { h: 'Em çiqas diparêzin?', list: [
+      'Şandinên ku nakevin arşîvê û agahiyên têkiliyê: herî dereng salek piştî nirxandinê tên jêbirin.',
+      'Naveroka di arşîvê de: heta ku arşîv li ser înternetê be; agahiyên têkiliyê herî zêde 2 sal.',
+      'Tomarên ewlehiyê: herî zêde 2 sal.',
+      'Heke hûn razîbûna xwe paşde bistînin, naverok ji weşanê tê rakirin.',
+    ] },
+    { id: 'haklar', h: 'Mafên we (KVKK xala 11an)', p: ['Mafê we heye ku hûn bizanin ka daneyên we tên bikaranîn an na, agahî bixwazin, rastkirin an jêbirina wan bixwazin, bizanin ji kê re hatine şandin, li dijî derkevin û tezmînat bixwazin. Hûn dikarin bixwazin ku wêneyek, tomarek an nûçeyek ku hûn an xizmekî we tê de ye ji arşîvê were rakirin.', 'Hûn dikarin serlêdana xwe ji vê navnîşanê re binivîsin: {mail}. Bersiv herî dereng di 30 rojan de û bêpere tê dayîn.'] },
+  ],
+  cookieIntro: ['Li ser malpera me çerezên reklam, bazarkirin an şopandinê tune ne; amûrên wek Google Analytics an Meta Pixel jî tune ne. Tenê ev tomarên jêrîn ên ku ji bo xebata malperê pêwîst in di geroka we de tên parastin. Ji ber ku pêwîst in, destûra we ya cuda nayê xwestin.'],
+  cookieHead: ['Nav', 'Çi dike?', 'Dem'],
+  cookieRows: [
+    ['k-lang (çerez)', 'Zimanê ku we hilbijartiye bi bîr tîne.', '1 sal'],
+    ['k-theme, k-fs (bîra gerokê)', 'Tema ronî/tarî û mezinahiya nivîsê bi bîr tîne.', 'Heta ku hûn jê bibin'],
+    ['payload-token, payload-lng (çerez)', 'Tenê ji bo edîtorên ku dikevin panela rêveberiyê: danişîn û zimanê panelê.', 'Danişîn / 1 sal'],
+    ['Cloudflare Turnstile', 'Heke vekirî be, li forma arşîvê şandinên robotan asteng dike.', 'Danişîn'],
+  ],
+  cookieOutro: ['Lîstikvanê weşana zindî heta ku hûn bişkoka “Weşanê veke” nekirtînin bar nabe. Dema hûn bitikînin, lîstikvanê YouTube yê nepenîtî-parêz (youtube-nocookie.com) vedibe û dibe ku YouTube çerezên xwe bi kar bîne.', 'Hûn dikarin ji mîhengên geroka xwe çerezan jê bibin an asteng bikin; wê demê ziman û tema we nayên bîrkirin.'],
+  noMail: 'agahiyên têkiliyê yên li rûpela Saziyan',
+}
+
+/* Zazaca metin taslaktır; Zazaca bilen biri kontrol etmeli. */
+const zza: LegalText = {
+  title: 'Nımıtışî û KVKK',
+  lede: 'Ma be zıwanêko sade vanê ke kamcîn melumatê şexsîyan çıra kar ardenê, çıqas wext pawenê û heqê şıma çı yê.',
+  updated: 'Rocanekerdışo peyên',
+  kvkk: 'Metnê Parastışê Melumatan',
+  cookies: 'Polîtîkaya Çerezan',
+  kvkkSections: [
+    { h: 'Mesulê melumatan', p: ['Goreyê Qanûnê Parastışê Melumatanê Şexsîyan yê numre 6698 (KVKK), mesulê melumatan {org} yo. No metın seba ke şıma melumatanê xo yê şexsîyan ser o agahdar bê amade bîyo; wexto ke şıma sîte kar ardenê û arşîv rê çîyêk rışenê.'] },
+    { h: 'Ma kamcîn melumatan kar ardenê?', list: [
+      'Formê arşîvî: name û peynameyê şıma, telefon û/ya e-posteyê şıma, fotografî, veng, vîdeo, belgeyî û şınasnayîşê ke şıma rışenê, û adresê IPyê şıma wexto rıştışî de.',
+      'Kesê ke muhteva de estê: resım, veng û nameyê kesanê ke fotograf û qeydan de asenê ya nameyê înan vîyareno.',
+      'Qeydê emnîyetî: adresê IP, tarîx, saete û karo ke sîte û panelê îdareyî de bîyo.',
+      'Karberê panelê îdareyî (edîtorî û îdarekerî): name, e-poste û karê ke panel de kerdê.',
+    ] },
+    { h: 'Seba çıçî?', list: [
+      'Seba ke ma muhtevaya şıma bıqontrol kerê, raşt kerê û eke lazım bo şıma reyde têkilî kewê.',
+      'Seba ke muhtevaya ke şıma îzin dayo, bı şınasnameyê aye (nameyê bexşkarî û kesê ke qeyd de estê zî) arşîvo dîjîtal de bıweşanê.',
+      'Seba parastışê sîte hetê êrîşan, rıştışanê sexteyan û xırab-kar-ardışî ra.',
+      'Seba ardışê erkanê ma yê qanûnîyan.',
+    ] },
+    { h: 'Bıngehê qanûnî', p: ['Melumatê şıma goreyê madeyê 5. yê KVKK nê bıngehan ser o kar yenê ardene: rızaya şıma ya akerde seba weşanayîşê muhteva arşîv de; têkilîya ke formê şıma ra vırazîyêna; menfeetê meşrûyê mesulê melumatan seba emnîyetê melumatan; û erkê qanûnî. Telefon û e-posteyê şıma sîte de nêweşanîyenê.'] },
+    { h: 'Kamî rê şîyenê?', p: [
+      'Melumatê şıma nêroşîyenê û seba reklamî kesî reyde parenêbenê. Sîte Tırkîya de serverêk ser o yo. Tena edîtorê ma yê îzindarî înan vînenê; eke qanûn bıwazo, şenê bıdîyê qurumanê umûmîyan yê selahîyetdaran.',
+      'Weşanê zindî û tayê vîdeoyî YouTube (Google) ser o mocnîyenê. Wexto ke şıma vîdeoyêk dest pêkenê ya resımê verqaytîyî bar benê, adresê IPyê şıma şono Google. Eke kontrolê robotan akerde bo, form Cloudflare Turnstile kar ano û melumatê browserî şonê Cloudflare. Serverê nê şîrketan teberê welatî de yê.',
+    ] },
+    { h: 'Ma çıqas wext pawenê?', list: [
+      'Rıştışê ke nêkewê arşîv û melumatê têkilîye: tewr erey serrêk badê qontrolî ra esterîyenê.',
+      'Muhtevaya arşîvî: heta ke arşîv înternet ser o bo; melumatê têkilîye tewr zêde 2 serrî.',
+      'Qeydê emnîyetî: tewr zêde 2 serrî.',
+      'Eke şıma rızaya xo peyser bıgîrê, muhteva weşan ra wedarîyena.',
+    ] },
+    { id: 'haklar', h: 'Heqê şıma (KVKK madeyo 11.)', p: ['Heqê şıma esto ke şıma bızanê melumatê şıma kar yenê ardene ya nê, melumat bıwazê, raştkerdış ya esterıtışê înan bıwazê, bızanê kamî rê şîyê, îtîraz kerê û tazmînat bıwazê. Şıma şenê bıwazê ke fotografêk, qeydêk ya xeberêk ke şıma ya merdımêkê şıma tede yo arşîv ra wedarîyo.', 'Şıma şenê muracatê xo nê adresî rê bınusê: {mail}. Cewab tewr erey 30 rocan de û bêpere dîyeno.'] },
+  ],
+  cookieIntro: ['Sîteyê ma de çerezê reklam, bazarkerdış ya taqîbkerdışî çin ê; hacetê sey Google Analytics ya Meta Pixel zî çin ê. Tena nê qeydê cêrinî ke seba gurenayîşê sîte lazım ê browserê şıma de pawîyenê. Çıke lazım ê, îzinê şıma yo cıya nêwazîyeno.'],
+  cookieHead: ['Name', 'Çı keno?', 'Wext'],
+  cookieRows: [
+    ['k-lang (çerez)', 'Zıwano ke şıma weçînayo xo vîr de tepışeno.', '1 serre'],
+    ['k-theme, k-fs (vîrê browserî)', 'Temaya roşne/tarî û gırdîya nuşteyî xo vîr de tepışeno.', 'Heta ke şıma esternê'],
+    ['payload-token, payload-lng (çerez)', 'Tena seba edîtoranê ke kewenê panelê îdareyî: oturum û zıwanê panelî.', 'Oturum / 1 serre'],
+    ['Cloudflare Turnstile', 'Eke akerde bo, formê arşîvî de rıştışanê robotan vındarneno.', 'Oturum'],
+  ],
+  cookieOutro: ['Kayıtoxê weşanê zindî heta ke şıma butonê “Weşanî akere” nêtıkne bar nêbeno. Wexto ke şıma tıknenê, kayıtoxê YouTube yo nımıtışparêz (youtube-nocookie.com) abîyeno û beno ke YouTube çerezanê xo kar biyaro.', 'Şıma şenê ayaranê browserê xo ra çerezan bıesternê ya vındarnê; o wext zıwan û temaya şıma vîr de nêmanenê.'],
+  noMail: 'melumatê têkilîye yê pela Quruman',
+}
+
+/** Yedi dilin hepsi */
+export const LEGAL: Record<Lang, LegalText> = { tr, ku, zza, en, de, nl, fr }
 /** Metnin son güncellenme tarihi (metin değişince güncelleyin) */
 export const LEGAL_UPDATED = '2026-11-19'
