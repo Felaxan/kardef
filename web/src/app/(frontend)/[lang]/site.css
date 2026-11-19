@@ -723,3 +723,22 @@ a:hover .live-play{transform:scale(1.1)}
 .foot-legal{display:flex;gap:16px;flex-wrap:wrap}
 .foot-legal a{color:inherit;text-decoration:underline;text-underline-offset:3px;opacity:.85;transition:opacity .2s}
 .foot-legal a:hover{opacity:1}
+
+/* Menü: sığmayan öğeler "Daha fazla" altına taşınır (geniş ekran) */
+.nav-in.is-fit,.mini-nav.is-fit{overflow:visible}
+.nav a.is-over,.mini-nav a.is-over,.nav-more.is-over{position:absolute;visibility:hidden;pointer-events:none}
+.nav-more{position:relative;flex:none}
+.nav-more>button{display:inline-flex;align-items:center;gap:6px;padding:15px 0;border:0;background:none;font:inherit;font-weight:600;font-size:.96875rem;white-space:nowrap;color:var(--ink-2);cursor:pointer;transition:color .25s}
+.mini-nav .nav-more>button{padding:0;font-size:.875rem}
+.nav-more>button:hover,.nav-more>button.is-active,.nav-more.is-open>button{color:var(--ink)}
+.nav-more>button svg{width:12px;height:12px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;transition:transform .35s var(--ease-out)}
+.nav-more.is-open>button svg{transform:rotate(180deg)}
+.nav-more-list{position:absolute;right:0;top:calc(100% + 6px);z-index:60;min-width:220px;margin:0;padding:8px;list-style:none;background:var(--bg);border:1px solid var(--line);border-radius:8px;box-shadow:0 22px 50px -24px rgba(0,0,0,.45);opacity:0;visibility:hidden;transform:translateY(-6px) scale(.98);transform-origin:top right;transition:opacity .22s var(--ease-out),transform .3s var(--ease-out),visibility 0s .3s}
+.mini-nav .nav-more-list{top:calc(100% + 18px)}
+.nav-more.is-open .nav-more-list{opacity:1;visibility:visible;transform:none;transition:opacity .22s var(--ease-out),transform .3s var(--ease-out),visibility 0s}
+.nav-more-list li{opacity:0;transform:translateY(-4px);transition:opacity .25s var(--ease-out),transform .3s var(--ease-out);transition-delay:calc(var(--i,0) * 35ms)}
+.nav-more.is-open .nav-more-list li{opacity:1;transform:none}
+.nav .nav-more-list a,.mini-nav .nav-more-list a{display:flex;align-items:center;margin:0;padding:10px 12px;border-radius:5px;font-size:.9375rem;color:var(--ink-2);white-space:nowrap;transition:background .2s,color .2s}
+.nav .nav-more-list a:hover,.mini-nav .nav-more-list a:hover,.nav-more-list a.is-active{background:var(--bg-soft);color:var(--ink)}
+.nav-more-list a.is-live{color:var(--brand-text)}
+@media (prefers-reduced-motion: reduce){.nav-more-list,.nav-more-list li,.nav-more>button svg{transition:none}}

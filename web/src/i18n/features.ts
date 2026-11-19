@@ -7,6 +7,7 @@ type Dict = Record<string, string>
 
 export const FEATURES: Record<string, Dict> = {
   tr: {
+    'nav.more': "Daha fazla",
     "foot.privacy": "KVKK Aydınlatma Metni", "foot.cookies": "Çerez Politikası", "live.load": "Yayını aç", "live.loadNote": "Yayın YouTube üzerinden açılır; bağlantı yalnızca düğmeye bastığınızda kurulur.",
     'nav.canli': 'Canlı', 'live.badge': 'CANLI', 'live.title': 'Canlı yayın', 'live.lede': 'Toplantılar, etkinlikler ve özel günler buradan canlı yayınlanır.', 'live.next': 'Sıradaki yayın', 'live.none': 'Şu an yayın yok.', 'live.past': 'Geçmiş yayınlar', 'live.watch': 'İzle', 'live.onyt': "YouTube'da aç",
     'rate.gram': 'Gram altın', 'rate.ceyrek': 'Çeyrek', 'rate.yarim': 'Yarım', 'rate.tam': 'Tam altın', 'rate.eur': 'Euro', 'rate.usd': 'Dolar', 'rate.gbp': 'Sterlin', 'rate.title': 'Altın ve döviz', 'rate.updated': 'Güncelleme',
@@ -16,6 +17,7 @@ export const FEATURES: Record<string, Dict> = {
     'not.couple': 'Gelin ve damat', 'not.families': 'Aileler', 'not.person': 'Kimin için', 'not.occasion': 'Etkinlik',
   },
   ku: {
+    'nav.more': "Zêdetir",
     "foot.privacy": "Parastina daneyan", "foot.cookies": "Polîtîkaya çerezan", "live.load": "Weşanê veke", "live.loadNote": "Weşan bi riya YouTubeê vedibe; girêdan tenê dema hûn bitikînin çêdibe.",
     'nav.canli': 'Zindî', 'live.badge': 'ZINDÎ', 'live.title': 'Weşana zindî', 'live.lede': 'Civîn, çalakî û rojên taybet ji vir zindî tên weşandin.', 'live.next': 'Weşana bê', 'live.none': 'Niha weşan tune.', 'live.past': 'Weşanên borî', 'live.watch': 'Temaşe bike', 'live.onyt': 'Li YouTubeê veke',
     'rate.gram': 'Gram zêr', 'rate.ceyrek': 'Çarîk', 'rate.yarim': 'Nîv', 'rate.tam': 'Zêrê tam', 'rate.eur': 'Euro', 'rate.usd': 'Dolar', 'rate.gbp': 'Sterlîn', 'rate.title': 'Zêr û dovîz', 'rate.updated': 'Nûkirin',
@@ -25,6 +27,7 @@ export const FEATURES: Record<string, Dict> = {
     'not.couple': 'Bûk û zava', 'not.families': 'Malbat', 'not.person': 'Ji bo kê', 'not.occasion': 'Bûyer',
   },
   zza: {
+    'nav.more': "Hîna zêde",
     "foot.privacy": "Parastişê melumatan", "foot.cookies": "Polîtîkaya çerezan", "live.load": "Weşanî akere", "live.loadNote": "Weşan YouTube ser o abîyeno; gıreydayîş tena wexto ke şıma bıtıkne beno.",
     'nav.canli': 'Zindî', 'live.badge': 'ZINDÎ', 'live.title': 'Weşanê zindî', 'live.lede': 'Kombîyayîşî, aktîvîteyî û rojê xasî tiya ra zindî weşiyenê.', 'live.next': 'Weşano ke yeno', 'live.none': 'Nika weşan çin o.', 'live.past': 'Weşanê verênî', 'live.watch': 'Temaşe ke', 'live.onyt': 'YouTube de akere',
     'rate.gram': 'Gram zern', 'rate.ceyrek': 'Çarek', 'rate.yarim': 'Nêm', 'rate.tam': 'Zerno tam', 'rate.eur': 'Euro', 'rate.usd': 'Dolar', 'rate.gbp': 'Sterlîn', 'rate.title': 'Zern û dovîz', 'rate.updated': 'Rojanekerdiş',
@@ -34,6 +37,7 @@ export const FEATURES: Record<string, Dict> = {
     'not.couple': 'Veyve û zama', 'not.families': 'Keyeyî', 'not.person': 'Seba kamî', 'not.occasion': 'Bûyer',
   },
   en: {
+    'nav.more': "More",
     "foot.privacy": "Privacy Notice", "foot.cookies": "Cookie Policy", "live.load": "Load stream", "live.loadNote": "The stream plays via YouTube; a connection is made only when you press the button.",
     'nav.canli': 'Live', 'live.badge': 'LIVE', 'live.title': 'Live stream', 'live.lede': 'Meetings, events and special days are streamed live here.', 'live.next': 'Next broadcast', 'live.none': 'Nothing is live right now.', 'live.past': 'Past broadcasts', 'live.watch': 'Watch', 'live.onyt': 'Open on YouTube',
     'rate.gram': 'Gram gold', 'rate.ceyrek': 'Quarter gold', 'rate.yarim': 'Half gold', 'rate.tam': 'Full gold', 'rate.eur': 'Euro', 'rate.usd': 'Dollar', 'rate.gbp': 'Pound', 'rate.title': 'Gold & currency', 'rate.updated': 'Updated',
@@ -43,6 +47,7 @@ export const FEATURES: Record<string, Dict> = {
     'not.couple': 'Bride and groom', 'not.families': 'Families', 'not.person': 'In honour of', 'not.occasion': 'Occasion',
   },
   de: {
+    'nav.more': "Mehr",
     "foot.privacy": "Datenschutz", "foot.cookies": "Cookie-Richtlinie", "live.load": "Stream laden", "live.loadNote": "Der Stream läuft über YouTube; eine Verbindung entsteht erst, wenn Sie klicken.",
     'nav.canli': 'Live', 'live.badge': 'LIVE', 'live.title': 'Livestream', 'live.lede': 'Versammlungen, Veranstaltungen und besondere Tage werden hier live übertragen.', 'live.next': 'Nächste Übertragung', 'live.none': 'Derzeit keine Übertragung.', 'live.past': 'Frühere Übertragungen', 'live.watch': 'Ansehen', 'live.onyt': 'Auf YouTube öffnen',
     'rate.gram': 'Gramm Gold', 'rate.ceyrek': 'Viertel-Gold', 'rate.yarim': 'Halb-Gold', 'rate.tam': 'Ganz-Gold', 'rate.eur': 'Euro', 'rate.usd': 'Dollar', 'rate.gbp': 'Pfund', 'rate.title': 'Gold & Devisen', 'rate.updated': 'Stand',
@@ -52,6 +57,7 @@ export const FEATURES: Record<string, Dict> = {
     'not.couple': 'Braut und Bräutigam', 'not.families': 'Familien', 'not.person': 'Für', 'not.occasion': 'Anlass',
   },
   nl: {
+    'nav.more': "Meer",
     "foot.privacy": "Privacy", "foot.cookies": "Cookiebeleid", "live.load": "Stream laden", "live.loadNote": "De stream loopt via YouTube; er wordt pas verbinding gemaakt als u klikt.",
     'nav.canli': 'Live', 'live.badge': 'LIVE', 'live.title': 'Livestream', 'live.lede': 'Vergaderingen, evenementen en bijzondere dagen worden hier live uitgezonden.', 'live.next': 'Volgende uitzending', 'live.none': 'Er is nu geen uitzending.', 'live.past': 'Eerdere uitzendingen', 'live.watch': 'Bekijken', 'live.onyt': 'Open op YouTube',
     'rate.gram': 'Gram goud', 'rate.ceyrek': 'Kwart goud', 'rate.yarim': 'Half goud', 'rate.tam': 'Heel goud', 'rate.eur': 'Euro', 'rate.usd': 'Dollar', 'rate.gbp': 'Pond', 'rate.title': 'Goud & valuta', 'rate.updated': 'Bijgewerkt',
@@ -61,6 +67,7 @@ export const FEATURES: Record<string, Dict> = {
     'not.couple': 'Bruid en bruidegom', 'not.families': 'Families', 'not.person': 'Voor', 'not.occasion': 'Gelegenheid',
   },
   fr: {
+    'nav.more': "Plus",
     "foot.privacy": "Confidentialité", "foot.cookies": "Cookies", "live.load": "Charger le direct", "live.loadNote": "Le direct passe par YouTube ; la connexion n’a lieu que lorsque vous cliquez.",
     'nav.canli': 'Direct', 'live.badge': 'DIRECT', 'live.title': 'En direct', 'live.lede': 'Réunions, événements et jours spéciaux sont diffusés ici en direct.', 'live.next': 'Prochaine diffusion', 'live.none': 'Aucun direct pour le moment.', 'live.past': 'Diffusions passées', 'live.watch': 'Regarder', 'live.onyt': 'Ouvrir sur YouTube',
     'rate.gram': 'Or (gramme)', 'rate.ceyrek': 'Quart d’or', 'rate.yarim': 'Demi-or', 'rate.tam': 'Or entier', 'rate.eur': 'Euro', 'rate.usd': 'Dollar', 'rate.gbp': 'Livre', 'rate.title': 'Or et devises', 'rate.updated': 'Mise à jour',

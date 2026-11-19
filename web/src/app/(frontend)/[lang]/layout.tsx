@@ -58,7 +58,7 @@ export default async function SiteLayout({ children, params }: { children: React
     ...(home.tickerExtra ?? []).map((x) => ({ text: x.text, href: x.link || undefined })),
   ]
   const credits = [...new Set(media.docs.map((m) => m.credit).filter((c): c is string => !!c).map((c) => c.replace(/, Wikimedia Commons$/, '')))]
-  const siteName = settings.siteName || 'KAR-DEF'
+  const siteName = settings.siteName || 'Karakoçan'
 
   // Altın ve döviz şeridi (yönetici açıp kapatır, kalemleri seçer)
   const shown = settings.rates?.items?.length ? settings.rates.items : null
@@ -91,7 +91,7 @@ export default async function SiteLayout({ children, params }: { children: React
           live={Boolean(live.isLive && live.url)}
           notice={home.notice?.enabled ? { text: home.notice.text || '', link: home.notice.link } : null}
         />
-        <ScrollChrome lang={lang} items={navItems(lang, Boolean(live.isLive && live.url))} cta={t(lang, 'cta.katki')} totop={t(lang, 'totop')} siteName={siteName} />
+        <ScrollChrome lang={lang} items={navItems(lang, Boolean(live.isLive && live.url))} cta={t(lang, 'cta.katki')} totop={t(lang, 'totop')} siteName={siteName} moreLabel={t(lang, 'nav.more')} />
         <main id="main">
           <AdPlacement slot="top" lang={lang} className="wrap ad-wrap ad-wrap--top" />
           <AdPlacement slot="left" lang={lang} className="ad-rail ad-rail--left" />

@@ -50,7 +50,7 @@ export const SiteSettings: GlobalConfig = {
   admin: { group: 'Yönetim', hidden: onlyAdminSees },
   access: { read: anyone, update: isAdmin },
   fields: [
-    { name: 'siteName', label: 'Site adı', type: 'text', defaultValue: 'KAR-DEF', required: true },
+    { name: 'siteName', label: 'Site adı', type: 'text', defaultValue: 'Karakoçan', required: true },
     { name: 'tagline', label: 'Alt başlık', type: 'text', localized: true, defaultValue: 'Haber ve Arşiv Platformu' },
     {
       name: 'contact',

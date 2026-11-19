@@ -8,7 +8,7 @@ export const Icon = () => (
       <img className="kd-icon kd-icon--av" src="/brand/av-kardep-logo.png" alt="AV-KARDEP" />
     </span>
     <span className="kd-topbrand-text">
-      <b>KAR-DEF</b>
+      <b>Karakoçan</b>
       <small>Panel</small>
     </span>
   </span>

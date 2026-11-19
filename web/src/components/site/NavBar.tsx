@@ -2,26 +2,27 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
+import { MoreMenu, useNavFit } from './useNavFit'
 
 export type NavItem = { href: string; label: string; section?: string; live?: boolean }
 
 /** Ana menü: fareyi takip eden kırmızı çizgi + ana sayfada bulunulan bölümü işaretleme */
-export function NavBar({ items, lang }: { items: NavItem[]; lang: string }) {
+export function NavBar({ items, lang, moreLabel }: { items: NavItem[]; lang: string; moreLabel: string }) {
   const pathname = usePathname()
   const home = pathname === `/${lang}`
   const routeIdx = items.findIndex((it) => !it.section && it.href !== `/${lang}` && pathname.startsWith(it.href))
   const [scrollIdx, setScrollIdx] = useState<number | null>(null)
   const [hover, setHover] = useState<number | null>(null)
   const active = home && scrollIdx !== null ? scrollIdx : routeIdx >= 0 ? routeIdx : 0
-  const refs = useRef<(HTMLAnchorElement | null)[]>([])
   const ind = useRef<HTMLSpanElement>(null)
+  const { box, items: refs, more, fit, fitting } = useNavFit(items.length, [lang])
 
   const place = useCallback((i: number) => {
-    const a = refs.current[i]
+    const a = i < fit ? refs.current[i] : more.current?.parentElement
     if (!a || !ind.current) return
     ind.current.style.width = `${a.offsetWidth}px`
     ind.current.style.transform = `translateX(${a.offsetLeft}px)`
-  }, [])
+  }, [fit, refs, more])
 
   useEffect(() => { place(hover ?? active) }, [hover, active, place])
   useEffect(() => {
@@ -49,13 +50,15 @@ export function NavBar({ items, lang }: { items: NavItem[]; lang: string }) {
   }, [home, items])
 
   return (
-    <div className="wrap nav-in" onMouseLeave={() => setHover(null)}>
+    <div ref={box} className={`wrap nav-in${fitting ? ' is-fit' : ''}`} onMouseLeave={() => setHover(null)}>
       {items.map((it, i) => (
         <Link
           key={it.href + it.label}
           href={it.href}
           ref={(el) => { refs.current[i] = el }}
-          className={[i === active ? 'is-active' : '', it.live ? 'is-live' : ''].filter(Boolean).join(' ') || undefined}
+          className={[i === active ? 'is-active' : '', it.live ? 'is-live' : '', i >= fit ? 'is-over' : ''].filter(Boolean).join(' ') || undefined}
+          aria-hidden={i >= fit || undefined}
+          tabIndex={i >= fit ? -1 : undefined}
           onMouseEnter={() => setHover(i)}
           onFocus={() => setHover(i)}
           scroll={!it.section}
@@ -64,6 +67,15 @@ export function NavBar({ items, lang }: { items: NavItem[]; lang: string }) {
           {it.label}
         </Link>
       ))}
+      <MoreMenu
+        label={moreLabel}
+        items={items}
+        activeIndex={active}
+        offset={fit}
+        hidden={fit >= items.length}
+        btnRef={(el) => { more.current = el }}
+        onHover={() => setHover(items.length)}
+      />
       <span className="nav-ind" ref={ind} aria-hidden="true" />
     </div>
   )

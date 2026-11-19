@@ -74,7 +74,7 @@ export function Header({
           </div>
         </div>
         <nav className="nav intro" style={{ '--d': 3 } as React.CSSProperties} aria-label="Menü">
-          <NavBar items={items} lang={lang} />
+          <NavBar items={items} lang={lang} moreLabel={t(lang, 'nav.more')} />
         </nav>
       </header>
 

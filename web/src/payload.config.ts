@@ -53,7 +53,7 @@ export default buildConfig({
     importMap: { baseDir: path.resolve(dirname) },
     dateFormat: 'd MMMM yyyy, HH:mm',
     meta: {
-      titleSuffix: ' · KAR-DEF Panel',
+      titleSuffix: ' · Karakoçan Panel',
       icons: [{ rel: 'icon', type: 'image/png', url: '/brand/kar-def-logo.png' }],
     },
     components: {

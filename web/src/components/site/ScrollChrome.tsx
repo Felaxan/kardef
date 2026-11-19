@@ -3,11 +3,13 @@ import Link from 'next/link'
 import React, { useEffect, useRef, useState } from 'react'
 import { Ico } from './Icons'
 import type { NavItem } from './NavBar'
+import { MoreMenu, useNavFit } from './useNavFit'
 
 /** Kaydırınca beliren küçük başlık, okuma ilerleme çizgisi ve başa dön düğmesi */
 export function ScrollChrome({
-  lang, items, cta, totop, siteName,
-}: { lang: string; items: NavItem[]; cta: string; totop: string; siteName: string }) {
+  lang, items, cta, totop, siteName, moreLabel,
+}: { lang: string; items: NavItem[]; cta: string; totop: string; siteName: string; moreLabel: string }) {
+  const { box, items: refs, more, fit, fitting } = useNavFit<HTMLElement>(items.length, [lang])
   const [show, setShow] = useState(false)
   const [top, setTop] = useState(false)
   const prog = useRef<HTMLSpanElement>(null)
@@ -48,8 +50,21 @@ export function ScrollChrome({
             <img src="/brand/av-kardep-logo.png" alt="" />
             <span>{siteName}</span>
           </Link>
-          <nav className="mini-nav" aria-label="Kısa menü">
-            {items.map((it) => <Link key={it.href + it.label} href={it.href} scroll={!it.section}>{it.label}</Link>)}
+          <nav ref={box} className={`mini-nav${fitting ? ' is-fit' : ''}`} aria-label="Kısa menü">
+            {items.map((it, i) => (
+              <Link
+                key={it.href + it.label}
+                href={it.href}
+                scroll={!it.section}
+                ref={(el) => { refs.current[i] = el }}
+                className={i >= fit ? 'is-over' : undefined}
+                aria-hidden={i >= fit || undefined}
+                tabIndex={i >= fit ? -1 : undefined}
+              >
+                {it.label}
+              </Link>
+            ))}
+            <MoreMenu label={moreLabel} items={items} offset={fit} hidden={fit >= items.length} btnRef={(el) => { more.current = el }} />
           </nav>
           <Link href={`/${lang}/arsive-katki`} className="btn btn-brand btn-sm"><span>{cta}</span><Ico name="arrow" /></Link>
         </div>
